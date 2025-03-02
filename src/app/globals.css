@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.swiper-button-prev,
+.swiper-button-next {
+  &::after {
+    display: none;
+  }
+}
+
+
+.swiper-button-prev {
+  height: 40px !important;
+  width: 40px !important;
+  border-radius: 100%;  
+  left: -40px !important;
+}
+
+.swiper-button-next {
+  height: 40px !important;
+  width: 40px !important;
+  border-radius: 100%;  
+  right: -40px !important;
+}
