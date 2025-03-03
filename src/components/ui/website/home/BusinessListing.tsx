@@ -4,14 +4,13 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { ChevronLeft, ChevronRight, Building2, Utensils, Building } from 'lucide-react';
-import { Card, Typography } from 'antd';
+
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-const { Title, Paragraph } = Typography;
 
 interface BusinessCardProps {
   image: string;
@@ -58,10 +57,10 @@ const businessData = [
   ]; 
 const BusinessListing = () => { 
 
-    const BusinessCard: React.FC<BusinessCardProps> = ({ image, title, icon, description }) => {
+    const BusinessCard: React.FC<BusinessCardProps> = ({ image, title, description }) => {
         return (
           <div 
-            className=" "
+            className=" pb-5  "
         
           > 
            <div className="relative h-[455px] ">
@@ -72,14 +71,14 @@ const BusinessListing = () => {
                 />
               </div>  
 
-              <div className='absolute -bottom-5 right-1 bg-white p-4 w-4/5 rounded-lg'> 
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-blue-600">{icon}</span>
-              <Title level={5} className="m-0">{title}</Title>
-            </div>
-            <p className="text-gray-600 text-sm">
+              <div className='absolute bottom-1 right-0 bg-white/95 drop-shadow-md p-4 w-[94%] rounded-lg shadow z-30'> 
+            <div className=" h-[130px]">
+             
+              <p  className="pb-2 text-[24px] font-semibold ">{title}</p>
+            <p className="text-[#757575] text-sm font-normal">
               {description}
             </p>
+            </div>
 
               </div>
           </div>
@@ -87,7 +86,7 @@ const BusinessListing = () => {
       }; 
 
     return (
-        <div className='container mx-auto pb-[60px]'>
+        <div className='container mx-auto  mb-[60px] '>
             <p className="text-[48px] font-semibold mb-[36px] text-[#000000]">Business listing</p> 
 
             <div className="">
@@ -103,8 +102,8 @@ const BusinessListing = () => {
                 nextEl: '.swiper-button-next',  
             }}
             pagination={{ 
-              clickable: true,
-              el: '.swiper-pagination'
+              clickable: false,
+            
             }}
             breakpoints={{
               640: {
@@ -117,7 +116,7 @@ const BusinessListing = () => {
             className="relative lg:px-4 px-2"
           >
             {businessData.map((business) => (
-              <SwiperSlide key={business.id} className="h-auto">
+              <SwiperSlide key={business.id} className="h-[555px]">
                 <BusinessCard
                   image={business.image}
                   title={business.title}
