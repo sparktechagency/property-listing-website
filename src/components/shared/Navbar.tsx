@@ -73,9 +73,9 @@ const Navbar = () => {
           {/* Right Icons */}
           <div className="nav-icons flex gap-4">  
 
-          <div className="flex items-center gap-2" onClick={()=>router.push("/brand-home")}> 
-   <img className="lg:w-16 lg:h-16 w-12 h-12 rounded-full" src="/user.jpg" alt="profile" /> 
-   <p className="text-black text-lg lg:block hidden">Jone Doe</p>
+          <div className="flex items-center gap-2" onClick={()=>router.push("/profile")}> 
+   <img className="lg:w-16 lg:h-16 w-12 h-12 rounded-full" src="/user2.jpg" alt="profile" /> 
+   <p className="text-black text-lg lg:block hidden cursor-pointer">Jone Doe</p>
   </div> 
             {/* {  
   

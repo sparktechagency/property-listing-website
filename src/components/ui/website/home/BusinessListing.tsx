@@ -1,147 +1,92 @@
-/* eslint-disable @next/next/no-img-element */ 
+/* eslint-disable @next/next/no-img-element */
 "use client"
+import PropertyCard from '@/components/shared/PropertyCard';
 import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
-import { ChevronLeft, ChevronRight, Building2, Utensils, Building } from 'lucide-react';
 
 
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+const properties = [
+  {
+    id: 1,
+    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop",
+    title: "Equestrian  House",
+    location: "Singapore City",
+    revenue: "$38,440",
+    area: 420,
+    ownership: "Sole proprietorship",
+    year: 1978
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1632833239869-a37e3a5806d2?q=80&w=2069&auto=format&fit=crop",
+    title: "Singapore  Hospital",
+    location: "Singapore City",
+    revenue: "$38,440",
+    area: 480,
+    ownership: "Partnership",
+    year: 1974
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=2070&auto=format&fit=crop",
+    title: "Apartments",
+    location: "Singapore City",
+    revenue: "$38,440",
+    area: 420,
+    ownership: "Sole proprietorship",
+    year: 1978
+  },
+  {
+    id: 4,
+    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop",
+    title: "Equestrian Family ",
+    location: "Singapore City",
+    revenue: "$23,040",
+    area: 420,
+    ownership: "Sole proprietorship",
+    year: 1978
+  },
+  {
+    id: 5,
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
+    title: "Corporate Office ",
+    location: "Singapore City",
+    revenue: "$22,014",
+    area: 870,
+    ownership: "Sole proprietorship",
+    year: 1988
+  },
+  {
+    id: 6,
+    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop",
+    title: "Brew & Bliss Café",
+    location: "Singapore City",
+    revenue: "$13,410",
+    area: 420,
+    ownership: "Sole proprietorship",
+    year: 1978
+  }
+];
+
+const BusinessListing = () => {
 
 
-interface BusinessCardProps {
-  image: string;
-  title: string;
-  icon: React.ReactNode;
-  description: string;
-} 
-const businessData = [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80",
-      title: "Hospital",
-      icon: <Building2 size={20} />,
-      description: "Singapore General Hospital (SGH) is Singapore's largest and oldest hospital, providing comprehensive medical care, advanced treatments, and research."
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-      title: "Restaurant",
-      icon: <Utensils size={20} />,
-      description: "A restaurant offers a variety of delicious meals in a comfortable setting, providing an enjoyable dining experience for all."
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-      title: "Industrial Building",
-      icon: <Building size={20} />,
-      description: "An industrial building is designed for manufacturing, storage, or distribution, offering specialized spaces for equipment, production, and logistics."
-    },
-    {
-      id: 4,
-      image: "https://images.unsplash.com/photo-1577979749830-f1d742b96791?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
-      title: "Office Space",
-      icon: <Building2 size={20} />,
-      description: "Modern office spaces designed for productivity and collaboration, featuring flexible layouts and amenities for businesses of all sizes."
-    },
-    {
-      id: 5,
-      image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-      title: "Shopping Mall",
-      icon: <Building size={20} />,
-      description: "A comprehensive retail destination offering a wide range of stores, dining options, and entertainment facilities for visitors."
-    }
-  ]; 
-const BusinessListing = () => { 
 
-    const BusinessCard: React.FC<BusinessCardProps> = ({ image, title, description }) => {
-        return (
-          <div 
-            className=" pb-5  "
-        
-          > 
-           <div className="relative h-[455px] ">
-                <img 
-                  src={image} 
-                  alt={title} 
-                  className="w-full h-[455px] object-cover"
-                />
-              </div>  
+  return (
+    <div className="container my-[60px] ">
 
-              <div className='absolute bottom-1 right-0 bg-white/95 drop-shadow-md p-4 w-[94%] rounded-lg shadow z-30'> 
-            <div className=" h-[130px]">
-             
-              <p  className="pb-2 text-[24px] font-semibold ">{title}</p>
-            <p className="text-[#757575] text-sm font-normal">
-              {description}
-            </p>
-            </div>
+      <p className="text-4xl md:text-[48px] font-semibold  mb-9 ">
+        Business listing
+      </p>
 
-              </div>
-          </div>
-        );
-      }; 
-
-    return (
-        <div className='container mx-auto  mb-[60px] '>
-            <p className="text-[48px] font-semibold mb-[36px] text-[#000000]">Business listing</p> 
-
-            <div className="">
-
-        
-        <div className="relative">
-          <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={24}
-            slidesPerView={1}
-            navigation={{
-                prevEl: '.swiper-button-prev',  
-                nextEl: '.swiper-button-next',  
-            }}
-            pagination={{ 
-              clickable: false,
-            
-            }}
-            breakpoints={{
-              640: {
-                slidesPerView: 2,
-              },
-              1024: {
-                slidesPerView: 3,
-              },
-            }}
-            className="relative lg:px-4 px-2"
-          >
-            {businessData.map((business) => (
-              <SwiperSlide key={business.id} className="h-[555px]">
-                <BusinessCard
-                  image={business.image}
-                  title={business.title}
-                  icon={business.icon}
-                  description={business.description}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          
-          <button className="swiper-button-prev   z-10  rounded-full bg-primary shadow-lg flex items-center justify-center  ">
-                   <span>  <ChevronLeft className="" color='white' /> </span>
-                </button>
-
-                <button className="swiper-button-next  z-10  rounded-full bg-primary shadow-lg flex items-center justify-center  ">
-                  <span>  <ChevronRight className="" color='white' /> </span> 
-                </button>
-
-      <div className="swiper-pagination flex justify-center gap-2 mt-6" />
+      <div className=" mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {properties.map((property) => (
+            <PropertyCard key={property.id} property={property} />
+          ))}
         </div>
-
-    </div> 
-
-        </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default BusinessListing;

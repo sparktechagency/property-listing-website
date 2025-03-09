@@ -1,47 +1,47 @@
-import Image from "next/image";
-
+import {  Input } from "antd";
+import { Search } from "lucide-react";
 
 const Banner = () => {
     return (  
-        <div className=" flex items-center justify-center  h-[calc(100vh-180px)] "> 
-        <div className=" container  ">
-      <div className=" w-full ">
-        <div className="flex flex-col md:flex-row  rounded-tr-[100px] rounded-bs-3xl overflow-hidden ">
-          {/* Property Image Section */}
-          <div className="md:w-1/2 relative h-[300px] md:h-auto">
-            <Image
-              src="/banner.svg" 
-              alt="Luxury Property" 
-              fill
-              className="object-cover"
+       <div className="container min-h-[calc(100vh-140px)] flex items-center justify-center rounded-se-[120px]  rounded-bl-[120px] w-full bg-no-repeat bg-center bg-contain md:bg-cover"
+       style={{ backgroundImage: `url('/banner.jpg')` }}
+       > 
+         <div className=" flex items-center justify-center ">  
+          <div className=" text-[#FFF7EC] w-2/3"> 
+ <p className=" text-[50px] font-semibold text-center">The Power of Partnership. </p> 
+ <p className=" text-[18px] font-normal text-center px-10 mt-5 "> Partnerships combine strengths to achieve shared goals, fostering trust, innovation, and problem-solving. They drive growth, market expansion, and long-term success in business sales. </p> 
+
+ <div className="bg-white mt-12 rounded-full p-2 shadow-lg flex flex-col md:flex-row gap-4 w-full">
+          <div className="flex-1 relative">
+            <Input
+              type="text"
+              placeholder="Find a business"
+              className="w-full pl-10 h-12 text-lg placeholder:text-gray-800" 
+              prefix={<Search className=" text-gray-400 h-5 w-5" />} 
+              style={{border:"none" }}
             />
-   
+           
           </div>
-          
-          {/* Property Details Section */}
-          <div className="md:w-1/2 p-8 md:p-12 bg-[#FFF8EE]">
-   
-            
-            <h1 className="text-[60px]  font-semibold text-[#000000] mb-5">
-              Elegant Property for Sale.
-            </h1>
-            
-            <p className="text-[#757575] mb-8 text-[20px] font-normal">
-              Discover this exquisite property, blending modern luxury with timeless elegance. Spacious interiors, stunning design, and premium amenities create a perfect living space. Located in a prime neighborhood, it offers comfort, style, and convenience. Don&apos;t miss this opportunity!
-            </p>
-            
-            <div className="mb-6">
-              <p className="text-[20px] text-[#929191] uppercase font-normal">PRICE STARTS AT</p>
-              <p className="text-[54px] font-bold text-[#0171E2]">$2,50,00</p>
-            </div>
-            
+          <div className="flex-1 relative">
+            <Input
+              type="text"
+              placeholder="Search your business"
+              className="w-full pl-10 h-12 text-lg" 
+              prefix={<Search className=" text-gray-400 h-5 w-5" />} 
+              style={{border:"none"}}
+            />
+           
+          </div>
+          <button
+            className="h-12 px-8 text-lg bg-orange-400 hover:bg-orange-500 rounded-full font-medium"
+          >
+            FIND
+          </button>
+        </div> 
 
           </div>
-        </div>
-      </div>
-    </div>
-
-        </div>
+         </div>
+       </div>
     );
 };
 

@@ -1,11 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
 import {
-    FaFacebook,
-    FaInstagram,
-    FaLinkedin,
+    FaFacebookF,
+    FaLinkedinIn,
     FaTwitter,
 } from "react-icons/fa";
+import { PiInstagramLogoFill } from "react-icons/pi";
 
 const Footer = () => {
     const router = useRouter();
@@ -23,11 +23,13 @@ const Footer = () => {
                 <div className=" w-full">
                     <h1 className="text-xl font-semibold my-5">Services</h1>
                     <div className="space-y-2">
-                        <p className=" ">Real Estate Agents</p>
-                        <p className=" ">Home Measurement</p>
-                        <p className=" ">Sells product</p>
-                        <p className=" ">Buying</p>
-                        <p className=" ">Selling</p>
+                        <p className=" ">Houses</p>
+                        <p className=" ">Apartments</p>
+                        <p className=" ">Office</p>
+                        <p className=" ">Restaurant</p>
+                        <p className=" ">Cafe</p>
+                        <p className=" ">Firm</p>
+                        <p className=" ">Sell your business</p>
 
                     </div>
                 </div>
@@ -37,6 +39,7 @@ const Footer = () => {
                         <p className="cursor-pointer " onClick={() => router.push("/about")}>About Us</p>
                         <p className="cursor-pointer " onClick={() => router.push("/contact")}>Contact Us</p>
                         <p className="cursor-pointer " onClick={() => router.push("/privacy")}>Privacy Policy</p>
+                        <p className="cursor-pointer " onClick={() => router.push("/terms")}>Terms & conditions</p>
 
                     </ul>
                 </div>
@@ -47,7 +50,7 @@ const Footer = () => {
                     <div className="flex gap-5 pt-3">
                         <div className="flex gap-5 text-white">
                             <div className="p-2 bg-black rounded-full">
-                                <FaFacebook size={25} />
+                                <FaFacebookF size={25} />
                             </div>
                         </div>
                         <div className="flex gap-5 text-white">
@@ -57,12 +60,12 @@ const Footer = () => {
                         </div>
                         <div className="flex gap-5 text-white">
                             <div className="p-2 bg-black rounded-full">
-                                <FaInstagram size={25} />
+                                <PiInstagramLogoFill size={25} />
                             </div>
                         </div>
                         <div className="flex gap-5 text-white">
                             <div className="p-2 bg-black rounded-full">
-                                <FaLinkedin size={25} />
+                                <FaLinkedinIn size={25} />
                             </div>
                         </div>
                     </div>
