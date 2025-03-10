@@ -238,7 +238,7 @@ const MainBusinessListing = () => {
 
                         <button
                             type="submit"
-                            className="w-full bg-primary text-white border-none h-12 text-base font-medium "
+                            className="w-full bg-primary text-white border-none h-12 text-base font-medium rounded-lg"
                             onClick={() => console.log('Applying filters')}
                         >
                             Apply Filter
@@ -258,7 +258,7 @@ const MainBusinessListing = () => {
                                 { value: 'Price low', label: 'Price low' }
                             ]} className='w-32' />
 
-                            <p className={`cursor-pointer ${!sidebar ? 'text-blue-800' : 'text-gray-500'}`} onClick={() => setSidebar(!sidebar)}>  <RxDashboard size={25} />  </p>
+                            <p className={`cursor-pointer lg:block hidden ${!sidebar ? 'text-blue-800' : 'text-gray-500'}`} onClick={() => setSidebar(!sidebar)}>  <RxDashboard size={25} />  </p>
                             <p className={`cursor-pointer lg:block hidden ${sidebar ? 'text-blue-800' : 'text-gray-500'}`} onClick={() => setSidebar(!sidebar)}> <CiBoxList size={25} /> </p>
                         </div>
                     </div>

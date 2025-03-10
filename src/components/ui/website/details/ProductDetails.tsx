@@ -71,10 +71,13 @@ const ProductDetails = () => {
                         <p className="text-gray-500 text-[14px] lg:mb-0 mb-2 flex items-center gap-1"> <span> <GrLocation size={16} />  </span> <span> Singapore City </span></p>
                     </div>
                     <div className="flex flex-col  gap-y-2">
-                        <div className="block font-semibold lg:text-[32px] text-[20px] text-[#0171E2]">Revenue: $38,440</div>
-                        <div className=" flex items-center lg:justify-end gap-4">
+                        <div className="block font-semibold lg:text-[32px] text-[20px] text-[#0171E2]">Revenue: $38,440</div> 
+                        <div className=" lg:block hidden"> 
+                        <div className=" flex items-center lg:justify-end gap-4 ">
                             <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => router.push("/checkout")} > Buy </button>
                             <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpen(true)}> Enquire Now </button>
+                        </div>
+
                         </div>
 
                     </div>
@@ -182,7 +185,15 @@ const ProductDetails = () => {
         </video>
 
                     </div>
-                </div>
+                </div> 
+
+                <div className=" block lg:hidden mt-5"> 
+                        <div className=" flex items-center justify-end gap-4 ">
+                            <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => router.push("/checkout")} > Buy </button>
+                            <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpen(true)}> Enquire Now </button>
+                        </div>
+
+                        </div>
             </div> 
             <EnquireNowModal open={open} setOpen={setOpen} />
         </div>

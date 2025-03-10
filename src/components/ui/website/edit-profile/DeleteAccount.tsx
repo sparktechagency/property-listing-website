@@ -48,7 +48,7 @@ const DeleteAccount = () => {
                 </Form.Item> 
 
                 <Form.Item className="flex items-center justify-end mt-5"> 
-                    <button className=" w-[250px] h-[45px] bg-primary text-white text-[20px] font-normal flex items-center justify-center rounded-lg "> Save & Change </button>
+                    <button className=" lg:w-[250px] w-[150px]  h-[45px] bg-primary text-white lg:text-[20px] text-[16px] font-normal flex items-center justify-center rounded-lg "> Save & Change </button>
                 </Form.Item>
 
             </Form>

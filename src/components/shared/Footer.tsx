@@ -14,7 +14,7 @@ const Footer = () => {
             <div className="flex lg:flex-row flex-col items-start justify-center  gap-10   container mx-auto">
                 <div className=" w-full  flex items-center justify-center h-full"> 
                     <div className=" space-y-5 text-primary pt-10"> 
-                    <h1 className="text-3xl font-bold">Creator Brief</h1>
+                    <h1 className="text-3xl font-bold">LOGO</h1>
                     <p className="w-[90%] text-[#FFC77E]">
                         There are many variations of passages of lorem ipsum available.
                     </p>

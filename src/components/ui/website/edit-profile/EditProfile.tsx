@@ -22,10 +22,10 @@ const EditProfile = () => {
       }; 
 
     return (
-        <div className=" container py-[60px]">
+        <div className=" container lg:py-[60px] py-[30px] ">
            
            <div className=" flex items-center justify-center "> 
-           <div className="flex lg:flex-row flex-wrap lg:gap-4 gap-2">
+           <div className="flex lg:flex-row flex-wrap gap-5 ">
             {tabs.map((tab) => (
               <button
                 key={tab.id}

@@ -144,7 +144,7 @@ const handleChangePassword = (values:{currentPassword:string , newPassword:strin
             </ConfigProvider>
 
             <Form.Item className="flex items-center justify-end mt-5"> 
-                    <button className=" w-[250px] h-[45px] bg-primary text-white text-[20px] font-normal flex items-center justify-center rounded-lg "> Save & Change </button>
+                    <button className=" lg:w-[250px] w-[150px] h-[45px] bg-primary text-white lg:w-[250px] w-[150px] font-normal flex items-center justify-center rounded-lg "> Save & Change </button>
                 </Form.Item>
         </Form>
    

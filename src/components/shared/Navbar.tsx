@@ -34,7 +34,7 @@ const Navbar = () => {
           </button>
   
           {/* Logo */}
-          <h1 className="text-3xl font-bold">Creator Briefs</h1>
+          <h1 className="text-3xl font-bold">LOGO</h1>
           {/* Nav Menu */}
           <div
             ref={menuRef}
