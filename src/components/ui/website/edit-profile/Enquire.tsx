@@ -16,7 +16,7 @@ const Enquire = () => {
 
     return (
         <div className=" mt-5">
-            <Table dataSource={data} columns={columns} style={{border: "1px solid #E6E6E6" }}  className=" rounded-lg "/>
+            <Table dataSource={data} columns={columns} style={{border: "1px solid #E6E6E6" }}   scroll={{ x: 'max-content' }}   className=" rounded-lg "/>
         </div>
     );
 };

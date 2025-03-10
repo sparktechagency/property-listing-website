@@ -44,7 +44,7 @@ const UploadBusiness = () => {
 
 <p className="text-xl font-semibold py-3"> Business Information </p> 
 
-<div className=" grid grid-cols-3 gap-x-8"> 
+<div className=" grid lg:grid-cols-3 grid-cols-1 gap-x-8"> 
  <BusinessInput name="businessName" label="Enter your business name" />
  <BusinessInput name="businessLogo" label="Enter your business brand logo" /> 
  <BusinessInput name="businessLocation" label="Enter your business location" />  

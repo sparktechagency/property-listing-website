@@ -69,9 +69,9 @@ const properties = [
       ownership: "Sole proprietorship",
       year: 1978
     }
-  ];
+  ]; 
 
-const businessTypes = [
+  const businessTypes = [
     'All',
     'Houses',
     'Apartments',
@@ -81,26 +81,18 @@ const businessTypes = [
     'Firm',
 ];
 
-const sortData = [
-    { value: 'Newest', label: 'Newest' },
-    { value: 'Best Seller', label: 'Best Seller' },
-    { value: 'Best Match', label: 'Best Match' },
-    { value: 'Price high', label: 'Price high' },
-    { value: 'Price low', label: 'Price low' }
-]
-
 const MainBusinessListing = () => {
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-    const [employees, setEmployees] = useState<number|string>(0);
+    const [sidebar, setSidebar] = useState<boolean>(false); 
+    const [employees, setEmployees] = useState<number|string>(0); 
     const [constructionYear, setConstructionYear] = useState<string>('');
-    const [sidebar, setSidebar] = useState<boolean>(false);
 
     return (
-        <div className=' container py-[60px]'>
-            <div className='grid grid-cols-12 gap-8'>
-                <div className='col-span-4 bg-[#F8F8F8] rounded p-5'>
-                    <div className="space-y-6">
+        <div className='container py-10 px-4 md:px-6'>
+            <div className='grid grid-cols-1 md:grid-cols-12 gap-6'>
+                <div className='md:col-span-4 bg-[#F8F8F8] rounded p-5'>
+                <div className="space-y-6">
                         <div>
                             <h2 className="text-lg font-semibold mb-2">Find your Business</h2>
                             <div className="relative">
@@ -254,52 +246,28 @@ const MainBusinessListing = () => {
                     </div>
                 </div>
 
-                <div className='col-span-8'>
-                    <div className='flex items-center justify-between '>
-                        <p className=' font-normal text-[20px] text-[#000000] '> Showing 1-8 og 25 results  </p>
+                <div className='md:col-span-8'>
+                    <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-4'>
+                        <p className='text-lg font-normal'>Showing 1-8 of 25 results</p>
+                        <div className='flex items-center gap-4'>
+                            <Select defaultValue='Newest' options={[
+                                { value: 'Newest', label: 'Newest' },
+                                { value: 'Best Seller', label: 'Best Seller' },
+                                { value: 'Best Match', label: 'Best Match' },
+                                { value: 'Price high', label: 'Price high' },
+                                { value: 'Price low', label: 'Price low' }
+                            ]} className='w-32' />
 
-                        <div className='flex items-center gap-5'>
-                            <Select
-                                defaultValue="sortData"
-                                options={sortData}
-                                style={{
-                                    width: "120px",
-                                    height: "35px",
-                                    border: "none",
-                                    outline: "none",
-                                    boxShadow: "none",
-                                    backgroundColor: "white",
-                                }}
-                            />
-
-                            <p className={`${!sidebar ? " text-blue-800" : "text-[#757575]"} border-x-2 px-3 border-primary cursor-pointer `} onClick={() => setSidebar(!sidebar)}>  <RxDashboard size={28} />  </p>
-                            <p className={`${sidebar ? " text-blue-800" : "text-[#757575]"} cursor-pointer `} onClick={() => setSidebar(!sidebar)}> <CiBoxList size={29} /> </p>
+                            <p className={`cursor-pointer ${!sidebar ? 'text-blue-800' : 'text-gray-500'}`} onClick={() => setSidebar(!sidebar)}>  <RxDashboard size={25} />  </p>
+                            <p className={`cursor-pointer lg:block hidden ${sidebar ? 'text-blue-800' : 'text-gray-500'}`} onClick={() => setSidebar(!sidebar)}> <CiBoxList size={25} /> </p>
                         </div>
                     </div>
 
-
-{/* cards   */}  
-
-{ 
-sidebar ? 
-<div className='grid grid-cols-1 gap-8 mt-[30px]'> 
-{
-    properties.map((property) => (
-        <SidePropertyCard key={property.id} property={property} />
-    ))
-}
-
-</div> : <div className='grid grid-cols-2  gap-5 mt-[30px]'> 
-{
-    properties.map((property) => (
-        <PropertyCard key={property.id} property={property} />
-    ))
-}
-
-</div>
-}
-
-
+                    <div className={`mt-6 grid ${sidebar ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'} gap-6`}> 
+                        {properties.map((property) => (
+                            sidebar ? <SidePropertyCard key={property.id} property={property} /> : <PropertyCard key={property.id} property={property} />
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

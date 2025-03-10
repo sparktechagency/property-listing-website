@@ -63,16 +63,16 @@ const ProductDetails = () => {
     const [ open , setOpen]  = useState(false) 
     const router = useRouter()
     return (
-        <div className='container py-[60px]'>
+        <div className='container lg:py-[60px] py-[30px]'>
             <div className=''>
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex lg:flex-row flex-col lg:justify-between lg:items-center mb-6">
                     <div>
-                        <p className="text-[32px] text-primary font-semibold ">Equestrian Family House</p>
-                        <p className="text-gray-500 text-[14px] flex items-center gap-1"> <span> <GrLocation size={16} />  </span> <span> Singapore City </span></p>
+                        <p className="lg:text-[32px] text-[24px] text-primary font-semibold lg:mb-0 mb-2 ">Equestrian Family House</p>
+                        <p className="text-gray-500 text-[14px] lg:mb-0 mb-2 flex items-center gap-1"> <span> <GrLocation size={16} />  </span> <span> Singapore City </span></p>
                     </div>
                     <div className="flex flex-col  gap-y-2">
-                        <div className="block font-semibold text-[32px] text-[#0171E2]">Revenue: $38,440</div>
-                        <div className=" flex items-center justify-end gap-4">
+                        <div className="block font-semibold lg:text-[32px] text-[20px] text-[#0171E2]">Revenue: $38,440</div>
+                        <div className=" flex items-center lg:justify-end gap-4">
                             <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => router.push("/checkout")} > Buy </button>
                             <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpen(true)}> Enquire Now </button>
                         </div>
@@ -80,12 +80,12 @@ const ProductDetails = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-4 gap-4 mb-8  ">
+                <div className="grid lg:grid-cols-4 grid-cols-1 gap-4 mb-8  ">
                     <div className="col-span-2">
                         <img alt="Main Property Image" src={propertyImages[0]} className="h-auto w-full object-cover shadow-lg rounded-lg" />
                     </div>
                     <div className="col-span-2 ">
-                        <div className="grid grid-cols-2 gap-x-4">
+                        <div className="grid grid-cols-2 gap-x-4 lg:gap-y-0 gap-y-2">
                             {propertyImages.slice(1).map((image, index) => (
                                 <img key={index} alt={`Property Image ${index + 2}`} src={image} className="h-auto w-full object-cover shadow-md rounded-lg" />
                             ))}
@@ -96,9 +96,9 @@ const ProductDetails = () => {
 
 
                 <div className="flex items-center justify-center mb-[30px]   ">
-                    <div className="w-[90%] bg-[#F8F8F8] px-[77px] py-10 rounded-xl">
+                    <div className="w-[90%] bg-[#F8F8F8] lg:px-[77px] px-4 lg:py-10 py-4 rounded-xl">
                         <p className="text-[32px] font-semibold mb-6">Overview</p>
-                        <div className="grid grid-cols-3 gap-4 mb-8 text-center">
+                        <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mb-8 text-center">
                             {
                                 overview?.map((item, index) => (
                                     <div key={index} className="p-4  flex items-center justify-center gap-x-5 border border-gray-300 rounded-lg">
@@ -118,21 +118,21 @@ const ProductDetails = () => {
                 </div>
 
                 <div>
-                    <p className="text-[32px] font-semibold mb-3 text-[#000000] ">Business Description</p>
-                    <p className={`${montserrat.className} text-lg font-normal pb-3 text-[#000000] `}>
+                    <p className="lg:text-[32px] text-[24px] font-semibold mb-3 text-[#000000] ">Business Description</p>
+                    <p className={`${montserrat.className} lg:text-lg text-sm font-normal pb-3 text-[#000000] `}>
                         This 5-bed with a loft, 4-bath home in the gated community of The Hideout has it all. From the open floor plan to the abundance of light from the windows, this home is perfect for entertaining. The living room and dining room have vaulted ceilings and a beautiful fireplace. You will love spending time on the deck taking in the beautiful views. In the kitchen, you&apos;ll find stainless steel appliances and a tile backsplash, as well as a breakfast bar.
                     </p>
 
-                    <p className={`${montserrat.className} text-lg font-normal pb-7 text-[#000000] `}>
+                    <p className={`${montserrat.className} lg:text-lg text-sm font-normal pb-7 text-[#000000] `}>
                         Placeholder content for this accordion, which is intended to demonstrate the class. This is the first item&apos;s accordion body you get groundbreaking performance and amazing battery life. Add to that a stunning Liquid Retina XDR display, the best camera and audio ever in a Mac notebook, and all the ports you need.
                     </p>
                 </div>
 
-                <div className="grid grid-cols-3 gap-16 mb-8">
+                <div className="grid lg:grid-cols-3 grid-cols-1 lg:gap-16 gap-8 mb-8">
 
                     <div className="w-full col-span-2">
-                        <p className="text-[32px] font-semibold mb-3 text-[#000000]">Business Details</p>
-                        <div className="grid grid-cols-2 gap-16 ">
+                        <p className="lg:text-[32px] text-[24px] font-semibold mb-3 text-[#000000]">Business Details</p>
+                        <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-16 gap-8 ">
 
                             <div className="flex flex-col gap-10 gap-y-2  w-full">
                                 <div className="flex items-center justify-between gap-10 "><p className="text-gray-500 font-medium">Business ID : </p>  <p className="font-semibold">RT48</p></div>
@@ -153,7 +153,7 @@ const ProductDetails = () => {
                     </div>
 
                     <div className="col-span-1">
-                        <p className="text-[32px] font-semibold mb-3 text-[#000000]">Address</p>
+                        <p className="lg:text-[32px] text-[24px] font-semibold mb-3 text-[#000000]">Address</p>
                         <div className=" ">
 
                             <div className="flex flex-col gap-10 gap-y-2  w-full">
@@ -167,11 +167,11 @@ const ProductDetails = () => {
                 </div>  
 
                 <div> 
-                    <p className="text-[32px] font-semibold mb-3 text-[#000000]">Video</p> 
+                    <p className="lg:text-[32px] text-[24px] font-semibold mb-3 text-[#000000]">Video</p> 
 
-                    <div className="relative w-full h-[500px] overflow-hidden"> 
+                    <div className="relative w-full lg:h-[500px] h-[400px] overflow-hidden"> 
                     <video 
-            className="absolute top-0 left-0 w-full h-[500px] object-cover rounded-lg"
+            className="absolute top-0 left-0 w-full lg:h-[500px] h-[400px] object-cover rounded-lg"
             autoPlay 
             loop 
             muted 
