@@ -47,14 +47,15 @@ const Contact = () => {
             <div className=" mt-16">
                 <Form layout="vertical" >
 
-                    <div className=" grid lg:grid-cols-3 grid-cols-1 gap-4">
+                    <div className=" grid lg:grid-cols-2 grid-cols-1 gap-x-4">
                         <TextInput name="fullName" label="Full Name" />
                         <TextInput name="email" label="Email" />
-                        <TextInput name="contact" label="Contact Number" />
+                        <TextInput name="contact" label="Contact Number" /> 
+                        <TextInput name="subject" label="Subject" />
                     </div>
 
                     <Form.Item name="message" label={<p className="text-[#4E4E4E] text-[16px]">Your Message</p>}>
-                        <TextArea rows={4} style={{
+                        <TextArea rows={4} placeholder="Enter your message" style={{
                             border: "1px solid #d9d9d9",
                             outline: "none",
                             boxShadow: "none",
