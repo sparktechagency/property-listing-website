@@ -78,7 +78,7 @@ const GetInTouch = () => {
          <TextInput name="fullName" label="Full Name" /> 
 
          <TextInput name="email" label="Email" />
-         <TextInput name="subject" label="Subject" />
+         {/* <TextInput name="subject" label="Subject" /> */}
           
           <Form.Item
             name="message"
