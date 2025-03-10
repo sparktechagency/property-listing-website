@@ -43,7 +43,7 @@ const PropertyCard = ({ property }:{property:Property}) => {
             </div>
           </div>
           
-          <div className="flex items-center justify-between  py-4 ">
+          <div className="flex lg:flex-row flex-wrap items-center justify-between  py-4 ">
           
               <div className='flex items-center gap-2'> 
                 <p><PiUsersThree size={24} color='#757575' /> </p>

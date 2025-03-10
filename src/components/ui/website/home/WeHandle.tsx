@@ -37,8 +37,8 @@ const WeHandle = () => {
           <div className="w-[80px] h-[80px] flex items-center justify-center bg-[#FFF7EC] rounded-full">
             {icon}
           </div>
-          <h3 className="text-[32px] font-semibold text-[#000000]">{title}</h3>
-          <p className="text-[18px] text-[#757575] font-normal">{description}</p>
+          <h3 className="lg:text-[32px] text-[20px] font-semibold text-[#000000]">{title}</h3>
+          <p className="lg:text-[18px] text-[16px] text-[#757575] font-normal">{description}</p>
         </div>
       </div>
     );
@@ -48,14 +48,14 @@ const WeHandle = () => {
 
   return (
     <div>
-      <div className=" mb-[60px]">
+      <div className=" lg:mb-[60px] mb-[20px]">
         {/* Hero Section */}
-        <section className="py-16 px-4 md:px-8 container mx-auto">
-          <div className="text-start mb-10 w-full">
-            <p className="text-4xl md:text-[48px] font-semibold  mb-5 ">
+        <section className="lg:py-16 py-8 px-4 md:px-8 container mx-auto">
+          <div className="lg:text-start text-center mb-10 w-full">
+            <p className="text-[28px] md:text-[48px] font-semibold  lg:mb-5 mb-2 ">
               We handle everything
             </p>
-            <p className="text-[20px] font-normal  text-[#757575] w-2/3  leading-8 ">
+            <p className="lg:text-[20px] text-[16px] font-normal  text-[#757575] lg:w-2/3  lg:leading-8 ">
               We handle everything, from start to finish, ensuring a seamless experience with no hassle, so
               you can relax.
             </p>

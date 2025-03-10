@@ -82,7 +82,7 @@ const CustomerReview = () => {
           <div  className={` text-[#000000]  font-[600] lg:text-[48px] text-[28px] `} >
           Customer Reviews
 </div>  
-     <p className=' text-[#757575] font-normal text-[20px]'> There are many variations of passages of lorem ipsum available, but the majority have suffered alteration in some form by injected humour or randomised. </p>
+     <p className=' text-[#757575] font-normal lg:text-[20px] text-[16px]'> There are many variations of passages of lorem ipsum available, but the majority have suffered alteration in some form by injected humour or randomised. </p>
         </div>  
 
         <Slider {...settings}> 

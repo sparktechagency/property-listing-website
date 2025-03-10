@@ -6,7 +6,7 @@ const WeConnect = () => {
     return (
         <main className="">
         <div className="container mx-auto  py-[60px]">
-        <div className="flex flex-col md:flex-row items-center gap-[80px] ">
+        <div className="flex flex-col md:flex-row items-center lg:gap-[80px] gap-10 ">
       {/* Left side with image and blue background */}
       <div className=" w-full md:w-1/2 ">
           <Image
@@ -22,10 +22,10 @@ const WeConnect = () => {
       {/* Right side with text content */}
       <div className="w-full md:w-1/2 space-y-6">
         <div className="space-y-4">
-          <h2 className="text-[35px] font-semibold">
+          <h2 className="lg:text-[35px] text-[28px] font-semibold">
             We <span className="text-[#0171E2]">Connect People</span> With Their Dreams
           </h2>
-          <p className="text-[#757575] text-[20px] font-normal">
+          <p className="text-[#757575] lg:text-[20px] text-[17px] font-normal">
             At our core, we connect people with their dreams by finding the perfect
             property that suits their needs. Whether it&apos;s a home or an investment, we make
             the journey seamless, turning aspirations into reality with trust and expertise.

@@ -73,7 +73,7 @@ const Navbar = () => {
           {/* Right Icons */}
           <div className="nav-icons flex gap-4">  
 
-          <div className="flex items-center gap-2" onClick={()=>router.push("/profile")}> 
+          <div className="flex items-center gap-2" onClick={()=>router.push("/edit-profile")}> 
    <img className="lg:w-16 lg:h-16 w-12 h-12 rounded-full" src="/user2.jpg" alt="profile" /> 
    <p className="text-black text-lg lg:block hidden cursor-pointer">Jone Doe</p>
   </div> 

@@ -72,9 +72,9 @@ const BusinessListing = () => {
 
 
   return (
-    <div className="container my-[60px] ">
+    <div className="container lg:my-[60px] my-[35px] ">
 
-      <p className="text-4xl md:text-[48px] font-semibold  mb-9 ">
+      <p className="text-[28px] md:text-[48px] font-semibold  lg:mb-9 mb-4 ">
         Business listing
       </p>
 

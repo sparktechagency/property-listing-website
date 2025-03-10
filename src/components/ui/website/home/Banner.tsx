@@ -3,15 +3,15 @@ import { Search } from "lucide-react";
 
 const Banner = () => {
     return (  
-       <div className="container min-h-[calc(100vh-140px)] flex items-center justify-center rounded-se-[120px]  rounded-bl-[120px] w-full bg-no-repeat bg-center bg-contain md:bg-cover"
+       <div className="container lg:min-h-[calc(100vh-140px)] h-[calc(100vh-250px)]   flex items-center justify-center lg:rounded-se-[100px]  lg:rounded-bl-[100px] w-full bg-no-repeat bg-center  bg-cover"
        style={{ backgroundImage: `url('/banner.jpg')` }}
        > 
          <div className=" flex items-center justify-center ">  
-          <div className=" text-[#FFF7EC] w-2/3"> 
- <p className=" text-[50px] font-semibold text-center">The Power of Partnership. </p> 
- <p className=" text-[18px] font-normal text-center px-10 mt-5 "> Partnerships combine strengths to achieve shared goals, fostering trust, innovation, and problem-solving. They drive growth, market expansion, and long-term success in business sales. </p> 
+          <div className=" text-[#FFF7EC] lg:w-2/3 w-full"> 
+ <p className=" lg:text-[50px] text-[25px] font-semibold text-center">The Power of Partnership. </p> 
+ <p className=" lg:text-[18px] text-[14px] font-normal text-center lg:px-10 mt-5 "> Partnerships combine strengths to achieve shared goals, fostering trust, innovation, and problem-solving. They drive growth, market expansion, and long-term success in business sales. </p> 
 
- <div className="bg-white mt-12 rounded-full p-2 shadow-lg flex flex-col md:flex-row gap-4 w-full">
+ <div className="lg:bg-white mt-12 lg;rounded-full p-2 shadow-lg flex flex-col md:flex-row gap-4 w-full">
           <div className="flex-1 relative">
             <Input
               type="text"

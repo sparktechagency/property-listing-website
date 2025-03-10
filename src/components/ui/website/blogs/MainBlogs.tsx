@@ -53,7 +53,7 @@ const MainBlogs = () => {
 <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
 
                 <div className="absolute w-full left-0  p-4">
-                  <div className="translate-y-[126px]  transition-all duration-500 group-hover:translate-y-0">
+                  <div className="lg:translate-y-[126px]  translate-y-[137px]  transition-all duration-500 group-hover:translate-y-0">
                     <p className="font-semibold lg:text-[24px] text-[21px] leading-[32px] mb-2 text-[#FAFAFA]"
                     >{news.title}</p>
                     <Link href={`/blogs/${news.id}`}>

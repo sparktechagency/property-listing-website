@@ -25,9 +25,9 @@ const data = [
 ]
 const Contact = () => {
     return (
-        <div className="container py-[64px]">
+        <div className="container py-[60px]">
 
-            <div className="grid grid-cols-3 gap-3   ">
+            <div className="grid lg:grid-cols-3 grid-cols-1 lg:gap-3 gap-6   ">
                 {
                     data?.map((value, index) => (
                         <div key={index} className=" flex items-center gap-2 ">
@@ -37,7 +37,7 @@ const Contact = () => {
 
                             <div className="flex flex-col gap-[2px]">
                                 <p className="text-[16px] text-[#757575] font-medium "> {value?.title} </p>
-                                <p className="text-[20px] text-[#000000] font-semibold"> {value?.content} </p>
+                                <p className="lg:text-[20px] text-[16px] text-[#000000] font-semibold"> {value?.content} </p>
                             </div>
                         </div>
                     ))
@@ -47,7 +47,7 @@ const Contact = () => {
             <div className=" mt-16">
                 <Form layout="vertical" >
 
-                    <div className=" grid grid-cols-3 gap-4">
+                    <div className=" grid lg:grid-cols-3 grid-cols-1 gap-4">
                         <TextInput name="fullName" label="Full Name" />
                         <TextInput name="email" label="Email" />
                         <TextInput name="contact" label="Contact Number" />
@@ -65,7 +65,7 @@ const Contact = () => {
 
                     <div className=" flex items-center justify-end"> 
                         <Form.Item> 
-                            <button type="submit" className=" px-10 rounded bg-primary text-white text-lg h-[50px] font-medium"> Send Message </button>
+                            <button type="submit" className=" px-10 rounded bg-primary text-white text-lg h-[45px] font-medium"> Send Message </button>
                         </Form.Item>
                     </div>
                 </Form>

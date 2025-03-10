@@ -60,8 +60,8 @@ const MeetOurTeam = () => {
     return (
         <div className='mb-[60px]'>
               <div className="container mx-auto px-4 my-[60px]">
-      <div className="text-center pb-[36px]">
-        <h2 className="text-[35px] font-semibold">
+      <div className="text-center lg:pb-[36px] pb-5">
+        <h2 className="lg:text-[35px] text-[28px] font-semibold">
           <span className="text-black">Meet </span>
           <span className="text-amber-500">Our</span>
           <span className="text-black"> Team</span>
@@ -70,13 +70,13 @@ const MeetOurTeam = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {teamMembers.map((member, index) => (
-          <div key={index} className="relative group">
-            <div className="relative h-[370px] w-full overflow-hidden ">
+          <div key={index} className="relative group lg:mb-0 mb-5">
+            <div className="relative lg:h-[370px] h-[300px] w-full overflow-hidden  ">
               <Image 
                 src={member.image} 
                 alt={member.name}
                 fill
-                className="object-cover "
+                className="lg:object-cover object-fill "
               />
             </div>
             <div className=" text-white p-4 absolute -bottom-8  " 

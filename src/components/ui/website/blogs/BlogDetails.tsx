@@ -34,7 +34,7 @@ const BlogDetails = () => {
             }}
           >
             <p
-              className="font-medium lg:text-[32px] text-[24px] text-center   leading-[48px] text-[#3E3E3E]"
+              className="font-medium lg:text-[32px] text-[20px] text-center   lg:leading-[48px] text-[#3E3E3E]"
             > 9 Things Real Estate Agents Wish You Knew About Selling Your Home </p>
           </div>
         </div>
@@ -58,7 +58,7 @@ const BlogDetails = () => {
         </p>
       </div>
       <div className="container mx-auto py-[60px]"> 
-        <p className="text-[32px] font-semibold text-[#757575] pb-5">Another Blogs </p>
+        <p className="lg:text-[32px] text-[28px] font-semibold text-[#757575] pb-5">Another Blogs </p>
            <div className="grid lg:grid-cols-2 grid-cols-1 gap-6">
           {data?.map((news, index: number) => {
             return (
@@ -75,8 +75,8 @@ const BlogDetails = () => {
 <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
 
                 <div className="absolute w-full left-0  p-4">
-                  <div className="translate-y-[126px]  transition-all duration-500 group-hover:translate-y-0">
-                    <p className="font-semibold lg:text-[24px] text-[21px] leading-[32px] mb-2 text-[#FAFAFA]"
+                  <div className="lg:translate-y-[126px] translate-y-[126px]  transition-all duration-500 group-hover:translate-y-0">
+                    <p className="font-semibold lg:text-[24px] text-[18px] lg:leading-[32px] mb-2 text-[#FAFAFA]"
                     >{news.title}</p>
                     <Link href={`/blogs/${news.id}`}>
                       <div className="text-[#FAFAFA] flex items-center gap-2 underline">

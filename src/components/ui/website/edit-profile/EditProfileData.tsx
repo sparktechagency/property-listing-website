@@ -29,7 +29,7 @@ const EditProfileData = () => {
 
     return (
         <div className="">
-              <div className="flex items-center gap-9 ">
+              <div className="flex items-center gap-9 "> 
               <div className="flex  py-5">
               <input
                 onChange={onChange}
@@ -39,7 +39,7 @@ const EditProfileData = () => {
               />
               <label
                 htmlFor="img"
-                className="relative w-[140px] h-[140px] cursor-pointer rounded-full  bg-white bg-cover bg-center"
+                className="relative w-[120px] h-[120px] cursor-pointer rounded-full  bg-white bg-cover bg-center"
                 style={{ backgroundImage: `url(${imgURL})` }}
               >
                 <div
@@ -49,7 +49,10 @@ const EditProfileData = () => {
                 </div>
               </label>
             </div> 
-
+            <div>
+                    <p className=" text-[16px] font-medium text-[#757575] "> Hello !! </p>
+                    <p className=" text-[24px] font-semibold text-[#000000] "> Jone Doe </p>
+                </div>
             </div>
 
 
@@ -58,7 +61,7 @@ const EditProfileData = () => {
                 <TextInput name={"email"} label={"Email"} /> 
 
                 <Form.Item className="flex items-center justify-end mt-5"> 
-                    <button className=" w-[250px] h-[50px] bg-primary text-white text-[22px] font-normal flex items-center justify-center rounded-lg "> Save & Change </button>
+                    <button className=" w-[250px] h-[45px] bg-primary text-white text-[20px] font-normal flex items-center justify-center rounded-lg "> Save & Change </button>
                 </Form.Item>
             </Form>
 

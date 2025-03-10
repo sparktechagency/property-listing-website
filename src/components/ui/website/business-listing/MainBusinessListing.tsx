@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Input, Checkbox, Select, Slider } from 'antd';
+import { Input, Checkbox, Select, Slider, ConfigProvider } from 'antd';
 import { SearchIcon } from 'lucide-react';
 import { CiBoxList } from 'react-icons/ci';
 import { RxDashboard } from 'react-icons/rx';
@@ -121,14 +121,23 @@ const MainBusinessListing = () => {
 
                         <div>
                             <h3 className="text-sm font-medium mb-3">Price Range</h3>
-                            <div className="space-y-4">
+                            <div className="space-y-4"> 
+                            <ConfigProvider
+                theme={{
+                    token: {
+                        colorPrimary: '#FFAB3E',
+                    },
+                    components: {},
+                }}
+            >
                                 <Slider
                                     range
                                     min={0}
                                     max={10000}
                                     value={priceRange}
                                     onChange={(value) => setPriceRange(value as [number, number])}
-                                />
+                                /> 
+                                </ConfigProvider>
                                 <div className="flex gap-4">
                                     <Input
                                         prefix="$"
@@ -193,7 +202,7 @@ const MainBusinessListing = () => {
                                 ]}
                                 style={{
                                     height: "45px",
-                                    border: "1px solid #d9d9d9",
+                           
                                     outline: "none",
                                     boxShadow: "none",
                                     backgroundColor: "white",
