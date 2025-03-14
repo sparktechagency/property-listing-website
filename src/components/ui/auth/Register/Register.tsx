@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { SetLocalStorage } from "@/app/util/LocalStroage";
 import TextInput from "@/components/shared/TextInput";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
 import {  ConfigProvider, Form, Input, Select } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import Swal from "sweetalert2";
 
 interface ValuesType {
   name: string;
@@ -16,12 +20,42 @@ interface ValuesType {
 }
 
 const Register: React.FC = () => {
-  const router = useRouter();
+  const router = useRouter();  
+  const [register , {isLoading }] = useRegisterMutation()
 
-  const onFinish = async (values: ValuesType) => {
-    console.log(values);
-    localStorage.setItem("userType", "register");
-    router.push(`/verify-otp?email=${values.email}`);
+  const onFinish = async (values: ValuesType) => { 
+    await register(values).then((res) => {
+    console.log(res)
+      if (res?.data?.success) {
+        Swal.fire({
+          text: res?.data?.message,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => { 
+          const value = {
+            userType: "registerUser",
+            email: values?.email
+          }
+          if (values?.email) {
+            SetLocalStorage("userInfo", JSON.stringify(value))
+          } 
+          router.push(`/verify-otp?email=${values.email}`);
+        
+        });
+      } else {
+        Swal.fire({
+          title: "Oops",
+          //@ts-ignore
+          text: res?.error?.data?.message,
+          icon: "error",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+
+      }
+    }) 
+
   };
 
   return (
@@ -62,41 +96,28 @@ const Register: React.FC = () => {
           >
             <Input.Password
               placeholder="Enter password"
-              className="border border-gray-300 h-[50px] bg-white rounded-lg"
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="confirm_password"
-            label="Confirm Password"
-            dependencies={["password"]}
-            hasFeedback
-            rules={[
-              {
-                required: true,
-                message: "Please confirm your password!",
-              },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(
-                    new Error("The passwords do not match!")
-                  );
-                },
-              }),
-            ]}
-            className="mb-10"
-          >
-            <Input.Password
-              placeholder="Confirm password"
-              className="border border-gray-300 h-[50px] bg-white rounded-lg"
+              className="" 
+              style={{
+                height: 45,
+                border: "1px solid #d9d9d9",
+                outline: "none",
+                boxShadow: "none",
+                backgroundColor: "white",
+              }}
             />
           </Form.Item> 
 
+          <TextInput name="contact" label="Contact" />
+
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#FFAB3E",
+              },
+            }}
+          >
           <Form.Item
-          name="user-role"
+          name="role"
           label={<p>User Role</p>}
           rules={[
             {
@@ -105,31 +126,24 @@ const Register: React.FC = () => {
             },
           ]}
         >
-          <ConfigProvider
-            theme={{
-              token: {
-                colorPrimary: "#FFAB3E",
-              },
-            }}
-          >
-
+  
             <Select
-              defaultValue="Buyer"
+              placeholder="Select User Role"
               style={{ width: "100%", height: 45, }}
               options={[
-                { value: 'Buyer', label: 'Buyer' },
-                { value: 'Seller', label: 'Seller' },
+                { value: 'CUSTOMER', label: 'Customer' },
+                { value: 'SELLER', label: 'Seller' },
               ]}
             />
-          </ConfigProvider>
         </Form.Item> 
+          </ConfigProvider>
 
           <Form.Item>
             <button
               type="submit"
               className="w-full h-[45px] text-white font-medium text-lg bg-primary rounded-lg flex items-center justify-center mt-4"
             >
-              Sign up
+            {isLoading? "Loading..." : "Sign up"}
             </button>
           </Form.Item>
         </Form>

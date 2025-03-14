@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import TextInput from "@/components/shared/TextInput";
+import { useProfileQuery } from "@/redux/features/auth/authApi";
 import { Form } from "antd";
 import { useEffect, useState } from "react";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -8,14 +9,16 @@ import { AiOutlineEdit } from "react-icons/ai";
 
 const EditProfileData = () => { 
         const [form] = Form.useForm()
-        const [imgURL, setImgURL] = useState("/user2.jpg"); 
+        const [imgURL, setImgURL] = useState("/user2.jpg");  
+        const {data:profile} = useProfileQuery(undefined); 
+        console.log(profile);
 
         useEffect(() => {
             form.setFieldsValue({
-                fullName: "Jone Doe",
-                email: "dZV0O@example.com",
+                fullName: profile?.name,
+                email: profile?.email,
             });
-        }, [form]); 
+        }, [form , profile]); 
  
 
         const onChange = async (e:React.ChangeEvent<HTMLInputElement> ) => {

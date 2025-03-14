@@ -1,38 +1,103 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @next/next/no-img-element */
 "use client"
-import { Button, Form, Typography } from "antd";
+import { GetLocalStorage, SetLocalStorage } from "@/app/util/LocalStroage";
+import { useOtpVerifyMutation, useResendOtpMutation } from "@/redux/features/auth/authApi";
+import { Button, ConfigProvider, Form, Input, Typography } from "antd";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react"
-import OTPInput from "react-otp-input";
+import React, {  useEffect, useState } from "react"
+import Swal from "sweetalert2";
 
 const { Text } = Typography;
 
 const VerifyOtp = () => {
   const router = useRouter()
-  const [otp, setOtp] = useState<string>("");
-  const [email, setEmail] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);  
+  const details =  GetLocalStorage("userInfo"); 
+  const userInfo = details ? JSON.parse(details) : null;
+  const userType = userInfo?.userType
+const [otpVerify] = useOtpVerifyMutation()   
+const [resendOtp] = useResendOtpMutation()
 
-  useEffect(() => {
-    const emailFromQuery = new URLSearchParams(window.location.search).get('email');
-    setEmail(emailFromQuery);
-  }, []);
 
-  console.log(email);
+useEffect(() => {
 
-  const onFinish = async (values: { otp: string }) => {
-    const userType = localStorage.getItem("userType")
-    console.log(values);
-    if (userType === "forget") {
-      router.push(`/reset-password`);
-    } else {
-      router.push(`/login`);
-    }
+  if (userInfo?.email) {
+    setEmail(userInfo.email);
+  }
+}, [userInfo]); 
+
+  const onFinish = async (values: { otp: string  }) => {
+   
+    const data = {
+      email: email,
+      oneTimeCode: parseInt(values?.otp)
+    } 
+
+    await otpVerify(data).then((res) => {
+        console.log("res", res);
+      if (res?.data?.success) {
+        Swal.fire({
+          text: res?.data?.message,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+
+          if (userType === "registerUser") {         
+            if (data) {
+              router.push("/login") 
+            }
+          } else {
+            SetLocalStorage("resetToken", res?.data?.data);
+            router.push("/reset-password")
+          }
+
+        });
+      } else {
+        Swal.fire({
+          title: "Oops",
+          //@ts-ignore
+          text: res?.error?.data?.message,
+          icon: "error",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+
+      }
+    })
   };
-
+ 
 
   const handleResendEmail = async () => {
+    const value = {
+      email: email
+    }
+    await resendOtp(value).then((res: any) => {
+      if (res?.data?.success) {
+        Swal.fire({
+          text: res?.data?.message,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      } else {
+        Swal.fire({
+          title: "Oops",
+          //@ts-ignore
+          text: res?.error?.data?.message,
+          icon: "error",
+          timer: 1500,
+          showConfirmButton: false,
+        });
 
-  };
+      }
+    })
+
+  } 
+
+
   return (
     <div className=" flex items-center justify-center  w-full gap-10">
 
@@ -50,26 +115,37 @@ const VerifyOtp = () => {
 
         <Form layout="vertical" onFinish={onFinish}>
 
-          <div className="flex items-center justify-center mb-6">
-            <OTPInput
-              value={otp}
-              onChange={setOtp}
-              numInputs={5}
-              inputStyle={{
-                height: 50,
-                width: 50,
-                borderRadius: "8px",
-                margin: "16px",
-                fontSize: "20px",
-                border: "1px solid #818181",
-                color: "#2B2A2A",
-                outline: "none",
-                marginBottom: 10
+        <ConfigProvider
+              theme={{
+                components: {
+                  Input: {
+                    // lineHeight: 3,
+                    controlHeight: 55, 
+                    borderRadius: 10,
+                  },
+                },
+                token: {
+                  colorPrimary: '#292C61',
+                },
               }}
-              renderInput={(props) => <input {...props} />}
-            />
+            >
+              <Form.Item
+                className="flex items-center justify-center mx-auto"
+                name="otp"
+                rules={[{ required: true, message: 'Please input otp code here!' }]}
+              >
+                <Input.OTP
+                  style={{
+                    width: 300,
+                    height: 50,
 
-          </div>
+                  }}
+                  className=""
+                  // variant="filled" 
+                  length={6}
+                />
+              </Form.Item>
+            </ConfigProvider>
 
           <div className="flex items-center justify-between mb-6 ">
             <Text>Don&apos;t received code?</Text>

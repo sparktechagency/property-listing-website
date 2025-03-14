@@ -4,12 +4,16 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { HiOutlineMenuAlt3, HiX } from "react-icons/hi";
+import { useProfileQuery } from "@/redux/features/auth/authApi";
+import { imageUrl } from "@/redux/base/baseApi";
+import CmnButton from "./CmnButton";
 
 const Navbar = () => { 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
     const pathname = usePathname();
-    const router = useRouter();
+    const router = useRouter(); 
+    const { data: profile } = useProfileQuery(undefined); 
 
   
     const navOptions = [
@@ -20,8 +24,8 @@ const Navbar = () => {
       { label: "Contact Us", path: "/contact" },
     ]; 
   
-    // const image  = profile?.data?.profile?.startsWith("https") ? profile?.data?.profile : `${imageUrl}${profile?.data?.profile }` 
-    // const userName  = profile?.data?.name 
+    const image  = profile?.profile?.startsWith("https") ? profile?.profile : `${imageUrl}${profile?.profile }` 
+    const userName  = profile?.name 
     return (
         <div className=" text-black  bg-[#F8F8F8] w-full">
         <div className="navbar flex  py-6 container  justify-between items-center relative">
@@ -73,19 +77,15 @@ const Navbar = () => {
           {/* Right Icons */}
           <div className="nav-icons flex gap-4">  
 
-          <div className="flex items-center gap-2" onClick={()=>router.push("/edit-profile")}> 
-   <img className="lg:w-16 lg:h-16 w-12 h-12 rounded-full" src="/user2.jpg" alt="profile" /> 
-   <p className="text-black text-lg lg:block hidden cursor-pointer">Jone Doe</p>
-  </div> 
-            {/* {  
+            {  
   
-  profile?.data ? <div className="flex items-center gap-2" onClick={()=>router.push("/brand-home")}> 
-   <img className="lg:w-16 lg:h-16 w-12 h-12 rounded-full" src={image} alt="profile" /> 
-   <p className="text-white text-lg lg:block hidden">{userName}</p>
+  profile ? <div className="flex items-center gap-2" onClick={()=>router.push("/edit-profile")}> 
+   <img className="lg:w-16 lg:h-16 w-12 h-12 rounded-full cursor-pointer" src={image} alt="profile" /> 
+   <p className="text-black text-lg lg:block hidden cursor-pointer">{userName}</p>
   </div> :  <Link href="/login">
               <CmnButton className=" py-3 px-8 rounded-xl font-medium">Login</CmnButton>
             </Link>
-            } */}
+            }
            
           </div>
         </div>

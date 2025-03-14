@@ -1,18 +1,60 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @next/next/no-img-element */
 "use client"
+import { SetLocalStorage } from "@/app/util/LocalStroage";
+import { useForgetPasswordMutation } from "@/redux/features/auth/authApi";
 import {  Form, Input } from "antd";
 import { useRouter } from "next/navigation";
 import React from "react";
+import Swal from "sweetalert2";
+
+interface forgetPassProps {
+  email: string
+} 
 
 const ForgetPassword = () => { 
-    const router  = useRouter()
+    const router  = useRouter()  
+    const [forgetPassword] = useForgetPasswordMutation()
 
-    const onFinish = async(values:{email:string}) => { 
-        localStorage.setItem("userType","forget")
-  
-          router.push(`/verify-otp?email=${values?.email}`);
-  
-    };
+
+    const onFinish = async(values: forgetPassProps) => { 
+      console.log(values);
+
+      await forgetPassword(values).then((res)=>{  
+        console.log(res);
+           if (res?.data?.success) {
+                  Swal.fire({
+                    text: res?.data?.message,
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                  }).then(() => { 
+          
+                      const value = {
+                          userType: "loginUser",
+                          email: values?.email
+                      }
+                      if (values?.email) {
+                          SetLocalStorage("userInfo", JSON.stringify(value))
+                      }
+              
+                      router.push(`/verify-otp?email=${values.email}`);  
+                      
+                  });
+                } else {
+                  Swal.fire({
+                    title: "Oops",
+                    //@ts-ignore
+                    text: res?.error?.data?.message,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                  });
+          
+                }
+              
+      })
+  } 
   
     return (
         <div className=" flex items-center justify-center  w-full gap-10"> 

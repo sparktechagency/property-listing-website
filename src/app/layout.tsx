@@ -3,6 +3,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 import { ConfigProvider } from "antd";
+import ReduxProvider from "@/redux/lib/ReduxProvider";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,7 +20,8 @@ export default function RootLayout({
       <body
        className={`${montserrat.className} antialiased`}
       >
-        <AntdRegistry> 
+        <AntdRegistry>  
+        <ReduxProvider>   
         <ConfigProvider
                 theme={{
                     token: {
@@ -29,7 +31,8 @@ export default function RootLayout({
                 }}
             >
           {children} 
-          </ConfigProvider>
+          </ConfigProvider> 
+          </ReduxProvider>
         </AntdRegistry>
       </body>
     </html>

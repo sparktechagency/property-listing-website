@@ -1,21 +1,53 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @next/next/no-img-element */
 "use client"
 
+import { SetLocalStorage } from "@/app/util/LocalStroage";
 import TextInput from "@/components/shared/TextInput";
-import { Checkbox, ConfigProvider, Form, Input, Select } from "antd";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { Checkbox, Form, Input } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
+import Swal from "sweetalert2";
 
 const Login = () => {
-  const router = useRouter()
+  const router = useRouter() 
+  const [login , {isError , isLoading , isSuccess , error , data} ] = useLoginMutation() 
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (data) {
+        Swal.fire({
+          text: data?.message,
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+
+          if (data) {
+            SetLocalStorage("accessToken", data?.data?.accessToken);
+          }
+          router.push("/");
+
+        });
+      }
+
+    }
+    if (isError) {
+      Swal.fire({
+        title: "Failed to Login",
+        //@ts-ignore
+        text: error?.data?.message,
+        icon: "error",
+      });
+    }
+  }, [isSuccess, isError, error, data, router]); 
 
 
   const onFinish = async (values: { email: string, password: string }) => {
-    console.log(values);
 
-    router.push("/")
-
+    await login(values)
 
   };
 
@@ -63,35 +95,6 @@ const Login = () => {
           />
         </Form.Item>
 
-        <Form.Item
-          name="user-role"
-          label={<p>User Role</p>}
-          rules={[
-            {
-              required: true,
-              message: "Please input your User Role!",
-            },
-          ]}
-        >
-          <ConfigProvider
-            theme={{
-              token: {
-                colorPrimary: "#FFAB3E",
-              },
-            }}
-          >
-
-            <Select
-              defaultValue="Buyer"
-              style={{ width: "100%", height: 45, }}
-              options={[
-                { value: 'Buyer', label: 'Buyer' },
-                { value: 'Seller', label: 'Seller' },
-              ]}
-            />
-          </ConfigProvider>
-        </Form.Item>
-
         <div className="flex items-center justify-between">
           <Form.Item style={{ marginBottom: 0 }} name="remember" valuePropName="checked">
             <Checkbox>Remember me</Checkbox>
@@ -119,7 +122,7 @@ const Login = () => {
             }}
             className="flex items-center justify-center bg-primary rounded-lg"
           >
-            {/* {isLoading? < Spinner/> : "Sign in"} */} Sign in
+            {isLoading? "Loading..." : "Sign in"} 
           </button>
         </Form.Item>
 

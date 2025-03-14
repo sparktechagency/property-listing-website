@@ -8,7 +8,8 @@ import { FiEdit3 } from "react-icons/fi";
 
 const Profile = () => {
     const router = useRouter();
-    const [form] = Form.useForm()
+    const [form] = Form.useForm() 
+
 
     useEffect(() => {
         form.setFieldsValue({
