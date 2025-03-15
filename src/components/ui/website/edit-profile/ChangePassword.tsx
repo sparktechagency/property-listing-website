@@ -1,10 +1,41 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { useChangePasswordMutation } from "@/redux/features/auth/authApi";
 import { ConfigProvider, Form, Input } from "antd";
+import { useEffect } from "react";
+import Swal from "sweetalert2";
 
 const ChangePassword = () => { 
-    const [form] = Form.useForm();  
+    const [form] = Form.useForm();   
+    const [changePassword , {isLoading , isError , error , data, isSuccess}] = useChangePasswordMutation() 
 
-const handleChangePassword = (values:{currentPassword:string , newPassword:string , confirmPassword:string}) => {  
-    console.log(values);
+    
+        useEffect(() => {
+          if (isSuccess) {
+            if (data) {
+              Swal.fire({
+                text: data?.message,
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
+              }).then(() => {
+                form.resetFields();
+              })
+            }
+      
+          }
+          if (isError) {
+            Swal.fire({
+              title: "Failed to Login",
+              //@ts-ignore
+              text: error?.data?.message,
+              icon: "error",
+            });
+          }
+        }, [isSuccess, isError, error, data , form]);   
+
+const handleChangePassword = async(values:{currentPassword:string , newPassword:string , confirmPassword:string}) => {  
+    console.log(values); 
+    await changePassword(values).then((res) => { console.log(res);})
 } 
 
     return (
@@ -144,7 +175,7 @@ const handleChangePassword = (values:{currentPassword:string , newPassword:strin
             </ConfigProvider>
 
             <Form.Item className="flex items-center justify-end mt-5"> 
-                    <button className=" lg:w-[250px] w-[150px] h-[45px] bg-primary text-white lg:w-[250px] w-[150px] font-normal flex items-center justify-center rounded-lg "> Save & Change </button>
+                    <button className="  h-[45px] bg-primary text-white lg:w-[250px] w-[150px] font-normal flex items-center justify-center rounded-lg "> {isLoading ?  "Saving..." : "Save & Change"}  </button>
                 </Form.Item>
         </Form>
    

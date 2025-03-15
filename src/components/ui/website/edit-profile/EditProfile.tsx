@@ -2,7 +2,7 @@
  import { useState } from "react";
 import EditProfileData from "./EditProfileData";
 import ChangePassword from "./ChangePassword";
-import DeleteAccount from "./DeleteAccount";
+// import DeleteAccount from "./DeleteAccount";
 import Enquire from "./Enquire";
 import UploadBusiness from "./UploadBusiness";
 
@@ -10,7 +10,7 @@ import UploadBusiness from "./UploadBusiness";
  const tabs = [
     { id: "1", label: "Edit profile", component: <EditProfileData /> },
     { id: "2", label: "Change password", component: <ChangePassword /> },
-    { id: "3", label: "Delete account", component: <DeleteAccount /> },
+    // { id: "3", label: "Delete account", component: <DeleteAccount /> }, 
     { id: "4", label: "Enquire List", component: <Enquire  /> },
     { id: "5", label: "Upload Business", component: <UploadBusiness  /> },
   ]; 

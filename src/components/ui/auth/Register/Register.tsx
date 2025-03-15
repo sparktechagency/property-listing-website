@@ -25,7 +25,7 @@ const Register: React.FC = () => {
 
   const onFinish = async (values: ValuesType) => { 
     await register(values).then((res) => {
-    console.log(res)
+
       if (res?.data?.success) {
         Swal.fire({
           text: res?.data?.message,

@@ -3,7 +3,6 @@ import { GetLocalStorage } from "@/app/util/LocalStroage";
 import { baseApi } from "../../base/baseApi";
 const resetToken = GetLocalStorage("resetToken")  
 
-console.log("resetToken", resetToken);
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
 
@@ -75,7 +74,7 @@ const authApi = baseApi.injectEndpoints({
           query: (data) => {
               return{
                   method: "PATCH",
-                  url: "/user/profile-update",
+                  url: "/user",
                   body: data,
               }
           }
