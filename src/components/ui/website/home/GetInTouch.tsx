@@ -5,6 +5,7 @@ import { Form, Input, Button, message } from 'antd';
 import {  PhoneOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { GrMapLocation } from 'react-icons/gr';
 import TextInput from '@/components/shared/TextInput';
+import { useContactMutation } from '@/redux/features/contactApi';
 
 
 const { TextArea } = Input;
@@ -13,9 +14,13 @@ const { TextArea } = Input;
 const GetInTouch = () => { 
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
+    const [contact , {isError , isLoading , isSuccess , error , data} ] = useContactMutation() 
+
   
-    const onFinish = (values: { name: string; email: string; message: string }) => {
-      setLoading(true);
+    const onFinish =  async (values: { name: string; email: string; message: string }) => {
+
+      await contact(values)
+      /* setLoading(true);
       
       // Simulate form submission
       setTimeout(() => {
@@ -23,8 +28,13 @@ const GetInTouch = () => {
         message.success('Message sent successfully!');
         form.resetFields();
         setLoading(false);
-      }, 1500);
+      }, 1500); */
+
+
     }; 
+
+
+
     return (
         <div>
              <main className="container pb-[60px]">
@@ -75,10 +85,11 @@ const GetInTouch = () => {
           onFinish={onFinish}
           className="space-y-4"
         >
-         <TextInput name="fullName" label="Full Name" /> 
+         <TextInput name="name" label="Full Name" /> 
 
          <TextInput name="email" label="Email" />
          <TextInput name="subject" label="Subject" />
+         <TextInput name="phone" label="Phone" />
           
           <Form.Item
             name="message"
