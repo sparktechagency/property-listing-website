@@ -12,7 +12,7 @@ import { imageUrl } from "@/redux/base/baseApi";
 
 const CustomerReview = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const { data: reviews } = useGetReviewQuery({});
+  const { data: reviews } = useGetReviewQuery(undefined);
   console.log(reviews);
 
   const settings: Settings = {
@@ -70,7 +70,7 @@ const CustomerReview = () => {
             </div>
 
             <Slider {...settings}>
-              {reviews?.data?.map((review) => (
+              {reviews?.map((review:{ id: string; comment: string; rating: number; user: { name: string; profile: string; }; }) => (
                 <div
                   key={review.id}
                   className="border border-gray-100 shadow rounded-2xl p-[25px] space-y-4 w-[485px]"

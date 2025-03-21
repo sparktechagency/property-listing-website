@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../base/baseApi"
 
-const reviewApi = baseApi.injectEndpoints({
+const termsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getReview: builder.query({
+        getTerms: builder.query({
             query: () => {
-     
+
                 return {
-                    url: `/review`,
+                    url: `/rule/terms-and-conditions`,
                 }
             }, 
             transformResponse: (response: any) => response.data
@@ -15,4 +15,4 @@ const reviewApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useGetReviewQuery } = reviewApi
+export const { useGetTermsQuery } = termsApi

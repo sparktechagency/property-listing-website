@@ -10,7 +10,7 @@ import { useGetFaqQuery } from '@/redux/features/faqApi';
 const FAQ = () => {
     const { token } = theme.useToken();
     const [page, setPage] = useState(1)
-    const [limit, setLimit] = useState(5)
+    const limit = 5
     const {data: faqs} = useGetFaqQuery({page, limit});
 
     console.log(faqs)

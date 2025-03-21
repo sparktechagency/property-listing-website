@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck
 import BusinessInput from "@/components/shared/BusinessInput";
-import { ConfigProvider, Form, Select } from "antd";
+import { ConfigProvider, Form, Input, Select } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Upload } from "antd";
 import { FileTextOutlined } from "@ant-design/icons";
 import { useGetCategoryQuery } from "@/redux/features/categoryApi";
-import { useState } from "react";
+import {  useEffect, useState } from "react";
 import { IoImageOutline } from "react-icons/io5";
 import { useUploadBusinessListMutation } from "@/redux/features/businessListApi";
 
@@ -18,8 +18,34 @@ const UploadBusiness = () => {
   const [imgURL, setImgURL] = useState("");
   const [imgFile, setImageFile] = useState(null);
   const [coverImages, setCoverImages] = useState<File[]>([]);
-  const [documents, setDocuments] = useState<File[]>([]);  
-  const [uploadBusinessList] =  useUploadBusinessListMutation()
+  const [documents, setDocuments] = useState<File[]>([]);
+  const [uploadBusinessList , {isLoading , isError , isSuccess , error , data }] = useUploadBusinessListMutation() 
+
+ useEffect(() => {
+     if (isSuccess) {
+       if (data) {
+         Swal.fire({
+           text: data?.message,
+           icon: "success",
+           timer: 1500,
+           showConfirmButton: false
+         }).then(() => {
+ 
+      
+ 
+         });
+       }
+ 
+     }
+     if (isError) {
+       Swal.fire({
+         title: "Failed to Login",
+         //@ts-ignore
+         text: error?.data?.message,
+         icon: "error",
+       });
+     }
+   }, [isSuccess, isError, error, data, ]);  
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -47,34 +73,46 @@ const UploadBusiness = () => {
     beforeUpload: (file: File) => handleFileUpload(file, type),
   });
 
-  const onFinish = async(values) => {
+  const onFinish = async (values) => {
     const formData = new FormData();
 
-    coverImages.forEach((file) => formData.append("coverImages", file));
-    documents.forEach((file) => formData.append("documents", file));
+    console.log("coverImages", coverImages);
+    console.log("documents", documents);
+
+
+    if (coverImages) { 
+      coverImages.forEach((file) => { 
+        console.log("file", file);
+        formData.append("image", file)})
+    }
+
+    if (documents) {
+      documents.forEach((file) => formData.append("doc", file));
+    }
+
     if (imgFile) {
       formData.append("logo", imgFile);
-    } 
- 
-      Object.entries(values).forEach(([key, value]) => {
-        formData.append(key, value);
-      })
-    console.log(values); 
+    }
 
-    await uploadBusinessList(formData).then((res) => { console.log(res);})
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value);
+    })
+    console.log("values", values);
+
+    await uploadBusinessList(formData).then((res) => { console.log(res); })
   };
 
   return (
     <div >
       <Form className="w-full" layout="vertical" onFinish={onFinish}>
-          <ConfigProvider
-            theme={{
-              token: {
-                colorPrimary: "#FFAB3E",
-              },
-            }}
-          >
-        <Form.Item name="category"  >
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#FFAB3E",
+            },
+          }}
+        >
+          <Form.Item name="category"  >
             <Select
               placeholder="Select  Category"
               style={{ width: "100%", height: 45, }}
@@ -83,8 +121,8 @@ const UploadBusiness = () => {
                 label: item?.name,
               }))}
             />
-        </Form.Item>
-          </ConfigProvider>
+          </Form.Item>
+        </ConfigProvider>
 
         <p className="text-xl font-semibold py-3"> Business Information </p>
 
@@ -96,9 +134,56 @@ const UploadBusiness = () => {
           <BusinessInput name="phone" label="Enter your contact number" />
           <BusinessInput name="website" label="Enter your website URL" />
           <BusinessInput name="socialMedia" label="Enter your social media accounts" />
-          <BusinessInput name="ownership" label="Enter your ownership type" />
-          <BusinessInput name="revenue" label="Enter your revenue" />
-          <BusinessInput name="employees" label="Enter your number of employees" />
+          <BusinessInput name="ownership" label="Enter your ownership type" /> 
+
+          <Form.Item
+            name="revenue"
+            rules={[
+              {
+                required: true,
+                message: `Please enter your revenue`,
+              },
+            ]}
+          >
+
+            <Input
+              placeholder={`Enter your revenue`}
+              type="number"
+              style={{
+                height: 45,
+                border: "1px solid #d9d9d9",
+                outline: "none",
+                boxShadow: "none",
+                backgroundColor: "white",
+              }}
+            />
+
+          </Form.Item> 
+
+          <Form.Item
+            name="employees"
+            rules={[
+              {
+                required: true,
+                message: `Please enter your employees`,
+              },
+            ]}
+          >
+
+            <Input
+              placeholder={`Enter your employees`}
+              type="number"
+              style={{
+                height: 45,
+                border: "1px solid #d9d9d9",
+                outline: "none",
+                boxShadow: "none",
+                backgroundColor: "white",
+              }}
+            />
+
+          </Form.Item>  
+          
           <BusinessInput name="founded" label="Enter your year established" />
         </div>
 
@@ -161,7 +246,7 @@ const UploadBusiness = () => {
 
         </div>
 
-        <Form.Item name={"description"} className=" mt-5">
+        <Form.Item name="description" className=" mt-5">
           <TextArea rows={4} placeholder="Enter your business description" style={{
             border: "1px solid #d9d9d9",
             outline: "none",
@@ -172,7 +257,7 @@ const UploadBusiness = () => {
         </Form.Item>
 
         <Form.Item className="flex items-center justify-end mt-5">
-          <button className=" w-[250px] h-[45px] bg-primary text-white text-[18px] font-normal flex items-center justify-center rounded-lg "> Save & Change </button>
+          <button className=" w-[250px] h-[45px] bg-primary text-white text-[18px] font-normal flex items-center justify-center rounded-lg "> {} {isLoading ? "Saving..." : "Save & Change"}</button>
         </Form.Item>
       </Form>
     </div>

@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client"
 import TextInput from "@/components/shared/TextInput";
+import { useContactMutation } from "@/redux/features/contactApi";
 import { Form } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { useEffect } from "react";
 import { CiLocationOn, CiMail } from "react-icons/ci";
 import { PiPhoneCallLight } from "react-icons/pi";
+import Swal from "sweetalert2";
 
 
 const data = [
@@ -23,13 +27,48 @@ const data = [
         content: "8 Marina Boulevard, Singapore"
     },
 ]
-const Contact = () => {
+const Contact = () => { 
+        const [form] = Form.useForm();
+        const [contact , {isError , isLoading , isSuccess , error , data: contactData} ] = useContactMutation()   
+    
+        
+          useEffect(() => {
+            if (isSuccess) {
+              if (contactData) {
+                Swal.fire({
+                  text: contactData?.message,
+                  icon: "success",
+                  timer: 1500,
+                  showConfirmButton: false
+                }).then(() => {
+                  form.resetFields();
+                })
+              }
+        
+            }
+            if (isError) {
+              Swal.fire({
+                title: "Failed to Login",
+                //@ts-ignore
+                text: error?.contactData?.message,
+                icon: "error",
+              });
+            }
+          }, [isSuccess, isError, error, contactData , form]);    
+
+          const onFinish = async (values: { name: string; email: string; message: string }) => { 
+
+            await contact(values)
+
+           }
+
+
     return (
         <div className="container py-[60px]">
 
             <div className="grid lg:grid-cols-3 grid-cols-1 lg:gap-3 gap-6   ">
                 {
-                    data?.map((value, index) => (
+                    data?.map((value:{ icon: React.ReactNode; title: string; content: string; }, index:number) => (
                         <div key={index} className=" flex items-center gap-2 ">
                             <div className=" w-[44px] h-[44px] bg-[#E6F1FC] rounded-full flex items-center justify-center ">
                                 {value?.icon}
@@ -45,12 +84,12 @@ const Contact = () => {
             </div>
 
             <div className=" mt-16">
-                <Form layout="vertical" >
+                <Form layout="vertical" onFinish={onFinish}  form={form}>
 
                     <div className=" grid lg:grid-cols-2 grid-cols-1 gap-x-4">
-                        <TextInput name="fullName" label="Full Name" />
+                        <TextInput name="name" label="Full Name" />
                         <TextInput name="email" label="Email" />
-                        <TextInput name="contact" label="Contact Number" /> 
+                        <TextInput name="phone" label="Contact Number" /> 
                         <TextInput name="subject" label="Subject" />
                     </div>
 
@@ -66,7 +105,8 @@ const Contact = () => {
 
                     <div className=" flex items-center justify-end"> 
                         <Form.Item> 
-                            <button type="submit" className=" px-10 rounded bg-primary text-white text-lg h-[45px] font-medium"> Send Message </button>
+                            <button type="submit" className=" px-10 rounded bg-primary text-white text-lg h-[45px] font-medium"> 
+                                {isLoading ? "Sending..." : "Send Message"} </button>
                         </Form.Item>
                     </div>
                 </Form>

@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 
-import React, { useState } from 'react';
-import { Form, Input, Button, message } from 'antd';
+import React, { useEffect } from 'react';
+import { Form, Input, Button } from 'antd';
 import {  PhoneOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { GrMapLocation } from 'react-icons/gr';
 import TextInput from '@/components/shared/TextInput';
 import { useContactMutation } from '@/redux/features/contactApi';
+import Swal from 'sweetalert2';
 
 
 const { TextArea } = Input;
@@ -13,23 +15,37 @@ const { TextArea } = Input;
 
 const GetInTouch = () => { 
     const [form] = Form.useForm();
-    const [loading, setLoading] = useState(false);
-    const [contact , {isError , isLoading , isSuccess , error , data} ] = useContactMutation() 
+    const [contact , {isError , isLoading , isSuccess , error , data} ] = useContactMutation()   
+
+    
+      useEffect(() => {
+        if (isSuccess) {
+          if (data) {
+            Swal.fire({
+              text: data?.message,
+              icon: "success",
+              timer: 1500,
+              showConfirmButton: false
+            }).then(() => {
+              form.resetFields();
+            })
+          }
+    
+        }
+        if (isError) {
+          Swal.fire({
+            title: "Failed to Login",
+            //@ts-ignore
+            text: error?.data?.message,
+            icon: "error",
+          });
+        }
+      }, [isSuccess, isError, error, data , form]);  
 
   
     const onFinish =  async (values: { name: string; email: string; message: string }) => {
 
       await contact(values)
-      /* setLoading(true);
-      
-      // Simulate form submission
-      setTimeout(() => {
-        console.log('Form values:', values);
-        message.success('Message sent successfully!');
-        form.resetFields();
-        setLoading(false);
-      }, 1500); */
-
 
     }; 
 
@@ -113,7 +129,7 @@ const GetInTouch = () => {
             <Button 
               type="primary" 
               htmlType="submit" 
-              loading={loading}
+              loading={isLoading}
               className=" text-base font-medium" 
               style={{
                 height: 45,

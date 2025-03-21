@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../base/baseApi"
 
-const reviewApi = baseApi.injectEndpoints({
+const privacyApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getReview: builder.query({
+        getPrivacy: builder.query({
             query: () => {
-     
                 return {
-                    url: `/review`,
+                    url: `/rule/privacy-policy`,
                 }
             }, 
             transformResponse: (response: any) => response.data
@@ -15,4 +14,4 @@ const reviewApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useGetReviewQuery } = reviewApi
+export const { useGetPrivacyQuery } = privacyApi

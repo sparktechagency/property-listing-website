@@ -13,8 +13,8 @@ const businessApi = baseApi.injectEndpoints({
         uploadBusinessList: builder.mutation({
             query: (data) => {
                 return{
-                    method: "POST",
                     url: "/business",
+                    method: "POST",
                     body: data,
                 }
             }
