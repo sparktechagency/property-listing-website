@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck
 import BusinessInput from "@/components/shared/BusinessInput";
@@ -6,46 +7,58 @@ import TextArea from "antd/es/input/TextArea";
 import { Upload } from "antd";
 import { FileTextOutlined } from "@ant-design/icons";
 import { useGetCategoryQuery } from "@/redux/features/categoryApi";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IoImageOutline } from "react-icons/io5";
-import { useUploadBusinessListMutation } from "@/redux/features/businessListApi";
+import { useGetBusinessQuery, useUploadBusinessListMutation } from "@/redux/features/businessListApi";
+import { imageUrl } from "@/redux/base/baseApi";
 
 const { Dragger } = Upload;
 
 
 const UploadBusiness = () => {
+  const [form] = Form.useForm();
   const { data: categoryData } = useGetCategoryQuery(undefined)
-  const [imgURL, setImgURL] = useState("");
+  const [imgURL, setImgURL] = useState("/imgdemo.png");
   const [imgFile, setImageFile] = useState(null);
   const [coverImages, setCoverImages] = useState<File[]>([]);
   const [documents, setDocuments] = useState<File[]>([]);
-  const [uploadBusinessList , {isLoading , isError , isSuccess , error , data }] = useUploadBusinessListMutation() 
+  const [uploadBusinessList, { isLoading, isError, isSuccess, error, data }] = useUploadBusinessListMutation()
+  const { data: getBusinessData } = useGetBusinessQuery(undefined)
 
- useEffect(() => {
-     if (isSuccess) {
-       if (data) {
-         Swal.fire({
-           text: data?.message,
-           icon: "success",
-           timer: 1500,
-           showConfirmButton: false
-         }).then(() => {
- 
-      
- 
-         });
-       }
- 
-     }
-     if (isError) {
-       Swal.fire({
-         title: "Failed to Login",
-         //@ts-ignore
-         text: error?.data?.message,
-         icon: "error",
-       });
-     }
-   }, [isSuccess, isError, error, data, ]);  
+
+  useEffect(() => {
+    if (getBusinessData) {
+      form.setFieldsValue(getBusinessData);
+      setImgURL(getBusinessData?.logo?.startsWith("https") ? getBusinessData?.logo : `${imageUrl}${getBusinessData?.logo}`)
+
+    }
+  }, [form, getBusinessData]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (data) {
+        Swal.fire({
+          text: data?.message,
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+
+
+
+        });
+      }
+
+    }
+    if (isError) {
+      Swal.fire({
+        title: "Failed to Login",
+        //@ts-ignore
+        text: error?.data?.message,
+        icon: "error",
+      });
+    }
+  }, [isSuccess, isError, error, data,]);
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -80,10 +93,11 @@ const UploadBusiness = () => {
     console.log("documents", documents);
 
 
-    if (coverImages) { 
-      coverImages.forEach((file) => { 
+    if (coverImages) {
+      coverImages.forEach((file) => {
         console.log("file", file);
-        formData.append("image", file)})
+        formData.append("image", file)
+      })
     }
 
     if (documents) {
@@ -104,7 +118,7 @@ const UploadBusiness = () => {
 
   return (
     <div >
-      <Form className="w-full" layout="vertical" onFinish={onFinish}>
+      <Form className="w-full" layout="vertical" onFinish={onFinish} form={form}>
         <ConfigProvider
           theme={{
             token: {
@@ -134,7 +148,7 @@ const UploadBusiness = () => {
           <BusinessInput name="phone" label="Enter your contact number" />
           <BusinessInput name="website" label="Enter your website URL" />
           <BusinessInput name="socialMedia" label="Enter your social media accounts" />
-          <BusinessInput name="ownership" label="Enter your ownership type" /> 
+          <BusinessInput name="ownership" label="Enter your ownership type" />
 
           <Form.Item
             name="revenue"
@@ -158,7 +172,7 @@ const UploadBusiness = () => {
               }}
             />
 
-          </Form.Item> 
+          </Form.Item>
 
           <Form.Item
             name="employees"
@@ -182,15 +196,15 @@ const UploadBusiness = () => {
               }}
             />
 
-          </Form.Item>  
-          
+          </Form.Item>
+
           <BusinessInput name="founded" label="Enter your year established" />
         </div>
 
         <div className=" grid lg:grid-cols-2 grid-cols-1 gap-x-8">
 
           <Form.Item name={"reason"} className=" mt-5" label={<p className="text-[16px] text-gray-500 font-semibold "> Reason for Selling </p>}>
-            <TextArea rows={7} placeholder="Enter your reason for selling" style={{
+            <TextArea rows={5} placeholder="Enter your reason for selling" style={{
               border: "1px solid #d9d9d9",
               outline: "none",
               boxShadow: "none",
@@ -214,7 +228,7 @@ const UploadBusiness = () => {
               </div>
               <label
                 htmlFor="img"
-                className="relative w-[160px] h-[120px] cursor-pointer rounded-LG  bg-white bg-contain bg-no-repeat bg-center"
+                className="relative w-[160px] h-[80px] cursor-pointer rounded-lg  bg-white bg-contain bg-no-repeat bg-center object-cover"
                 style={{ backgroundImage: `url(${imgURL ? imgURL : <IoImageOutline size={50} />})` }}
               >
 
@@ -225,23 +239,50 @@ const UploadBusiness = () => {
 
         <div className="">
           {/* Cover Images Upload */}
-          <div className="h-[150px] mb-5">
+          <div className="h-auto mb-5">
             <Dragger {...uploadProps("cover")} className="p-6">
               <div className="flex justify-center gap-4 items-center">
                 <IoImageOutline size={24} color="#757575" />
                 <p className="text-[#757575] text-[22px]">Upload Cover Images</p>
               </div>
             </Dragger>
+            {getBusinessData?.image?.length > 0 && (
+              <div className="flex gap-4 flex-wrap mt-4">
+                {getBusinessData.image.map((img: string, index: number) => (
+                  <img
+                    key={index}
+                    src={img.startsWith("https") ? img : `${imageUrl}${img}`}
+                    alt={`cover-${index}`}
+                    className="w-24 h-24 object-cover rounded border"
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Documents Upload */}
-          <div className="h-[150px] mb-5">
+          <div className="h-auto mb-5">
             <Dragger {...uploadProps("document")} className="p-6">
               <div className="flex justify-center gap-4 items-center">
                 <FileTextOutlined size={24} style={{ fontSize: 24, color: "#757575" }} />
                 <p className="text-[#757575] text-[22px]">Upload Your Documents</p>
               </div>
             </Dragger>
+            {getBusinessData?.doc?.length > 0 && (
+              <div className="flex flex-col gap-2 mt-4">
+                {getBusinessData.doc.map((doc: string, index: number) => (
+                  <a
+                    key={index}
+                    href={doc.startsWith("https") ? doc : `${imageUrl}${doc}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    Document {index + 1}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
         </div>
@@ -257,7 +298,7 @@ const UploadBusiness = () => {
         </Form.Item>
 
         <Form.Item className="flex items-center justify-end mt-5">
-          <button className=" w-[250px] h-[45px] bg-primary text-white text-[18px] font-normal flex items-center justify-center rounded-lg "> {} {isLoading ? "Saving..." : "Save & Change"}</button>
+          <button className=" w-[250px] h-[45px] bg-primary text-white text-[18px] font-normal flex items-center justify-center rounded-lg "> { } {isLoading ? "Saving..." : "Save & Change"}</button>
         </Form.Item>
       </Form>
     </div>

@@ -5,21 +5,35 @@ import ChangePassword from "./ChangePassword";
 // import DeleteAccount from "./DeleteAccount";
 import Enquire from "./Enquire";
 import UploadBusiness from "./UploadBusiness";
+import { useProfileQuery } from "@/redux/features/auth/authApi";
+import ProposalPage from "./ProposalPage";
+import ReviewPage from "./ReviewPage";
 
  
- const tabs = [
-    { id: "1", label: "Edit profile", component: <EditProfileData /> },
-    { id: "2", label: "Change password", component: <ChangePassword /> },
-    // { id: "3", label: "Delete account", component: <DeleteAccount /> }, 
-    { id: "4", label: "Enquire List", component: <Enquire  /> },
-    { id: "5", label: "Upload Business", component: <UploadBusiness  /> },
-  ]; 
+
 
 const EditProfile = () => { 
-    const [activeTab, setActiveTab] = useState("1");   
+    const [activeTab, setActiveTab] = useState("1");    
+    const {data:profile} = useProfileQuery(undefined) 
+    const userRole = profile?.role
     const handleTabClick = (id: string) => {
         setActiveTab(id);
-      }; 
+      };  
+
+      console.log(profile);
+ 
+
+      const tabs = [
+        { id: "1", label: "Edit profile", component: <EditProfileData /> },
+        { id: "2", label: "Change password", component: <ChangePassword /> },
+        { id: "3", label: "Proposal List", component: <ProposalPage /> }, 
+        ...(userRole === "SELLER"
+          ? [{ id: "4", label: "Upload Business", component: <UploadBusiness /> }]
+          : []),
+        { id: "5", label: "Enquire List", component: <Enquire  /> },
+        { id: "6", label: "Review", component: <ReviewPage /> },
+       
+      ];  
 
     return (
         <div className=" container lg:py-[60px] py-[30px] ">

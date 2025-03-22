@@ -1,6 +1,12 @@
+"use client"
+
+import { useGetEnquiresQuery } from "@/redux/features/enquireApi";
 import { Table } from "antd";
 
-const Enquire = () => { 
+const Enquire = () => {   
+
+  const {data:enquires} = useGetEnquiresQuery({}) 
+  console.log("enquires", enquires);
     const data = [
         { id: 1, sNo: 1, name: "John Doe", email: "john@example.com", description: "Software Engineer" },
         { id: 2, sNo: 2, name: "Jane Smith", email: "jane@example.com", description: "Product Manager" },

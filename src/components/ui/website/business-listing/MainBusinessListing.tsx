@@ -1,77 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState } from 'react';
-import { Input, Checkbox, Select, Slider, ConfigProvider } from 'antd';
+import React, {  useState } from 'react';
+import { Input, Checkbox, Select, Slider, ConfigProvider, Pagination } from 'antd';
 import { SearchIcon } from 'lucide-react';
 import { CiBoxList } from 'react-icons/ci';
 import { RxDashboard } from 'react-icons/rx';
-import PropertyCard from '@/components/shared/PropertyCard'; 
+import PropertyCard from '@/components/shared/PropertyCard';
 import SidePropertyCard from '@/components/shared/SidePropertyCard';
+import { useGetAllBusinessListQuery } from '@/redux/features/businessListApi';
 
-const properties = [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop",
-      title: "Equestrian  House",
-      location: "Singapore City",
-      revenue: "$38,440",
-      area: 420,
-      ownership: "Sole proprietorship",
-      year: 1978
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1632833239869-a37e3a5806d2?q=80&w=2069&auto=format&fit=crop",
-      title: "Singapore  Hospital",
-      location: "Singapore City",
-      revenue: "$38,440",
-      area: 480,
-      ownership: "Partnership",
-      year: 1974
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=2070&auto=format&fit=crop",
-      title: "Apartments",
-      location: "Singapore City",
-      revenue: "$38,440",
-      area: 420,
-      ownership: "Sole proprietorship",
-      year: 1978
-    },
-    {
-      id: 4,
-      image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop",
-      title: "Equestrian Family ",
-      location: "Singapore City",
-      revenue: "$23,040",
-      area: 420,
-      ownership: "Sole proprietorship",
-      year: 1978
-    },
-    {
-      id: 5,
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
-      title: "Corporate Office ",
-      location: "Singapore City",
-      revenue: "$22,014",
-      area: 870,
-      ownership: "Sole proprietorship",
-      year: 1988
-    },
-    {
-      id: 6,
-      image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop",
-      title: "Brew & Bliss Café",
-      location: "Singapore City",
-      revenue: "$13,410",
-      area: 420,
-      ownership: "Sole proprietorship",
-      year: 1978
-    }
-  ]; 
 
-  const businessTypes = [
+const businessTypes = [
     'All',
     'Houses',
     'Apartments',
@@ -84,15 +24,19 @@ const properties = [
 const MainBusinessListing = () => {
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-    const [sidebar, setSidebar] = useState<boolean>(false); 
-    const [employees, setEmployees] = useState<number|string>(0); 
+    const [sidebar, setSidebar] = useState<boolean>(false);
+    const [employees, setEmployees] = useState<number | string>(0);
     const [constructionYear, setConstructionYear] = useState<string>('');
+    const [page, setPage] = useState(1)
+    const limit = 8
+    const { data: lists } = useGetAllBusinessListQuery({page , limit}) 
+    console.log("lists", lists);
 
     return (
         <div className='container py-10 px-4 md:px-6'>
             <div className='grid grid-cols-1 md:grid-cols-12 gap-6'>
                 <div className='md:col-span-4 bg-[#F8F8F8] rounded p-5'>
-                <div className="space-y-6">
+                    <div className="space-y-6">
                         <div>
                             <h2 className="text-lg font-semibold mb-2">Find your Business</h2>
                             <div className="relative">
@@ -113,22 +57,22 @@ const MainBusinessListing = () => {
 
                         <div>
                             <h3 className="text-sm font-medium mb-3">Price Range</h3>
-                            <div className="space-y-4"> 
-                            <ConfigProvider
-                theme={{
-                    token: {
-                        colorPrimary: '#FFAB3E',
-                    },
-                    components: {},
-                }}
-            >
-                                <Slider
-                                    range
-                                    min={0}
-                                    max={10000}
-                                    value={priceRange}
-                                    onChange={(value) => setPriceRange(value as [number, number])}
-                                /> 
+                            <div className="space-y-4">
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: '#FFAB3E',
+                                        },
+                                        components: {},
+                                    }}
+                                >
+                                    <Slider
+                                        range
+                                        min={0}
+                                        max={10000}
+                                        value={priceRange}
+                                        onChange={(value) => setPriceRange(value as [number, number])}
+                                    />
                                 </ConfigProvider>
                                 <div className="flex gap-4">
                                     <Input
@@ -194,7 +138,7 @@ const MainBusinessListing = () => {
                                 ]}
                                 style={{
                                     height: "45px",
-                           
+
                                     outline: "none",
                                     boxShadow: "none",
                                     backgroundColor: "white",
@@ -247,8 +191,8 @@ const MainBusinessListing = () => {
                 </div>
 
                 <div className='md:col-span-8'>
-                    <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-4'>
-                        <p className='text-lg font-normal'>Showing 1-8 of 25 results</p>
+                    <div className='flex flex-col md:flex-row items-start md:items-center justify-end gap-4'>
+                       
                         <div className='flex items-center gap-4'>
                             <Select defaultValue='Newest' options={[
                                 { value: 'Newest', label: 'Newest' },
@@ -263,10 +207,36 @@ const MainBusinessListing = () => {
                         </div>
                     </div>
 
-                    <div className={`mt-6 grid ${sidebar ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'} gap-6`}> 
-                        {properties.map((property) => (
+                    <div className={`mt-6 grid ${sidebar ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'} gap-6`}>
+                        {lists?.business?.map((property:any) => (
                             sidebar ? <SidePropertyCard key={property.id} property={property} /> : <PropertyCard key={property.id} property={property} />
                         ))}
+                    </div> 
+
+                    <div className='mt-6'> 
+                    <ConfigProvider
+          theme={{
+            components: {
+              Pagination: {
+                itemActiveBg: "#FFAB3E"
+              },
+            },
+            token: {
+              colorPrimary: "#ffffff",
+              colorBorder: "#FFAB3E",
+
+
+            },
+          }}
+        >
+
+          <Pagination
+            align="center"
+            defaultCurrent={lists?.pagination?.page}
+            onChange={(page) => setPage(page)}
+            total={lists?.pagination?.total}
+          />
+        </ConfigProvider> 
                     </div>
                 </div>
             </div>
