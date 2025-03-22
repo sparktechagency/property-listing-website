@@ -240,7 +240,7 @@ const UploadBusiness = () => {
         <div className="">
           {/* Cover Images Upload */}
           <div className="h-auto mb-5">
-            <Dragger {...uploadProps("cover")} className="p-6">
+            <Dragger {...uploadProps("cover")} min={5} className="p-6">
               <div className="flex justify-center gap-4 items-center">
                 <IoImageOutline size={24} color="#757575" />
                 <p className="text-[#757575] text-[22px]">Upload Cover Images</p>

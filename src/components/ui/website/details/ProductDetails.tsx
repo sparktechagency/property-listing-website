@@ -9,40 +9,59 @@ import { Montserrat } from "next/font/google";
 import { GrLocation } from "react-icons/gr";
 import { useState } from "react";
 import EnquireNowModal from "./EnquireNowModal";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useGetBusinessByIdQuery } from "@/redux/features/businessListApi";
+import { useGetCategoryQuery } from "@/redux/features/categoryApi";
+import moment from "moment";
+import { useProfileQuery } from "@/redux/features/auth/authApi";
+import ProposalModal from "./ProposalModal";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
+const ProductDetails = () => { 
+    const [ open , setOpen]  = useState(false) 
+    const {id} = useParams()  
+    const {data:detailsData} = useGetBusinessByIdQuery(id) 
+    const {data:category} = useGetCategoryQuery(undefined)  
+    const {data:profile} = useProfileQuery(undefined)  
+    const  [openProposal , setOpenProposal] = useState(false)
+    const userRole = profile?.role
+    console.log(detailsData); 
+
+    const matchedCategory = category?.find(
+        (cat:{_id:string}) => cat?._id === detailsData?.category
+      ); 
+    
 const overview = [
     {
         id: 1,
         title: "Business type ",
         icon: <LuBriefcaseBusiness size={24} color="#757575" />,
-        value: "Houses"
+        value: matchedCategory?.name
     },
     {
         id: 2,
         title: "Employees",
         icon: <PiUsers size={24} color="#757575" />,
-        value: "220"
+        value: detailsData?.employees
     },
     {
         id: 3,
         title: "Inception",
         icon: <RiCalendarScheduleLine size={24} color="#757575" />,
-        value: "1978"
+        value: moment(detailsData?.createdAt).format('D-MM-YY')
     },
     {
         id: 4,
         title: "Headquarters",
         icon: <HiOutlineBuildingOffice2 size={24} color="#757575" />,
-        value: "Singapore"
+        value: detailsData?.location
     },
     {
         id: 5,
         title: "Ownership Type",
         icon: <PiUsers size={24} color="#757575" />,
-        value: "Sole"
+        value: detailsData?.ownership
     },
     {
         id: 6,
@@ -58,27 +77,28 @@ const propertyImages = [
     "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
     "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
     "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-];
-const ProductDetails = () => { 
-    const [ open , setOpen]  = useState(false) 
-    const router = useRouter()
+]; 
     return (
         <div className='container lg:py-[60px] py-[30px]'>
             <div className=''>
                 <div className="flex lg:flex-row flex-col lg:justify-between lg:items-center mb-6">
                     <div>
-                        <p className="lg:text-[32px] text-[24px] text-primary font-semibold lg:mb-0 mb-2 ">Equestrian Family House</p>
-                        <p className="text-gray-500 text-[14px] lg:mb-0 mb-2 flex items-center gap-1"> <span> <GrLocation size={16} />  </span> <span> Singapore City </span></p>
+                        <p className="lg:text-[32px] text-[24px] text-primary font-semibold lg:mb-0 mb-2 ">{detailsData?.name}</p>
+                        <p className="text-gray-500 text-[14px] lg:mb-0 mb-2 flex items-center gap-1"> <span> <GrLocation size={16} />  </span> <span> {detailsData?.location} </span></p>
                     </div>
                     <div className="flex flex-col  gap-y-2">
-                        <div className="block font-semibold lg:text-[32px] text-[20px] text-[#0171E2]">Revenue: $38,440</div> 
-                        <div className=" lg:block hidden"> 
-                        <div className=" flex items-center lg:justify-end gap-4 ">
-                            <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => router.push("/checkout")} > Buy </button>
-                            <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpen(true)}> Enquire Now </button>
-                        </div>
+                        <div className="block font-semibold lg:text-[32px] text-[20px] text-[#0171E2]">Price: ${detailsData?.revenue}</div> 
 
-                        </div>
+                        {
+                              userRole === "CUSTOMER" &&          <div className=" lg:block hidden"> 
+                              <div className=" flex items-center lg:justify-end gap-4 ">
+                                  <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpenProposal(true)} > Send Proposal </button>
+                                  <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpen(true)}> Enquire Now </button>
+                              </div>
+      
+                              </div>
+                        } 
+                 
 
                     </div>
                 </div>
@@ -123,12 +143,9 @@ const ProductDetails = () => {
                 <div>
                     <p className="lg:text-[32px] text-[24px] font-semibold mb-3 text-[#000000] ">Business Description</p>
                     <p className={`${montserrat.className} lg:text-lg text-sm font-normal pb-3 text-[#000000] `}>
-                        This 5-bed with a loft, 4-bath home in the gated community of The Hideout has it all. From the open floor plan to the abundance of light from the windows, this home is perfect for entertaining. The living room and dining room have vaulted ceilings and a beautiful fireplace. You will love spending time on the deck taking in the beautiful views. In the kitchen, you&apos;ll find stainless steel appliances and a tile backsplash, as well as a breakfast bar.
+{detailsData?.reason}
                     </p>
 
-                    <p className={`${montserrat.className} lg:text-lg text-sm font-normal pb-7 text-[#000000] `}>
-                        Placeholder content for this accordion, which is intended to demonstrate the class. This is the first item&apos;s accordion body you get groundbreaking performance and amazing battery life. Add to that a stunning Liquid Retina XDR display, the best camera and audio ever in a Mac notebook, and all the ports you need.
-                    </p>
                 </div>
 
                 <div className="grid lg:grid-cols-3 grid-cols-1 lg:gap-16 gap-8 mb-8">
@@ -139,16 +156,17 @@ const ProductDetails = () => {
 
                             <div className="flex flex-col gap-10 gap-y-2  w-full">
                                 <div className="flex items-center justify-between gap-10 "><p className="text-gray-500 font-medium">Business ID : </p>  <p className="font-semibold">RT48</p></div>
-                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Revenue :</p><p className="font-semibold">$17340</p></div>
-                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Total employees :</p><p className="font-semibold">220</p></div>
+                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Price :</p><p className="font-semibold">${detailsData?.revenue
+                                }</p></div>
+                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Total employees :</p><p className="font-semibold">{detailsData?.employees}</p></div>
                             </div>
 
                             <div className="flex flex-col gap-y-2  w-full">
-                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Inception :</p><p className="font-semibold">1978</p></div>
+                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Inception :</p><p className="font-semibold">{detailsData?.founded}</p></div>
 
-                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Business Type :</p><p className="font-semibold">Houses</p></div>
+                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Business Type :</p><p className="font-semibold"> {matchedCategory?.name}</p></div>
 
-                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Ownership Type :</p><p className="font-semibold">Sole</p></div>
+                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Ownership Type :</p><p className="font-semibold">{detailsData?.ownership}</p></div>
                             </div>
 
 
@@ -160,7 +178,7 @@ const ProductDetails = () => {
                         <div className=" ">
 
                             <div className="flex flex-col gap-10 gap-y-2  w-full">
-                                <div className="flex items-center justify-between gap-10 "><p className="text-gray-500 font-medium">Address : </p>  <p className="font-semibold">SIA Building 77</p></div>
+                                <div className="flex items-center justify-between gap-10 "><p className="text-gray-500 font-medium">Address : </p>  <p className="font-semibold">{detailsData?.location}</p></div>
                                 <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">City :</p><p className="font-semibold">Woodlands</p></div>
                                 <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">State/County :</p><p className="font-semibold">Singapore City</p></div>
                             </div>
@@ -169,33 +187,20 @@ const ProductDetails = () => {
                     </div>
                 </div>  
 
-                <div> 
-                    <p className="lg:text-[32px] text-[24px] font-semibold mb-3 text-[#000000]">Video</p> 
+            {
+                userRole === "CUSTOMER" &&   <div className=" block lg:hidden mt-5"> 
+                <div className=" flex items-center justify-end gap-4 ">
+                    <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpenProposal(true)} > Send Proposal </button>
+                    <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpen(true)}> Enquire Now </button>
+                </div>
+                </div>
+            }
 
-                    <div className="relative w-full lg:h-[500px] h-[400px] overflow-hidden"> 
-                    <video 
-            className="absolute top-0 left-0 w-full lg:h-[500px] h-[400px] object-cover rounded-lg"
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-        >
-            <source src="https://media-hosting.imagekit.io//3b7d018d37354f33/3773486-hd_1920_1080_30fps.mp4?Expires=1836192387&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=mkFVj02CBa2cOPrgndzUzCszraauYy3-FV15MLkOFsrFuqGxrxelL1NblXVdb~KA1utJ-QDjxpdNPkPdoyldtbo~aRZeuN6k~-nlUyDtX6wRT7ykmlzGtqZ1MghlYuAZTkPmmDXwMiH9sCLVofNx0c3WE~S2E3SBOS16esVrdeNJEtCEAU~gKT7Htr8HNfOoK12hMx4GtF6QdvMS1hfGshhYxV~U14IuCw3ecRRkddaOp2JBpVH76r3BBN39Icajn1D5s2K-PhCPheAcfqU0s2nk-CZjKWX95XwmeGBmwQ1aAPhuzTzKKmNps56cMroxoDRFv6lwwulXjItZUyRc5Q__" type="video/mp4" />
-            Your browser does not support the video tag.
-        </video>
+              
+            </div>  
 
-                    </div>
-                </div> 
-
-                <div className=" block lg:hidden mt-5"> 
-                        <div className=" flex items-center justify-end gap-4 ">
-                            <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => router.push("/checkout")} > Buy </button>
-                            <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpen(true)}> Enquire Now </button>
-                        </div>
-
-                        </div>
-            </div> 
-            <EnquireNowModal open={open} setOpen={setOpen} />
+            <ProposalModal open={openProposal} setOpen={setOpenProposal} id={id} />
+            <EnquireNowModal open={open} setOpen={setOpen} id={id} />
         </div>
     );
 };

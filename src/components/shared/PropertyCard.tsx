@@ -28,7 +28,7 @@ const PropertyCard = ({ property }:{property:Property}) => {
           <img 
             src={property?.image[0]?.startsWith("https") ? property?.image[0] : `${imageUrl}${property?.image[0]}`} 
             alt={property?.name}            
-            className="w-full h-[250px] object-cover"
+            className="w-full h-[250px] object-contain"
           />
         </div>
         

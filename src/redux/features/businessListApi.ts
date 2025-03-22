@@ -21,18 +21,32 @@ const businessApi = baseApi.injectEndpoints({
         })  , 
 
         getAllBusinessList: builder.query({
-            query: ({page , limit}) => {  
+            query: ({page , limit , city , minPrice , maxPrice , category  , searchTerm}) => {  
                 const params = new URLSearchParams(); 
                 if (page) params.append("page", page)
-                if (limit) params.append("limit", limit)
+                if (limit) params.append("limit", limit) 
+                if (city) params.append("city", city) 
+                if (minPrice) params.append("minPrice", minPrice) 
+                if (maxPrice) params.append("maxPrice", maxPrice) 
+                if (category) params.append("category", category) 
+                if (searchTerm) params.append("searchTerm", searchTerm) 
                 return{
                     url: `/business/listing?${params.toString()}` ,
                 }
             }, 
             transformResponse: (response: any) => response.data
-        }) , 
+        }) ,  
+
+        getBusinessById: builder.query({
+            query: (id) => {
+                return{
+                    url: `/business/${id}` ,
+                }
+            }, 
+            transformResponse: (response: any) => response.data
+        })
 
      }) 
 }) 
 
-export const {useGetBusinessQuery , useUploadBusinessListMutation , useGetAllBusinessListQuery} = businessApi
+export const {useGetBusinessQuery , useUploadBusinessListMutation , useGetAllBusinessListQuery , useGetBusinessByIdQuery } = businessApi
