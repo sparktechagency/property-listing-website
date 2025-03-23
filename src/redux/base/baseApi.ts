@@ -16,8 +16,9 @@ export const baseApi = createApi({
       },
     }),
   endpoints: () => ({}), 
-  // tagTypes: ["favorites" , "chats"],
+  tagTypes: [ "chats"],
 });
 
 // export const imageUrl = "http://192.168.10.15:8000/";
 export const imageUrl = "http://10.0.80.75:6006/"; 
+export const socketURL  = "http://10.0.80.75:6006"; 

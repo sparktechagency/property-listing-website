@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useRouter } from "next/navigation";
 import {
@@ -13,9 +14,9 @@ const Footer = () => {
         <div className="bg-[#F8F8F8] lg:h-[400px] lg:pb-0 pb-5 flex items-center justify-center">
             <div className="flex lg:flex-row flex-col items-start justify-center  gap-10   container mx-auto">
                 <div className=" w-full  flex items-center justify-center h-full"> 
-                    <div className=" space-y-5 text-primary pt-10"> 
-                    <h1 className="text-3xl font-bold">LOGO</h1>
-                    <p className="w-[90%] text-[#FFC77E]">
+                    <div className=" space-y-5  pt-10"> 
+                    <img src="/logo.svg" alt="" className="lg:w-auto lg:h-[50px] w-12 h-12" />
+                    <p className="w-[100%] ">
                         There are many variations of passages of lorem ipsum available.
                     </p>
                     </div>

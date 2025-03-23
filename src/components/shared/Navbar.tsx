@@ -25,7 +25,12 @@ const Navbar = () => {
     ]; 
   
     const image  = profile?.profile?.startsWith("https") ? profile?.profile : `${imageUrl}${profile?.profile }` 
-    const userName  = profile?.name 
+    const userName  = profile?.name  
+
+    const handleLogOut = () => {
+      localStorage.removeItem("accessToken"); 
+      router.push("/login")
+    }
     return (
         <div className=" text-black  bg-[#F8F8F8] w-full">
         <div className="navbar flex  py-6 container  justify-between items-center relative">
@@ -38,7 +43,8 @@ const Navbar = () => {
           </button>
   
           {/* Logo */}
-          <h1 className="text-3xl font-bold">LOGO</h1>
+         
+          <img src="/logo.svg" alt="" className="lg:w-auto lg:h-[50px] w-12 h-12" />
           {/* Nav Menu */}
           <div
             ref={menuRef}
@@ -79,10 +85,13 @@ const Navbar = () => {
 
             {  
   
-  profile ? <div className="flex items-center gap-2" onClick={()=>router.push("/edit-profile")}> 
-   <img className="lg:w-16 lg:h-16 w-12 h-12 rounded-full cursor-pointer" src={image} alt="profile" /> 
+  profile ? <div className="flex items-center gap-2"> 
+<div className="flex items-center gap-2" onClick={()=>router.push("/edit-profile")}> 
+   <img className="lg:w-14 lg:h-14 w-12 h-12 rounded-full cursor-pointer" src={image} alt="profile" /> 
    <p className="text-black text-lg lg:block hidden cursor-pointer">{userName}</p>
-  </div> :  <Link href="/login">
+  </div> 
+  <p className="text-primary text-[16px]  cursor-pointer font-semibold  border-s-2 border-gray-300 ps-2 " onClick={handleLogOut}> Log Out </p>
+  </div>  :  <Link href="/login">
               <CmnButton className=" py-3 px-8 rounded-xl font-medium">Login</CmnButton>
             </Link>
             }

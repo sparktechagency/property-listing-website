@@ -2,12 +2,29 @@
 import { baseApi } from "../base/baseApi"
 
 const proposalApi = baseApi.injectEndpoints({
-    endpoints: (builder) => ({  
-        getProposals: builder.query({
-            query: () => ({
-                url: `/proposal`,
-            })
-        }),  
+    endpoints: (builder) => ({   
+
+        getSellerProposals: builder.query({
+            query: ({ page, limit }) => {  
+                const params = new URLSearchParams();
+                if (page) params.append("page", page)
+                if (limit) params.append("limit", limit) 
+                return {                 
+                    url: `/proposal?${params.toString()}`,
+                }
+            }
+        }),   
+
+        getCustomerProposals: builder.query({
+            query: ({ page, limit }) => {  
+                const params = new URLSearchParams();
+                if (page) params.append("page", page)
+                if (limit) params.append("limit", limit)
+                return {                 
+                    url: `/proposal/customer-proposal?${params.toString()}`,
+                }
+            }
+        }) ,
 
         createProposal: builder.mutation({
             query: (data) => ({
@@ -15,8 +32,16 @@ const proposalApi = baseApi.injectEndpoints({
                 method: "POST",
                 body: data,
             })
+        }), 
+
+        updateProposalStatus: builder.mutation({
+            query: (data) => ({
+                url: `/proposal/${data.id}`,
+                method: "PATCH",
+                body: data,
+            })
         }),
     }) 
 }) 
 
-export const { useCreateProposalMutation , useGetProposalsQuery } = proposalApi
+export const { useCreateProposalMutation , useGetCustomerProposalsQuery , useGetSellerProposalsQuery , useUpdateProposalStatusMutation } = proposalApi

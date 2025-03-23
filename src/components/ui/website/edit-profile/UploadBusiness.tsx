@@ -198,7 +198,31 @@ const UploadBusiness = () => {
 
           </Form.Item>
 
-          <BusinessInput name="founded" label="Enter your year established" />
+          <BusinessInput name="founded" label="Enter your year established" /> 
+
+          <Form.Item
+            name="price"
+            rules={[
+              {
+                required: true,
+                message: `Please enter Price`,
+              },
+            ]}
+          >
+
+            <Input
+              placeholder={`Enter Price`}
+              type="number"
+              style={{
+                height: 45,
+                border: "1px solid #d9d9d9",
+                outline: "none",
+                boxShadow: "none",
+                backgroundColor: "white",
+              }}
+            />
+
+          </Form.Item> 
         </div>
 
         <div className=" grid lg:grid-cols-2 grid-cols-1 gap-x-8">

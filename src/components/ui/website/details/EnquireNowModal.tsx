@@ -8,7 +8,8 @@ import Swal from 'sweetalert2';
 
 const EnquireNowModal = ({ open, setOpen, id }: { open: boolean, id: string | string[], setOpen: (open: boolean) => void }) => {
     const [createEnquire, { isLoading, isSuccess, error, isError, data }] = useCreateEnquireMutation() 
-    const [form] = Form.useForm(); 
+    const [form] = Form.useForm();  
+    console.log(id);
       useEffect(() => {
         if (isSuccess) {
           if (data) {

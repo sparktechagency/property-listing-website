@@ -18,7 +18,7 @@ const enquireApi = baseApi.injectEndpoints({
                 if (limit) params.append("limit", limit)
                 return{
 
-                    url: `/inquiry${params.toString()}`,
+                    url: `/inquiry?${params.toString()}`,
                 }
             },
             transformResponse: (response: any) => response.data
