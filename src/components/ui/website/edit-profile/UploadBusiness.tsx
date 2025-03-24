@@ -11,9 +11,10 @@ import { useEffect, useState } from "react";
 import { IoImageOutline } from "react-icons/io5";
 import { useGetBusinessQuery, useUploadBusinessListMutation } from "@/redux/features/businessListApi";
 import { imageUrl } from "@/redux/base/baseApi";
+import Swal from "sweetalert2";
+
 
 const { Dragger } = Upload;
-
 
 const UploadBusiness = () => {
   const [form] = Form.useForm();
@@ -25,12 +26,10 @@ const UploadBusiness = () => {
   const [uploadBusinessList, { isLoading, isError, isSuccess, error, data }] = useUploadBusinessListMutation()
   const { data: getBusinessData } = useGetBusinessQuery(undefined)
 
-
   useEffect(() => {
     if (getBusinessData) {
       form.setFieldsValue(getBusinessData);
       setImgURL(getBusinessData?.logo?.startsWith("https") ? getBusinessData?.logo : `${imageUrl}${getBusinessData?.logo}`)
-
     }
   }, [form, getBusinessData]);
 
@@ -42,22 +41,16 @@ const UploadBusiness = () => {
           icon: "success",
           timer: 1500,
           showConfirmButton: false
-        }).then(() => {
-
-
-
-        });
+        })
       }
-
-    }
+    } 
     if (isError) {
       Swal.fire({
-        title: "Failed to Login",
         //@ts-ignore
         text: error?.data?.message,
         icon: "error",
       });
-    }
+    } 
   }, [isSuccess, isError, error, data,]);
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +59,7 @@ const UploadBusiness = () => {
     if (file) {
       const imgUrl = URL.createObjectURL(file);
       setImgURL(imgUrl);
-      setImageFile(file)
+      setImageFile(file) 
     }
   };
 
@@ -89,10 +82,6 @@ const UploadBusiness = () => {
   const onFinish = async (values) => {
     const formData = new FormData();
 
-    console.log("coverImages", coverImages);
-    console.log("documents", documents);
-
-
     if (coverImages) {
       coverImages.forEach((file) => {
         console.log("file", file);
@@ -109,10 +98,13 @@ const UploadBusiness = () => {
     }
 
     Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, value);
-    })
-    console.log("values", values);
 
+      formData.append(key, value);
+
+    }) 
+
+    console.log(values);
+   
     await uploadBusinessList(formData).then((res) => { console.log(res); })
   };
 
@@ -126,7 +118,7 @@ const UploadBusiness = () => {
             },
           }}
         >
-          <Form.Item name="category"  >
+          <Form.Item name="category" >
             <Select
               placeholder="Select  Category"
               style={{ width: "100%", height: 45, }}
@@ -142,7 +134,7 @@ const UploadBusiness = () => {
 
         <div className=" grid lg:grid-cols-3 grid-cols-1 gap-x-8">
           <BusinessInput name="name" label="Enter your business name" />
-          <BusinessInput name="logo" label="Enter your business brand logo" />
+          {/* <BusinessInput name="logo" label="Enter your business brand logo" />  */}
           <BusinessInput name="location" label="Enter your business location" />
           <BusinessInput name="email" label="Enter your business email" />
           <BusinessInput name="phone" label="Enter your contact number" />
@@ -159,7 +151,6 @@ const UploadBusiness = () => {
               },
             ]}
           >
-
             <Input
               placeholder={`Enter your revenue`}
               type="number"
@@ -171,7 +162,6 @@ const UploadBusiness = () => {
                 backgroundColor: "white",
               }}
             />
-
           </Form.Item>
 
           <Form.Item
@@ -183,7 +173,6 @@ const UploadBusiness = () => {
               },
             ]}
           >
-
             <Input
               placeholder={`Enter your employees`}
               type="number"
@@ -199,7 +188,6 @@ const UploadBusiness = () => {
           </Form.Item>
 
           <BusinessInput name="founded" label="Enter your year established" /> 
-
           <Form.Item
             name="price"
             rules={[
@@ -209,7 +197,6 @@ const UploadBusiness = () => {
               },
             ]}
           >
-
             <Input
               placeholder={`Enter Price`}
               type="number"
@@ -221,21 +208,20 @@ const UploadBusiness = () => {
                 backgroundColor: "white",
               }}
             />
-
           </Form.Item> 
         </div>
 
         <div className=" grid lg:grid-cols-2 grid-cols-1 gap-x-8">
 
-          <Form.Item name={"reason"} className=" mt-5" label={<p className="text-[16px] text-gray-500 font-semibold "> Reason for Selling </p>}>
-            <TextArea rows={5} placeholder="Enter your reason for selling" style={{
+          <Form.Item name={"description"} className=" mt-5" label={<p className="text-[16px] text-gray-500 font-semibold "> Description </p>}>
+            <TextArea rows={5} 
+            style={{
               border: "1px solid #d9d9d9",
               outline: "none",
               boxShadow: "none",
               backgroundColor: "white",
               resize: "none"
             }} />
-
           </Form.Item>
 
           <div>
@@ -248,14 +234,12 @@ const UploadBusiness = () => {
                   id="img"
                   className=" hidden"
                 />
-
               </div>
               <label
                 htmlFor="img"
                 className="relative w-[160px] h-[80px] cursor-pointer rounded-lg  bg-white bg-contain bg-no-repeat bg-center object-cover"
                 style={{ backgroundImage: `url(${imgURL ? imgURL : <IoImageOutline size={50} />})` }}
               >
-
               </label>
             </div>
           </div>
@@ -311,15 +295,6 @@ const UploadBusiness = () => {
 
         </div>
 
-        <Form.Item name="description" className=" mt-5">
-          <TextArea rows={4} placeholder="Enter your business description" style={{
-            border: "1px solid #d9d9d9",
-            outline: "none",
-            boxShadow: "none",
-            backgroundColor: "white",
-            resize: "none"
-          }} />
-        </Form.Item>
 
         <Form.Item className="flex items-center justify-end mt-5">
           <button className=" w-[250px] h-[45px] bg-primary text-white text-[18px] font-normal flex items-center justify-center rounded-lg "> { } {isLoading ? "Saving..." : "Save & Change"}</button>

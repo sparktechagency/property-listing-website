@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import EditProfileData from "./EditProfileData";
 import ChangePassword from "./ChangePassword";
-import Enquire from "./Enquire";
 import UploadBusiness from "./UploadBusiness";
 import { useProfileQuery } from "@/redux/features/auth/authApi";
 import ProposalPage from "./ProposalPage";
@@ -30,10 +29,6 @@ const EditProfile = () => {
     ...(userRole === "SELLER"
       ? [{ id: "4", label: "Upload Business", component: <UploadBusiness /> }]
       : []),
-    ...(userRole === "SELLER"
-      ? [{ id: "5", label: "Enquire List", component: <Enquire /> }]
-      : []),
-    
     { id: "6", label: "Review", component: <ReviewPage /> },
     { id: "7", label: "Chat", component: <ChatPage /> },
   ];

@@ -27,7 +27,7 @@ const BlogDetails = () => {
           <img
             alt="new details"
             src={blogsDetails?.image?.startsWith("https") ? blogsDetails?.image : `${imageUrl}${blogsDetails?.image}`}
-         className="w-full h-full object-cover"
+         className="w-full h-full object-fill"
           />
   
           <div

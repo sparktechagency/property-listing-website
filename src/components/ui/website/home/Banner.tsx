@@ -1,7 +1,10 @@
+"use client"
 import {  ConfigProvider, Input, Select } from "antd";
 import { Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-const Banner = () => {
+const Banner = () => { 
+  const router = useRouter();
     return (  
        <div className="container lg:min-h-[calc(100vh-140px)] h-[calc(100vh-250px)]   flex items-center justify-center lg:rounded-se-[100px]  lg:rounded-bl-[100px] w-full bg-no-repeat bg-center  bg-cover"
        style={{ backgroundImage: `url('/banner.jpg')` }}
@@ -45,7 +48,8 @@ const Banner = () => {
            
           </div>
           <button
-            className="h-12 px-8 text-lg bg-orange-400 hover:bg-orange-500 lg:rounded-full rounded-lg font-medium"
+            className="h-12 px-8 text-lg bg-orange-400 hover:bg-orange-500 lg:rounded-full rounded-lg font-medium" 
+            onClick={() => router.push("/business-listing")}
           >
             FIND
           </button>

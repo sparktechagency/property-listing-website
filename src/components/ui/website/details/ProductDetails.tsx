@@ -8,20 +8,23 @@ import { RiCalendarScheduleLine, RiMoneyDollarCircleLine } from "react-icons/ri"
 import { Montserrat } from "next/font/google";
 import { GrLocation } from "react-icons/gr";
 import { useState } from "react";
-import EnquireNowModal from "./EnquireNowModal";
 import { useParams, useRouter } from "next/navigation";
 import { useGetBusinessByIdQuery } from "@/redux/features/businessListApi";
 import { useGetCategoryQuery } from "@/redux/features/categoryApi";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import moment from "moment";
 import { useProfileQuery } from "@/redux/features/auth/authApi";
 import ProposalModal from "./ProposalModal";
 import { useCreateInitialChatMutation } from "@/redux/features/chatApi";
 import { imageUrl } from "@/redux/base/baseApi";
+import { Carousel } from "antd";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
+
 const ProductDetails = () => {
-    const [open, setOpen] = useState(false)
+
     const { id } = useParams()
     const { data: detailsData } = useGetBusinessByIdQuery(id)
     const { data: category } = useGetCategoryQuery(undefined)
@@ -30,6 +33,7 @@ const ProductDetails = () => {
     const [openProposal, setOpenProposal] = useState(false)
     const userRole = profile?.role
     const router = useRouter()
+    console.log(detailsData);
 
 
     const matchedCategory = category?.find(
@@ -77,6 +81,7 @@ const ProductDetails = () => {
 
 
 
+
     const handelChat = async () => {
 
         await createInitialChat(detailsData?.seller).then((res) => {
@@ -98,21 +103,31 @@ const ProductDetails = () => {
                     <div className="flex flex-col  gap-y-2">
                         <div className="flex items-center justify-between lg:gap-8 gap-4">
                             <div className="block font-semibold lg:text-[32px] text-[20px] text-[#0171E2]">Price: ${detailsData?.revenue}</div>
-                            <button className=" bg-[#0171E2] text-white font-normal h-[35px]  px-3 rounded-lg text-[14px] disabled:bg-blue-300   disabled:cursor-not-allowed" onClick={handelChat} disabled={userRole === "SELLER"} > Send Message </button>
                         </div>
 
-                                <div className=" flex items-center lg:justify-end gap-4 ">
-                                    <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px] disabled:bg-[#ffab3e]/60  disabled:cursor-not-allowed  " onClick={() => setOpenProposal(true)} disabled={userRole === "SELLER"}  > Send Proposal </button>
-                                    <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px] disabled:text-[#ffab3e]/60   disabled:cursor-not-allowed  " onClick={() => setOpen(true)} disabled={userRole === "SELLER"} > Enquire Now </button>
-                                </div>
+                        <div className=" flex items-center lg:justify-end gap-4 ">
+                            <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px] disabled:bg-[#ffab3e]/60  disabled:cursor-not-allowed  " onClick={() => setOpenProposal(true)} disabled={userRole === "SELLER"}  > Send Proposal </button>
+                            <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px] disabled:text-[#ffab3e]/60   disabled:cursor-not-allowed " onClick={handelChat} disabled={userRole === "SELLER"} > Send Message </button>
+                        </div>
 
-                   
+
 
 
                     </div>
                 </div>
 
-                <div className="grid lg:grid-cols-4 grid-cols-1 gap-4 mb-8  ">
+                <Carousel autoplay autoplaySpeed={5000} >
+
+     
+                        {detailsData?.image?.map((image: string, index: number) => (
+                            <img key={index} alt={`Property Image ${index + 2}`} src={image?.startsWith("https") ? image : `${imageUrl}${image}`} className="h-[480px] w-full object-fill shadow-md rounded-lg" />
+                        ))}
+                  
+
+
+                </Carousel>
+
+                {/* <div className="grid lg:grid-cols-4 grid-cols-1 gap-4 mb-8  ">
                     <div className="col-span-2">
                         <img alt="Main Property Image" src={detailsData?.image[0]?.startsWith("https") ? detailsData?.image[0] : `${imageUrl}${detailsData?.image[0]}`} className="h-auto w-full object-cover shadow-lg rounded-lg" />
                     </div>
@@ -124,7 +139,7 @@ const ProductDetails = () => {
 
                         </div>
                     </div>
-                </div>
+                </div> */}
 
 
                 <div className="flex items-center justify-center mb-[30px]   ">
@@ -197,20 +212,11 @@ const ProductDetails = () => {
                     </div>
                 </div>
 
-                {
-                    userRole === "CUSTOMER" && <div className=" block lg:hidden mt-5">
-                        <div className=" flex items-center justify-end gap-4 ">
-                            <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpenProposal(true)} > Send Proposal </button>
-                            <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px]  " onClick={() => setOpen(true)}> Enquire Now </button>
-                        </div>
-                    </div>
-                }
 
 
             </div>
 
             <ProposalModal open={openProposal} setOpen={setOpenProposal} id={detailsData?.seller} />
-            <EnquireNowModal open={open} setOpen={setOpen} id={detailsData?.seller} />
         </div>
     );
 };

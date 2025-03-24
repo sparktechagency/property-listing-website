@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { Star } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { RiDoubleQuotesL, RiDoubleQuotesR } from "react-icons/ri";
@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider, { Settings } from "react-slick";
 import { useGetReviewQuery } from "@/redux/features/reviewApi";
 import { imageUrl } from "@/redux/base/baseApi";
+import { ConfigProvider, Rate } from "antd";
 
 const CustomerReview = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -59,7 +60,7 @@ const CustomerReview = () => {
               <div
                 className={` text-[#000000]  font-[600] lg:text-[48px] text-[28px] `}
               >
-                Customer Reviews
+                 Reviews
               </div>
               <p className=" text-[#757575] font-normal lg:text-[20px] text-[16px]">
                 {" "}
@@ -70,7 +71,7 @@ const CustomerReview = () => {
             </div>
 
             <Slider {...settings}>
-              {reviews?.map((review:{ id: string; comment: string; rating: number; user: { name: string; profile: string; }; }) => (
+              {reviews?.map((review:{ id: string; comment: string; rating: number; user: { name: string; profile: string; role: string }; }) => (
                 <div
                   key={review.id}
                   className="border border-gray-100 shadow rounded-2xl p-[25px] space-y-4 w-[485px]"
@@ -95,32 +96,35 @@ const CustomerReview = () => {
 
                   <div className="flex items-center gap-3">
                     {review?.user?.profile && (
-                      <Image
+                      <img
                         src={review?.user?.profile?.startsWith("https") ? review?.user?.profile : `${imageUrl}${review?.user?.profile}`  }
                         alt="Customer avatar"
-                        width={64}
-                        height={64}
-                        className="rounded-full"
+                     
+                        className="rounded-full h-[64px] w-[64px] object-cover"
                       />
                     )}
 
                     <div>
                       <h3 className="font-semibold">{review?.user?.name}</h3>
                       <p className="text-sm text-gray-600">
-                        Satisfied Customer
+                      {review?.user?.role}
                       </p>
                     </div>
-                    <div className="ml-auto flex bg-primary p-1 gap-0.5">
-                      {Array(review.rating)
-                        .fill(null)
-                        .map((_, i) => (
-                          <Star
-                            key={i}
-                            size={15}
-                            className="fill-[#ffffff] text-[#ffffff] "
-                          />
-                        ))}
-                    </div>
+                  <div className="ml-auto flex  p-1 gap-0.5"> 
+                         <ConfigProvider
+                        theme={{
+                            components: {
+                                Rate: {
+                                    starSize: 20 , 
+                                    starColor: "#ffab3e",
+                                },
+                            },
+                        }}
+                    >
+                        <Rate allowHalf defaultValue={review.rating}   />
+                    </ConfigProvider> 
+                      
+                    </div> 
                   </div>
                 </div>
               ))}

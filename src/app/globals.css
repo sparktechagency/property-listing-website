@@ -31,4 +31,9 @@
   height: 10px !important;
   margin: 5px !important;
   border-radius: 100% !important;
- }
+ } 
+
+ .review.ant-rate .ant-rate-star:not(:last-child) {
+  margin-inline-end: 25px !important;
+}  
+

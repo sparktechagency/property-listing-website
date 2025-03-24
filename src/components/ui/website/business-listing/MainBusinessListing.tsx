@@ -119,7 +119,7 @@ const MainBusinessListing = () => {
                                 placeholder="Select  Category"
                                 style={{ width: "100%", height: 45, }}
                                 options={categoryData?.map((item: { name: string, _id: string }) => ({
-                                    value: item?.name,
+                                    value: item?._id,
                                     label: item?.name,
                                 }))} 
                                 onChange={(value) => setCategory(value)}

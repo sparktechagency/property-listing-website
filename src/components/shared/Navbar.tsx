@@ -48,7 +48,7 @@ const Navbar = () => {
           {/* Nav Menu */}
           <div
             ref={menuRef}
-            className={`absolute lg:relative top-20 left-0 lg:top-0 border border-gray-400 lg:left-auto w-full lg:w-auto lg:flex flex-col lg:flex-row  lg:rounded-full lg:px-6 shadow-lg lg:shadow-none p-5 lg:p-0 space-y-4 lg:space-y-0 lg:space-x-6 transition-all duration-300 z-50 text-[16px] ${isMenuOpen ? "block bg-white" : "hidden "
+            className={`absolute lg:relative top-20 left-0 lg:top-0  lg:left-auto w-full lg:w-auto lg:flex flex-col lg:flex-row  lg:rounded-full lg:px-6 shadow-lg lg:shadow-none p-5 lg:p-0 space-y-4 lg:space-y-0 lg:space-x-6 transition-all duration-300 z-50 text-[16px] ${isMenuOpen ? "block bg-white" : "hidden "
               }`}
           >
             {navOptions.map((option, index) => {

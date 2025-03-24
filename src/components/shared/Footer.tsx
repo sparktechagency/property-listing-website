@@ -15,7 +15,7 @@ const Footer = () => {
             <div className="flex lg:flex-row flex-col items-start justify-center  gap-10   container mx-auto">
                 <div className=" w-full  flex items-center justify-center h-full"> 
                     <div className=" space-y-5  pt-10"> 
-                    <img src="/logo.svg" alt="" className="lg:w-auto lg:h-[50px] w-12 h-12" />
+                    <img src="/logo.svg" alt="" className="lg:w-auto lg:h-[50px] h-[40px]" />
                     <p className="w-[100%] ">
                         There are many variations of passages of lorem ipsum available.
                     </p>
