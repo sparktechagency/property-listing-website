@@ -1,15 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { HiOutlineMenuAlt3, HiX } from "react-icons/hi";
 import { useProfileQuery } from "@/redux/features/auth/authApi";
 import { imageUrl } from "@/redux/base/baseApi";
 import CmnButton from "./CmnButton";
+import { IoIosLogOut } from "react-icons/io";
+import Image from "next/image";
 
 const Navbar = () => { 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false); 
+    const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false); 
     const menuRef = useRef(null);
     const pathname = usePathname();
     const router = useRouter(); 
@@ -18,14 +21,33 @@ const Navbar = () => {
   
     const navOptions = [
       { label: "Home", path: "/" },
-      { label: " Business listing", path: "/business-listing" },
+      { label: "Business listing", path: "/business-listing" },
       { label: "About", path: "/about" },
       { label: "Blogs", path: "/blogs" },
       { label: "Contact Us", path: "/contact" },
     ]; 
   
     const image  = profile?.profile?.startsWith("https") ? profile?.profile : `${imageUrl}${profile?.profile }` 
-    const userName  = profile?.name  
+    const userName  = profile?.name   
+
+    const profileDropdownRef = useRef<HTMLDivElement>(null);
+  
+    // Handle click outside dropdowns
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          profileDropdownRef.current &&
+          !profileDropdownRef.current.contains(event.target as Node)
+        ) {
+          setIsProfileDropdownOpen(false);
+        }
+      };
+  
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);  
 
     const handleLogOut = () => {
       localStorage.removeItem("accessToken"); 
@@ -85,16 +107,40 @@ const Navbar = () => {
 
             {  
   
-  profile ? <div className="flex items-center gap-2"> 
-<div className="flex items-center gap-2" onClick={()=>router.push("/edit-profile")}> 
+  profile ? <div className="flex items-center gap-2"                
+  
+> 
+<div className="flex items-center gap-2"   onClick={() =>
+    setIsProfileDropdownOpen(!isProfileDropdownOpen)
+  }> 
    <img className="lg:w-14 lg:h-14 w-12 h-12 rounded-full cursor-pointer" src={image} alt="profile" /> 
    <p className="text-black text-lg lg:block hidden cursor-pointer">{userName}</p>
   </div> 
-  <p className="text-primary text-[16px]  cursor-pointer font-semibold  border-s-2 border-gray-300 ps-2 " onClick={handleLogOut}> Log Out </p>
   </div>  :  <Link href="/login">
               <CmnButton className=" py-3 px-8 rounded-xl font-medium">Login</CmnButton>
             </Link>
-            }
+            } 
+
+{isProfileDropdownOpen && (
+                <div   ref={profileDropdownRef} className="absolute top-20 right-4 mt-2 bg-white border rounded shadow-lg w-[200px] z-50">
+                  <div className="p-4 flex flex-col gap-3 items-center">          
+                    <Image src={image} alt="" height={55} width={55} style={{ borderRadius: "100%", width: "55px", height: "55px" }} />
+                    <div className="font-bold ">{userName}</div>
+                    <Link href="/edit-profile">
+                      <button className="text-white bg-primary w-full px-6 py-2 rounded-lg text-[14px]" >
+                        Visit Your Profile
+                      </button>
+                    </Link>
+
+                  </div>
+                  <div className="border-t">
+                    <button className="px-4 py-3 text-primary hover:bg-gray-100 cursor-pointer flex items-center gap-2" onClick={handleLogOut}>
+                      <IoIosLogOut size={24} />
+                      <p>Log Out</p>
+                    </button>
+                  </div>
+                </div>
+              )} 
            
           </div>
         </div>

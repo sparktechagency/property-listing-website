@@ -37,3 +37,6 @@
   margin-inline-end: 25px !important;
 }  
 
+.business-add.ant-upload-wrapper .ant-upload-list .ant-upload-list-item { 
+  display: none !important;
+}

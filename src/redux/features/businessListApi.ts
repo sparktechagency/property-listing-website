@@ -44,9 +44,35 @@ const businessApi = baseApi.injectEndpoints({
                 }
             }, 
             transformResponse: (response: any) => response.data
+        }) , 
+
+        getUserBusiness: builder.query({
+            query: () => ({
+                url: '/business/seller-business',
+            }), 
+            transformResponse: (response: any) => response.data
+        }) , 
+
+        deleteBusiness: builder.mutation({
+            query: (id) => {
+                return{
+                    url: `/business/${id}` ,
+                    method: "DELETE",
+                }
+            }, 
+        })  ,
+
+        updateBusiness: builder.mutation({
+            query: ({id , data}) => {
+                return{
+                    url: `/business/${id}` ,
+                    method: "Patch",
+                    body: data,
+                }
+            }, 
         })
 
      }) 
 }) 
 
-export const {useGetBusinessQuery , useUploadBusinessListMutation , useGetAllBusinessListQuery , useGetBusinessByIdQuery } = businessApi
+export const {useGetBusinessQuery , useUploadBusinessListMutation , useGetAllBusinessListQuery , useGetBusinessByIdQuery , useGetUserBusinessQuery , useDeleteBusinessMutation , useUpdateBusinessMutation } = businessApi

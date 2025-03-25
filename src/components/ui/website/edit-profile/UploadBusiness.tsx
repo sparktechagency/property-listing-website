@@ -9,29 +9,41 @@ import { FileTextOutlined } from "@ant-design/icons";
 import { useGetCategoryQuery } from "@/redux/features/categoryApi";
 import { useEffect, useState } from "react";
 import { IoImageOutline } from "react-icons/io5";
-import { useGetBusinessQuery, useUploadBusinessListMutation } from "@/redux/features/businessListApi";
+import { useGetBusinessByIdQuery, useUpdateBusinessMutation, useUploadBusinessListMutation } from "@/redux/features/businessListApi";
 import { imageUrl } from "@/redux/base/baseApi";
 import Swal from "sweetalert2";
+import { GoArrowLeft } from "react-icons/go";
 
 
 const { Dragger } = Upload;
 
-const UploadBusiness = () => {
+const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onBack: () => void }) => {
   const [form] = Form.useForm();
   const { data: categoryData } = useGetCategoryQuery(undefined)
   const [imgURL, setImgURL] = useState("/imgdemo.png");
   const [imgFile, setImageFile] = useState(null);
   const [coverImages, setCoverImages] = useState<File[]>([]);
-  const [documents, setDocuments] = useState<File[]>([]);
+  const [documents, setDocuments] = useState<File[]>([]); 
+  const [deletedCoverImages, setDeletedCoverImages] = useState<string[]>([]);
+const [deletedDocuments, setDeletedDocuments] = useState<string[]>([]); 
   const [uploadBusinessList, { isLoading, isError, isSuccess, error, data }] = useUploadBusinessListMutation()
-  const { data: getBusinessData } = useGetBusinessQuery(undefined)
-
+  const { data: getBusinessData } = useGetBusinessByIdQuery(businessId)
+  const [updateBusiness] = useUpdateBusinessMutation()
+ 
+  console.log("deleted cover image" , deletedCoverImages); 
+  console.log("deleted documents" , deletedDocuments);  
   useEffect(() => {
-    if (getBusinessData) {
-      form.setFieldsValue(getBusinessData);
-      setImgURL(getBusinessData?.logo?.startsWith("https") ? getBusinessData?.logo : `${imageUrl}${getBusinessData?.logo}`)
+    if (businessId) {
+
+      if (getBusinessData) {
+        form.setFieldsValue(getBusinessData);
+        setImgURL(getBusinessData?.logo?.startsWith("https") ? getBusinessData?.logo : `${imageUrl}${getBusinessData?.logo}`)
+        setCoverImages(getBusinessData?.image);
+        setDocuments(getBusinessData?.doc);
+      }
+
     }
-  }, [form, getBusinessData]);
+  }, [form, getBusinessData, businessId]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -41,17 +53,19 @@ const UploadBusiness = () => {
           icon: "success",
           timer: 1500,
           showConfirmButton: false
+        }).then(() => {
+          onBack()
         })
       }
-    } 
+    }
     if (isError) {
       Swal.fire({
         //@ts-ignore
         text: error?.data?.message,
         icon: "error",
       });
-    } 
-  }, [isSuccess, isError, error, data,]);
+    }
+  }, [isSuccess, isError, error, data, onBack]);
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -59,18 +73,47 @@ const UploadBusiness = () => {
     if (file) {
       const imgUrl = URL.createObjectURL(file);
       setImgURL(imgUrl);
-      setImageFile(file) 
+      setImageFile(file)
     }
   };
 
   const handleFileUpload = (file: File, type: "cover" | "document") => {
     if (type === "cover") {
+      if (coverImages.some((img) => img.name === file.name)) return false;
       setCoverImages((prev) => [...prev, file]);
     } else {
+      if (documents.some((doc) => doc.name === file.name)) return false;
       setDocuments((prev) => [...prev, file]);
     }
     return false;
   };
+
+  const handleRemoveCoverImage = (e, index ,removedImage ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const updatedImages = [...coverImages];
+    updatedImages.splice(index, 1);
+    setCoverImages(updatedImages);
+
+    if (typeof removedImage === 'string') {
+      setDeletedCoverImages(prev => [...prev, removedImage]);
+    } 
+
+  } 
+
+  const handleRemoveDocument = (e, index , removedDoc) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const updatedDocs = [...documents];
+    updatedDocs.splice(index, 1);
+    setDocuments(updatedDocs);  
+
+    if (typeof removedDoc === 'string') {
+      setDeletedDocuments(prev => [...prev, removedDoc]);
+    } 
+
+  }
+
 
   const uploadProps = (type: "cover" | "document") => ({
     name: "file",
@@ -84,7 +127,6 @@ const UploadBusiness = () => {
 
     if (coverImages) {
       coverImages.forEach((file) => {
-        console.log("file", file);
         formData.append("image", file)
       })
     }
@@ -98,18 +140,42 @@ const UploadBusiness = () => {
     }
 
     Object.entries(values).forEach(([key, value]) => {
-
       formData.append(key, value);
+    })
 
-    }) 
+    if (businessId) { 
+      if (deletedCoverImages) {
+        deletedCoverImages.forEach((file) => {
+          formData.append("imageToDelete[]", file)
+        })
+      }  
 
-    console.log(values);
-   
-    await uploadBusinessList(formData).then((res) => { console.log(res); })
+      if (deletedDocuments) {
+        deletedDocuments.forEach((file) => {
+          formData.append("docToDelete[]", file)
+        })
+      } 
+
+      await updateBusiness({ id: businessId, formData }).then((res) => { console.log(res); })
+
+    } else {
+
+      await uploadBusinessList(formData).then((res) => { console.log(res); })
+      
+    }
+
   };
 
   return (
     <div >
+
+      <div className="flex items-center gap-1 mb-4 cursor-pointer" onClick={onBack} >
+        <p> <GoArrowLeft size={22} color="#5c6063" />  </p>
+        <h2 className="text-2xl font-semibold text-[#5c6063]">{businessId ? 'Edit Business' : 'Add Business'}</h2>
+
+      </div>
+
+
       <Form className="w-full" layout="vertical" onFinish={onFinish} form={form}>
         <ConfigProvider
           theme={{
@@ -187,7 +253,7 @@ const UploadBusiness = () => {
 
           </Form.Item>
 
-          <BusinessInput name="founded" label="Enter your year established" /> 
+          <BusinessInput name="founded" label="Enter your year established" />
           <Form.Item
             name="price"
             rules={[
@@ -208,20 +274,20 @@ const UploadBusiness = () => {
                 backgroundColor: "white",
               }}
             />
-          </Form.Item> 
+          </Form.Item>
         </div>
 
         <div className=" grid lg:grid-cols-2 grid-cols-1 gap-x-8">
 
           <Form.Item name={"description"} className=" mt-5" label={<p className="text-[16px] text-gray-500 font-semibold "> Description </p>}>
-            <TextArea rows={5} 
-            style={{
-              border: "1px solid #d9d9d9",
-              outline: "none",
-              boxShadow: "none",
-              backgroundColor: "white",
-              resize: "none"
-            }} />
+            <TextArea rows={5}
+              style={{
+                border: "1px solid #d9d9d9",
+                outline: "none",
+                boxShadow: "none",
+                backgroundColor: "white",
+                resize: "none"
+              }} />
           </Form.Item>
 
           <div>
@@ -248,56 +314,71 @@ const UploadBusiness = () => {
         <div className="">
           {/* Cover Images Upload */}
           <div className="h-auto mb-5">
-            <Dragger {...uploadProps("cover")} min={5} className="p-6">
+            <Dragger {...uploadProps("cover")} min={5} className="p-6 business-add">
               <div className="flex justify-center gap-4 items-center">
                 <IoImageOutline size={24} color="#757575" />
                 <p className="text-[#757575] text-[22px]">Upload Cover Images</p>
               </div>
             </Dragger>
-            {getBusinessData?.image?.length > 0 && (
-              <div className="flex gap-4 flex-wrap mt-4">
-                {getBusinessData.image.map((img: string, index: number) => (
-                  <img
-                    key={index}
-                    src={img.startsWith("https") ? img : `${imageUrl}${img}`}
-                    alt={`cover-${index}`}
-                    className="w-24 h-24 object-cover rounded border"
-                  />
-                ))}
-              </div>
-            )}
+            <div className="grid grid-cols-3 gap-3 mb-4 mt-4">
+              {coverImages?.map((img, index) => {
+                const imageSrc = typeof img === "string" ? `${imageUrl}${img}` : URL.createObjectURL(img);
+                return (
+                  <div key={index} className="relative">
+                    <img src={imageSrc} alt="cover" className="w-full h-32 object-cover rounded" />
+                    <button
+                      onClick={(e) => handleRemoveCoverImage(e, index , img)}
+                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {/* Documents Upload */}
-          <div className="h-auto mb-5">
-            <Dragger {...uploadProps("document")} className="p-6">
+          <div className="h-auto my-5">
+            <Dragger {...uploadProps("document")} className="p-6 business-add">
               <div className="flex justify-center gap-4 items-center">
                 <FileTextOutlined size={24} style={{ fontSize: 24, color: "#757575" }} />
                 <p className="text-[#757575] text-[22px]">Upload Your Documents</p>
               </div>
             </Dragger>
-            {getBusinessData?.doc?.length > 0 && (
-              <div className="flex flex-col gap-2 mt-4">
-                {getBusinessData.doc.map((doc: string, index: number) => (
-                  <a
-                    key={index}
-                    href={doc.startsWith("https") ? doc : `${imageUrl}${doc}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 underline"
-                  >
-                    Document {index + 1}
-                  </a>
-                ))}
-              </div>
-            )}
+
+            <div className="grid grid-cols-2 gap-3 my-4">
+              {documents?.map((doc, index) => {
+                const isURL = typeof doc === "string";
+                const fileURL = isURL ? `${imageUrl}${doc}` : URL.createObjectURL(doc);
+                const fileName = isURL ? doc.split("/").pop() : doc.name;
+
+                return (
+                  <div key={index} className="flex items-center gap-3 border p-2 rounded relative">
+                    <FileTextOutlined style={{ fontSize: "24px", color: "#757575" }} />
+                    <a href={fileURL} target="_blank" rel="noreferrer" className="text-blue-500 truncate">
+                      {fileName}
+                    </a>
+                    <button
+                      onClick={(e) => {
+                        handleRemoveDocument(e ,index , doc);
+                      }}
+                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+
           </div>
 
         </div>
 
 
         <Form.Item className="flex items-center justify-end mt-5">
-          <button className=" w-[250px] h-[45px] bg-primary text-white text-[18px] font-normal flex items-center justify-center rounded-lg "> { } {isLoading ? "Saving..." : "Save & Change"}</button>
+          <button disabled={isLoading} type="submit" className=" w-[250px] h-[45px] bg-primary text-white text-[18px] font-normal flex items-center justify-center rounded-lg ">  {isLoading ? "Saving..." : "Save & Change"}</button>
         </Form.Item>
       </Form>
     </div>

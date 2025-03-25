@@ -101,7 +101,7 @@ const ProductDetails = () => {
                         <p className="text-gray-500 text-[14px] lg:mb-0 mb-2 flex items-center gap-1"> <span> <GrLocation size={16} />  </span> <span> {detailsData?.location} </span></p>
                     </div>
                     <div className="flex flex-col  gap-y-2">
-                        <div className="flex items-center justify-between lg:gap-8 gap-4">
+                        <div className="flex items-center justify-end lg:gap-8 gap-4">
                             <div className="block font-semibold lg:text-[32px] text-[20px] text-[#0171E2]">Price: ${detailsData?.revenue}</div>
                         </div>
 

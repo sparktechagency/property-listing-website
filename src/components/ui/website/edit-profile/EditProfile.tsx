@@ -2,12 +2,13 @@
 import { useEffect, useState } from "react";
 import EditProfileData from "./EditProfileData";
 import ChangePassword from "./ChangePassword";
-import UploadBusiness from "./UploadBusiness";
+// import UploadBusiness from "./UploadBusiness"; 
 import { useProfileQuery } from "@/redux/features/auth/authApi";
 import ProposalPage from "./ProposalPage";
 import ReviewPage from "./ReviewPage";
 import ChatPage from "./ChatPage";
 import { useSearchParams } from "next/navigation";
+import UserBusinessList from "./UserBusinessList";
 
 const EditProfile = () => { 
   const searchParams = useSearchParams();
@@ -27,7 +28,7 @@ const EditProfile = () => {
     { id: "2", label: "Change Password", component: <ChangePassword /> },
     { id: "3", label: "Proposal List", component: <ProposalPage /> },
     ...(userRole === "SELLER"
-      ? [{ id: "4", label: "Upload Business", component: <UploadBusiness /> }]
+      ? [{ id: "4", label: "Upload Business", component: <UserBusinessList /> }]
       : []),
     { id: "6", label: "Review", component: <ReviewPage /> },
     { id: "7", label: "Chat", component: <ChatPage /> },

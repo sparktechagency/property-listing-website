@@ -16,7 +16,8 @@ type Property = {
     employees: number;
     ownership: string;
     revenue: string;
-    createdAt: string; 
+    createdAt: string;  
+    logo: string;
     _id: number; 
   }; 
 const PropertyCard = ({ property }:{property:Property}) => {  
@@ -35,7 +36,14 @@ const PropertyCard = ({ property }:{property:Property}) => {
         <div className="p-4">
           <div className="flex justify-between items-start mb-2">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">{property?.name}</h3>
+                    <div className='flex items-center gap-2'> 
+                                 <img 
+                                src={property?.logo?.startsWith("https") ? property?.logo : `${imageUrl}${property?.logo}`} 
+                                alt={property?.name}
+                                className="w-[45px] h-[45px] object-cover rounded-full border border-gray-300"
+                              /> 
+                                  <h3 className="text-lg font-semibold text-gray-900">{property.name}</h3>
+                                 </div>
             <div className='flex items-center gap-1'> 
               <span> <IoLocationOutline size={18} color='#757575' /> </span>  
             <p className="text-sm text-[#757575]">{property.location}</p> 

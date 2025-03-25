@@ -16,11 +16,13 @@ type Property = {
   employees: number;
   ownership: string;
   revenue: string;
-  createdAt: string; 
+  createdAt: string;  
+  logo: string;
   _id: number; 
 };  
 const SidePropertyCard = ({ property }:{property:Property}) => { 
-    const router = useRouter();
+    const router = useRouter(); 
+    console.log("property", property);
     return (
          <div key={property?._id} className="bg-white rounded-lg overflow-hidden shadow-md  flex flex-row gap-7 cursor-pointer"  onClick={() => router.push(`/business-listing/${property?._id}`)}>
                <div className="relative">
@@ -33,8 +35,15 @@ const SidePropertyCard = ({ property }:{property:Property}) => {
                
                <div className="p-4 w-full">
                  <div className="flex  flex-col gap-2 mb-2">
-                   <div>
+                   <div> 
+                    <div className='flex items-center gap-2'> 
+                    <img 
+                   src={property?.logo?.startsWith("https") ? property?.logo : `${imageUrl}${property?.logo}`} 
+                   alt={property?.name}
+                   className="w-[45px] h-[45px] object-cover rounded-full border border-gray-300"
+                 /> 
                      <h3 className="text-lg font-semibold text-gray-900">{property.name}</h3>
+                    </div>
                    <div className='flex items-center gap-1'> 
                      <span> <IoLocationOutline size={18} color='#757575' /> </span>  
                    <p className="text-sm text-[#757575]">{property.location}</p> 
