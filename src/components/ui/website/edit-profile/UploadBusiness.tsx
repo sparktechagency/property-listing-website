@@ -23,15 +23,15 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
   const [imgURL, setImgURL] = useState("/imgdemo.png");
   const [imgFile, setImageFile] = useState(null);
   const [coverImages, setCoverImages] = useState<File[]>([]);
-  const [documents, setDocuments] = useState<File[]>([]); 
+  const [documents, setDocuments] = useState<File[]>([]);
   const [deletedCoverImages, setDeletedCoverImages] = useState<string[]>([]);
-const [deletedDocuments, setDeletedDocuments] = useState<string[]>([]); 
+  const [deletedDocuments, setDeletedDocuments] = useState<string[]>([]);
   const [uploadBusinessList, { isLoading, isError, isSuccess, error, data }] = useUploadBusinessListMutation()
   const { data: getBusinessData } = useGetBusinessByIdQuery(businessId)
   const [updateBusiness] = useUpdateBusinessMutation()
- 
-  console.log("deleted cover image" , deletedCoverImages); 
-  console.log("deleted documents" , deletedDocuments);  
+
+
+
   useEffect(() => {
     if (businessId) {
 
@@ -88,7 +88,7 @@ const [deletedDocuments, setDeletedDocuments] = useState<string[]>([]);
     return false;
   };
 
-  const handleRemoveCoverImage = (e, index ,removedImage ) => {
+  const handleRemoveCoverImage = (e, index, removedImage) => {
     e.preventDefault();
     e.stopPropagation();
     const updatedImages = [...coverImages];
@@ -97,20 +97,20 @@ const [deletedDocuments, setDeletedDocuments] = useState<string[]>([]);
 
     if (typeof removedImage === 'string') {
       setDeletedCoverImages(prev => [...prev, removedImage]);
-    } 
+    }
 
-  } 
+  }
 
-  const handleRemoveDocument = (e, index , removedDoc) => {
+  const handleRemoveDocument = (e, index, removedDoc) => {
     e.preventDefault();
     e.stopPropagation();
     const updatedDocs = [...documents];
     updatedDocs.splice(index, 1);
-    setDocuments(updatedDocs);  
+    setDocuments(updatedDocs);
 
     if (typeof removedDoc === 'string') {
       setDeletedDocuments(prev => [...prev, removedDoc]);
-    } 
+    }
 
   }
 
@@ -123,7 +123,9 @@ const [deletedDocuments, setDeletedDocuments] = useState<string[]>([]);
   });
 
   const onFinish = async (values) => {
-    const formData = new FormData();
+    const formData = new FormData(); 
+
+    console.log(coverImages);
 
     if (coverImages) {
       coverImages.forEach((file) => {
@@ -143,25 +145,49 @@ const [deletedDocuments, setDeletedDocuments] = useState<string[]>([]);
       formData.append(key, value);
     })
 
-    if (businessId) { 
+    if (businessId) {
       if (deletedCoverImages) {
         deletedCoverImages.forEach((file) => {
           formData.append("imageToDelete[]", file)
         })
-      }  
+      }
 
       if (deletedDocuments) {
         deletedDocuments.forEach((file) => {
           formData.append("docToDelete[]", file)
         })
-      } 
+      }
 
-      await updateBusiness({ id: businessId, formData }).then((res) => { console.log(res); })
+      await updateBusiness({ id: businessId, formData }).then((res) => {
+              console.log("res", res);
+            if (res?.data?.success) {
+              Swal.fire({
+                text: res?.data?.message,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => { 
+                onBack() 
+
+      
+              });
+            } else {
+              Swal.fire({
+                title: "Oops",
+                //@ts-ignore
+                text: res?.error?.data?.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false,
+              });
+      
+            }
+          }) 
 
     } else {
 
       await uploadBusinessList(formData).then((res) => { console.log(res); })
-      
+
     }
 
   };
@@ -327,7 +353,7 @@ const [deletedDocuments, setDeletedDocuments] = useState<string[]>([]);
                   <div key={index} className="relative">
                     <img src={imageSrc} alt="cover" className="w-full h-32 object-cover rounded" />
                     <button
-                      onClick={(e) => handleRemoveCoverImage(e, index , img)}
+                      onClick={(e) => handleRemoveCoverImage(e, index, img)}
                       className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
                     >
                       ✕
@@ -361,7 +387,7 @@ const [deletedDocuments, setDeletedDocuments] = useState<string[]>([]);
                     </a>
                     <button
                       onClick={(e) => {
-                        handleRemoveDocument(e ,index , doc);
+                        handleRemoveDocument(e, index, doc);
                       }}
                       className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
                     >

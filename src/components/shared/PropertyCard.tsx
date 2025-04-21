@@ -15,7 +15,7 @@ type Property = {
     location: string;
     employees: number;
     ownership: string;
-    revenue: string;
+    price: string;
     createdAt: string;  
     logo: string;
     _id: number; 
@@ -50,7 +50,7 @@ const PropertyCard = ({ property }:{property:Property}) => {
                 </div> 
             </div>
             <div className="text-right">
-              <p className="text-[12px] font-bold text-[#348DE8]">Price: {property?.revenue}</p>
+              <p className="text-[12px] font-bold text-[#348DE8]">Price: {property?.price}</p>
             </div>
           </div>
           

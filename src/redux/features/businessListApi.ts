@@ -65,8 +65,8 @@ const businessApi = baseApi.injectEndpoints({
         updateBusiness: builder.mutation({
             query: ({id , data}) => {
                 return{
-                    url: `/business/${id}` ,
-                    method: "Patch",
+                    url: `/business/update/${id}` ,
+                    method: "PATCH",
                     body: data,
                 }
             }, 

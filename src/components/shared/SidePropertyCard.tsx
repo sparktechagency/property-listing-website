@@ -15,7 +15,7 @@ type Property = {
   location: string;
   employees: number;
   ownership: string;
-  revenue: string;
+  price: string;
   createdAt: string;  
   logo: string;
   _id: number; 
@@ -51,7 +51,7 @@ const SidePropertyCard = ({ property }:{property:Property}) => {
                    </div>
 
                    <div className=" mt-4">
-                     <p className="text-[16px] font-bold text-[#348DE8]">price: {property.revenue}</p>
+                     <p className="text-[16px] font-bold text-[#348DE8]">price: {property.price}</p>
                    </div>
                  </div>
                  

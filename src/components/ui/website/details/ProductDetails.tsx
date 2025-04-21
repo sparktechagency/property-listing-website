@@ -33,8 +33,6 @@ const ProductDetails = () => {
     const [openProposal, setOpenProposal] = useState(false)
     const userRole = profile?.role
     const router = useRouter()
-    console.log(detailsData);
-
 
     const matchedCategory = category?.find(
         (cat: { _id: string }) => cat?._id === detailsData?.category
@@ -102,7 +100,7 @@ const ProductDetails = () => {
                     </div>
                     <div className="flex flex-col  gap-y-2">
                         <div className="flex items-center justify-end lg:gap-8 gap-4">
-                            <div className="block font-semibold lg:text-[32px] text-[20px] text-[#0171E2]">Price: ${detailsData?.revenue}</div>
+                            <div className="block font-semibold lg:text-[32px] text-[20px] text-[#0171E2]">Price: ${detailsData?.price}</div>
                         </div>
 
                         <div className=" flex items-center lg:justify-end gap-4 ">
@@ -181,7 +179,7 @@ const ProductDetails = () => {
 
                             <div className="flex flex-col gap-10 gap-y-2  w-full">
                                 <div className="flex items-center justify-between gap-10 "><p className="text-gray-500 font-medium">Business ID : </p>  <p className="font-semibold">RT48</p></div>
-                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Price :</p><p className="font-semibold">${detailsData?.revenue
+                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Price :</p><p className="font-semibold">${detailsData?.price
                                 }</p></div>
                                 <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">Total employees :</p><p className="font-semibold">{detailsData?.employees}</p></div>
                             </div>
