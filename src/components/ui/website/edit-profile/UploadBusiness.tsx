@@ -125,7 +125,6 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
   const onFinish = async (values) => {
     const formData = new FormData(); 
 
-    console.log(coverImages);
 
     if (coverImages) {
       coverImages.forEach((file) => {
