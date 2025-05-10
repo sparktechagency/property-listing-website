@@ -18,7 +18,6 @@ const ProposalPage = () => {
     const [updateProposalStatus, { isSuccess, isError, data, error }] = useUpdateProposalStatusMutation()
     const userRole = profile?.role
 
-    console.log(customerProposal);
     useEffect(() => {
         if (isSuccess) {
             if (data) {
@@ -52,7 +51,7 @@ const ProposalPage = () => {
     }))
 
     const handleStatusChange = async (value: string, id: string) => {
-        console.log(value, id);
+
         const data = {
             status: value,
             id: id
@@ -66,8 +65,7 @@ const ProposalPage = () => {
             proposal: id
         }
 
-        await createTransaction(data).then((res) => { console.log(res);  
-
+        await createTransaction(data).then((res) => { 
             if (res?.data?.success) {
                 const paymentUrl = res.data.data;
                 if (paymentUrl) {

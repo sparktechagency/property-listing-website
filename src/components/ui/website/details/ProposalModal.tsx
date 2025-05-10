@@ -39,7 +39,7 @@ const ProposalModal = ({ open, setOpen, id }: { open: boolean, id: string | stri
             business: id
         }
 
-        await createProposal(data).then((res) => { console.log(res); })
+        await createProposal(data)
     }
     return (
         <Modal open={open} onCancel={() => setOpen(false)} footer={null} centered width={550}>

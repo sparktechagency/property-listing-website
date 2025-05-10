@@ -129,7 +129,7 @@ const MainBusinessListing = () => {
                         <button
                             type="submit"
                             className="w-full bg-primary text-white border-none h-12 text-base font-medium rounded-lg"
-                            onClick={() => console.log('Applying filters')}
+                          
                         >
                             Apply Filter
                         </button>

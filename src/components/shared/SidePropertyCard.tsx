@@ -22,7 +22,7 @@ type Property = {
 };  
 const SidePropertyCard = ({ property }:{property:Property}) => { 
     const router = useRouter(); 
-    console.log("property", property);
+
     return (
          <div key={property?._id} className="bg-white rounded-lg overflow-hidden shadow-md  flex flex-row gap-7 cursor-pointer"  onClick={() => router.push(`/business-listing/${property?._id}`)}>
                <div className="relative">

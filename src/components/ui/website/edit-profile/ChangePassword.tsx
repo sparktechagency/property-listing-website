@@ -34,8 +34,8 @@ const ChangePassword = () => {
         }, [isSuccess, isError, error, data , form]);   
 
 const handleChangePassword = async(values:{currentPassword:string , newPassword:string , confirmPassword:string}) => {  
-    console.log(values); 
-    await changePassword(values).then((res) => { console.log(res);})
+
+    await changePassword(values)
 } 
 
     return (

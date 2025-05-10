@@ -83,7 +83,6 @@ const ProductDetails = () => {
     const handelChat = async () => {
 
         await createInitialChat(detailsData?.seller).then((res) => {
-            console.log(res);
             if (res?.data?.success) {
                 router.push("/edit-profile?tab=7")
             }

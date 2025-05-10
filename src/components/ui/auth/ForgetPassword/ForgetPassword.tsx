@@ -18,10 +18,9 @@ const ForgetPassword = () => {
 
 
     const onFinish = async(values: forgetPassProps) => { 
-      console.log(values);
 
       await forgetPassword(values).then((res)=>{  
-        console.log(res);
+
            if (res?.data?.success) {
                   Swal.fire({
                     text: res?.data?.message,

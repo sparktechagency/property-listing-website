@@ -21,7 +21,7 @@ type Property = {
     _id: number; 
   }; 
 const PropertyCard = ({ property }:{property:Property}) => {  
-  console.log("property", property);
+
   const router = useRouter();
     return (
         <div key={property?._id} className="bg-white rounded-lg overflow-hidden shadow-md cursor-pointer" onClick={() => router.push(`/business-listing/${property?._id}`)}>

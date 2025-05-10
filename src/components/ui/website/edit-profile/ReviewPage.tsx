@@ -38,7 +38,7 @@ const onFinish = async(values: { comment: string}) => {
         comment: values?.comment, 
         rating: rating
     } 
-    await createReview(data).then((res) => { console.log(res); }) 
+    await createReview(data)
 
      
 }

@@ -17,8 +17,6 @@ const BlogDetails = () => {
         .slice(0, 2) 
     : [];  
 
-    console.log(blogsDetails);
-
 
     return ( 
         <div> 

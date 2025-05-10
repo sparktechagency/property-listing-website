@@ -72,10 +72,7 @@ const EditProfileData = () => {
     formData.append("name", values?.name);
     formData.append("email", values?.email);
 
-    await updateProfile(formData).unwrap().then((res) => {
-      console.log(res);
-    })
-
+    await updateProfile(formData).unwrap()
   }
 
   return (

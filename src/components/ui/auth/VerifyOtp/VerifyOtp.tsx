@@ -36,7 +36,6 @@ useEffect(() => {
     } 
 
     await otpVerify(data).then((res) => {
-        console.log("res", res);
       if (res?.data?.success) {
         Swal.fire({
           text: res?.data?.message,

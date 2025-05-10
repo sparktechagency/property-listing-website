@@ -57,8 +57,6 @@ const ChatPage = () => {
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const [form] = Form.useForm();
 
-    console.log(messageList, "messagesList");
-
     useEffect(() => {
         if (getMessageList) {
             setMessageList(getMessageList?.data?.messages);
@@ -138,7 +136,6 @@ const ChatPage = () => {
         formData.append("type", messageType);
 
         await sendMessage(formData).then((res) => {
-            console.log(res);
             if (res?.data?.success) {
                 setMessageInput("");
                 setImage(null);
