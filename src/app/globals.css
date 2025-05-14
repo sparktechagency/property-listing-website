@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.swiper-button-prev,
+.swiper-button-next {
+  &::after {
+    display: none;
+  }
+}
+
+
+.swiper-button-prev {
+  height: 40px !important;
+  width: 40px !important;
+  border-radius: 100%;  
+  left: -30px !important;
+}
+
+.swiper-button-next {
+  height: 40px !important;
+  width: 40px !important;
+  border-radius: 100%;  
+  right: -30px !important;
+} 
+
+.swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet { 
+  background-color: #000 !important;
+  opacity: 1 !important;
+  width: 10px !important;
+  height: 10px !important;
+  margin: 5px !important;
+  border-radius: 100% !important;
+ } 
+
+ .review.ant-rate .ant-rate-star:not(:last-child) {
+  margin-inline-end: 25px !important;
+}  
+
+.business-add.ant-upload-wrapper .ant-upload-list .ant-upload-list-item { 
+  display: none !important;
+}
