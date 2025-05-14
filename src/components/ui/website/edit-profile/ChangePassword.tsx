@@ -4,182 +4,187 @@ import { ConfigProvider, Form, Input } from "antd";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 
-const ChangePassword = () => { 
-    const [form] = Form.useForm();   
-    const [changePassword , {isLoading , isError , error , data, isSuccess}] = useChangePasswordMutation() 
+const ChangePassword = () => {
+    const [form] = Form.useForm();
+    const [changePassword, { isLoading, isError, error, data, isSuccess }] = useChangePasswordMutation()
 
-    
-        useEffect(() => {
-          if (isSuccess) {
+
+    useEffect(() => {
+        if (isSuccess) {
             if (data) {
-              Swal.fire({
-                text: data?.message,
-                icon: "success",
-                timer: 1500,
-                showConfirmButton: false
-              }).then(() => {
-                form.resetFields();
-              })
+                Swal.fire({
+                    text: data?.message,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    form.resetFields();
+                })
             }
-      
-          }
-          if (isError) {
+
+        }
+        if (isError) {
             Swal.fire({
-              title: "Failed to Login",
-              //@ts-ignore
-              text: error?.data?.message,
-              icon: "error",
+                title: "Failed to Login",
+                //@ts-ignore
+                text: error?.data?.message,
+                icon: "error",
             });
-          }
-        }, [isSuccess, isError, error, data , form]);   
+        }
+    }, [isSuccess, isError, error, data, form]);
 
-const handleChangePassword = async(values:{currentPassword:string , newPassword:string , confirmPassword:string}) => {  
+    const handleChangePassword = async (values: { currentPassword: string, newPassword: string, confirmPassword: string }) => {
 
-    await changePassword(values)
-} 
+        await changePassword(values)
+    }
 
     return (
         <div className="">
-  
-        <Form
-            form={form}
-            layout="vertical"
-            initialValues={{ remember: true }}
-            onFinish={handleChangePassword}
-            className="w-full "
-        >
 
-            <ConfigProvider
-                theme={{
-                    token: {
-                        borderRadius: 0,
-                    },
-
-                }}
+            <Form
+                form={form}
+                layout="vertical"
+                initialValues={{ remember: true }}
+                onFinish={handleChangePassword}
+                className="w-full "
             >
-                <Form.Item
-                    name="currentPassword"
-                    label={<p className="block">Current Password</p>}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please input your current password!",
+
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            borderRadius: 0,
                         },
-                    ]}
-                    className="mb-5"
+
+                    }}
                 >
-                    <Input.Password
-                        placeholder="Enter Password"
-                        style={{
-                            height: 48,
-                            border: "1px solid #d9d9d9",
-                            outline: "none",
-                            boxShadow: "none",
-                            backgroundColor: "white" , 
-                            borderRadius: 10
-                        }}
-                    />
-                </Form.Item>
-            </ConfigProvider> 
+                    <Form.Item
+                        name="currentPassword"
+                        label={<p className="block">Current Password</p>}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your current password!",
+                            },
+                            {
+                                min: 8,
+                                message: "Password must be at least 8 characters long!",
+                            },
+                        ]}
+                        className="mb-5"
+                    >
+                        <Input.Password
+                            placeholder="Enter Password"
+                            style={{
+                                height: 48,
+                                border: "1px solid #d9d9d9",
+                                outline: "none",
+                                boxShadow: "none",
+                                backgroundColor: "white",
+                                borderRadius: 10
+                            }}
 
-            <ConfigProvider
-                theme={{
-                    token: {
-                        borderRadius: 0,
-                    },
+                        />
+                    </Form.Item>
+                </ConfigProvider>
 
-                }}
-            >
-
-            <Form.Item
-                name="newPassword"
-                label={<p className="block">New Password</p>}
-                dependencies={["currentPassword"]}
-                hasFeedback
-                rules={[
-                    {
-                        required: true,
-                        message: "Please confirm your password!",
-                    },
-                    ({ getFieldValue }) => ({
-                        validator(_, value) {
-                            if (!value || getFieldValue("currentPassword") === value) {
-                                return Promise.reject(
-                                    new Error("The new password and current password do not match!")
-                                );
-                            }
-                            return Promise.resolve();
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            borderRadius: 0,
                         },
-                    }),
-                ]}
-                className="mb-5"
-            >
-                <Input.Password
-                    placeholder="Enter password"
-                    style={{
-                        height: 48,
-                        border: "1px solid #d9d9d9",
-                        outline: "none",
-                        boxShadow: "none",
-                        backgroundColor: "white" , 
-                        borderRadius: 10
+
                     }}
-                />
-            </Form.Item> 
-            </ConfigProvider>
+                >
+
+                    <Form.Item
+                        name="newPassword"
+                        label={<p className="block">New Password</p>}
+                        dependencies={["currentPassword"]}
+                        hasFeedback
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please confirm your password!",
+                            },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue("currentPassword") === value) {
+                                        return Promise.reject(
+                                            new Error("The new password and current password do not match!")
+                                        );
+                                    }
+                                    return Promise.resolve();
+                                },
+                            }),
+                        ]}
+                        className="mb-5"
+                    >
+                        <Input.Password
+                            placeholder="Enter password"
+                            style={{
+                                height: 48,
+                                border: "1px solid #d9d9d9",
+                                outline: "none",
+                                boxShadow: "none",
+                                backgroundColor: "white",
+                                borderRadius: 10
+                            }}
+                        />
+                    </Form.Item>
+                </ConfigProvider>
 
 
-            <ConfigProvider
-                theme={{
-                    token: {
-                        borderRadius: 0,
-                    },
-
-                }}
-            >
-            <Form.Item
-                name="confirmPassword"
-                label={<p className="block">Re-Type Password</p>}
-                dependencies={["newPassword"]}
-                hasFeedback
-                rules={[
-                    {
-                        required: true,
-                        message: "Please confirm your password!",
-                    },
-                    ({ getFieldValue }) => ({
-                        validator(_, value) {
-                            if (!value || getFieldValue("newPassword") === value) {
-                                return Promise.resolve();
-                            }
-                            return Promise.reject(
-                                new Error("The new password that you entered does not match!")
-                            );
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            borderRadius: 0,
                         },
-                    }),
-                ]}
-                className="mb-10"
-            >
-                <Input.Password
-                    placeholder="Enter password"
-                    style={{
-                        height: 48,
-                        border: "1px solid #d9d9d9",
-                        outline: "none",
-                        boxShadow: "none",
-                        backgroundColor: "white", 
-                        borderRadius: 10
-                    }}
-                />
-            </Form.Item> 
-            </ConfigProvider>
 
-            <Form.Item className="flex items-center justify-end mt-5"> 
-                    <button className="  h-[45px] bg-primary text-white lg:w-[250px] w-[150px] font-normal flex items-center justify-center rounded-lg "> {isLoading ?  "Saving..." : "Save & Change"}  </button>
+                    }}
+                >
+                    <Form.Item
+                        name="confirmPassword"
+                        label={<p className="block">Re-Type Password</p>}
+                        dependencies={["newPassword"]}
+                        hasFeedback
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please confirm your password!",
+                            },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue("newPassword") === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(
+                                        new Error("The new password that you entered does not match!")
+                                    );
+                                },
+                            }),
+                        ]}
+                        className="mb-10"
+                    >
+                        <Input.Password
+                            placeholder="Enter password"
+                            style={{
+                                height: 48,
+                                border: "1px solid #d9d9d9",
+                                outline: "none",
+                                boxShadow: "none",
+                                backgroundColor: "white",
+                                borderRadius: 10
+                            }}
+                        />
+                    </Form.Item>
+                </ConfigProvider>
+
+                <Form.Item className="flex items-center justify-end mt-5">
+                    <button className="  h-[45px] bg-primary text-white lg:w-[250px] w-[150px] font-normal flex items-center justify-center rounded-lg "> {isLoading ? "Saving..." : "Save & Change"}  </button>
                 </Form.Item>
-        </Form>
-   
-</div>
+            </Form>
+
+        </div>
     );
 };
 

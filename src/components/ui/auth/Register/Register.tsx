@@ -5,7 +5,7 @@
 import { SetLocalStorage } from "@/app/util/LocalStroage";
 import TextInput from "@/components/shared/TextInput";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
-import {  ConfigProvider, Form, Input, Select } from "antd";
+import { ConfigProvider, Form, Input, Select } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -20,10 +20,10 @@ interface ValuesType {
 }
 
 const Register: React.FC = () => {
-  const router = useRouter();  
-  const [register , {isLoading }] = useRegisterMutation()
+  const router = useRouter();
+  const [register, { isLoading }] = useRegisterMutation()
 
-  const onFinish = async (values: ValuesType) => { 
+  const onFinish = async (values: ValuesType) => {
     await register(values).then((res) => {
 
       if (res?.data?.success) {
@@ -32,16 +32,16 @@ const Register: React.FC = () => {
           icon: "success",
           showConfirmButton: false,
           timer: 1500,
-        }).then(() => { 
+        }).then(() => {
           const value = {
             userType: "registerUser",
             email: values?.email
           }
           if (values?.email) {
             SetLocalStorage("userInfo", JSON.stringify(value))
-          } 
+          }
           router.push(`/verify-otp?email=${values.email}`);
-        
+
         });
       } else {
         Swal.fire({
@@ -54,7 +54,7 @@ const Register: React.FC = () => {
         });
 
       }
-    }) 
+    })
 
   };
 
@@ -74,7 +74,7 @@ const Register: React.FC = () => {
           },
           components: {
             Input: {
-            //   borderColor: "#d9d9d9",  
+              //   borderColor: "#d9d9d9",  
               hoverBorderColor: "#d9d9d9",
             },
           },
@@ -91,12 +91,16 @@ const Register: React.FC = () => {
                 required: true,
                 message: "Please enter your password!",
               },
+              {
+                min: 8,
+                message: "Password must be at least 8 characters long!",
+              },
             ]}
             className="mb-5"
           >
             <Input.Password
               placeholder="Enter password"
-              className="" 
+              className=""
               style={{
                 height: 45,
                 border: "1px solid #d9d9d9",
@@ -105,52 +109,52 @@ const Register: React.FC = () => {
                 backgroundColor: "white",
               }}
             />
-          </Form.Item>  
+          </Form.Item>
 
-                 <Form.Item
-                      style={{ marginBottom: 0 }}
-                      label={<p
-                        style={{
-                          display: "block",
-                          color: "#5C5C5C",
-                        }}
-                        className="font-semibold"
-                      >
-                        Confirm Password
-                      </p>}
-                      name="confirmPassword"
-                      dependencies={["password"]}
-                      hasFeedback
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please confirm your password!",
-                        },
-                        ({ getFieldValue }) => ({
-                          validator(_, value) {
-                            if (!value || getFieldValue("password") === value) {
-                              return Promise.resolve();
-                            }
-                            return Promise.reject(
-                              new Error("The new password that you entered do not match!")
-                            );
-                          },
-                        }),
-                      ]}
-                    >
-                      <Input.Password
-                        type="password"
-                        placeholder="Enter Confirm password"
-                        style={{
-                          border: "1px solid #E0E4EC",
-                          height: "45px",
-                          background: "white",
-                          borderRadius: "8px",
-                          outline: "none",
-                        }}
-                        className="mb-6"
-                      />
-                    </Form.Item> 
+          <Form.Item
+            style={{ marginBottom: 0 }}
+            label={<p
+              style={{
+                display: "block",
+                color: "#5C5C5C",
+              }}
+              className="font-semibold"
+            >
+              Confirm Password
+            </p>}
+            name="confirmPassword"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "Please confirm your password!",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("The new password that you entered do not match!")
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password
+              type="password"
+              placeholder="Enter Confirm password"
+              style={{
+                border: "1px solid #E0E4EC",
+                height: "45px",
+                background: "white",
+                borderRadius: "8px",
+                outline: "none",
+              }}
+              className="mb-6"
+            />
+          </Form.Item>
 
           <TextInput name="contact" label="Contact" />
 
@@ -161,26 +165,26 @@ const Register: React.FC = () => {
               },
             }}
           >
-          <Form.Item
-          name="role"
-          label={<p>User Role</p>}
-          rules={[
-            {
-              required: true,
-              message: "Please input your User Role!",
-            },
-          ]}
-        >
-  
-            <Select
-              placeholder="Select User Role"
-              style={{ width: "100%", height: 45, }}
-              options={[
-                { value: 'CUSTOMER', label: 'Customer' },
-                { value: 'SELLER', label: 'Seller' },
+            <Form.Item
+              name="role"
+              label={<p>User Role</p>}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your User Role!",
+                },
               ]}
-            />
-        </Form.Item> 
+            >
+
+              <Select
+                placeholder="Select User Role"
+                style={{ width: "100%", height: 45, }}
+                options={[
+                  { value: 'CUSTOMER', label: 'Customer' },
+                  { value: 'SELLER', label: 'Seller' },
+                ]}
+              />
+            </Form.Item>
           </ConfigProvider>
 
           <Form.Item>
@@ -188,11 +192,11 @@ const Register: React.FC = () => {
               type="submit"
               className="w-full h-[45px] text-white font-medium text-lg bg-primary rounded-lg flex items-center justify-center mt-4"
             >
-            {isLoading? "Loading..." : "Sign up"}
+              {isLoading ? "Loading..." : "Sign up"}
             </button>
           </Form.Item>
         </Form>
-      </ConfigProvider> 
+      </ConfigProvider>
 
       <div className="flex items-center gap-5 w-full my-5">
         <div className=" flex items-center gap-1 px-4 py-1 bg-[#FAFAFA] ">
@@ -208,7 +212,7 @@ const Register: React.FC = () => {
           </div>
           <p className="text-[#636363] text-lg ps-2">Continue with facebook</p>
         </div>
-      </div> 
+      </div>
 
       <div className="flex items-center justify-center gap-1 py-4">
         <p className="text-[#636363]">Have an account?</p>

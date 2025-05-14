@@ -8,8 +8,8 @@ import React, { useEffect } from "react";
 import Swal from "sweetalert2";
 
 const ResetPassword = () => {
-  const router = useRouter() 
-  const [resetPassword , {isError , isLoading , isSuccess , error , data}] = useResetPasswordMutation()
+  const router = useRouter()
+  const [resetPassword, { isError, isLoading, isSuccess, error, data }] = useResetPasswordMutation()
 
 
   useEffect(() => {
@@ -23,23 +23,23 @@ const ResetPassword = () => {
           showConfirmButton: false
         }).then(() => {
           router.push("/login")
-        
+
         });
       }
     }
     if (isError) {
       Swal.fire({
-       //@ts-ignore
-        text: error?.data?.message,  
+        //@ts-ignore
+        text: error?.data?.message,
         icon: "error",
       });
     }
-  }, [isSuccess, isError, error, data, router]);  
+  }, [isSuccess, isError, error, data, router]);
 
 
-  const onFinish = async(values:{ newPassword: string , confirmPassword: string}) => {   
+  const onFinish = async (values: { newPassword: string, confirmPassword: string }) => {
     await resetPassword(values)
-  }  
+  }
 
   return (
     <div className="grid grid-cols-2" >
@@ -72,6 +72,10 @@ const ResetPassword = () => {
               {
                 required: true,
                 message: "Please input your new Password!",
+              },
+              {
+                min: 8,
+                message: "Password must be at least 8 characters long!",
               },
             ]}
             style={{ marginBottom: 0 }}
@@ -149,7 +153,7 @@ const ResetPassword = () => {
                 marginTop: 20
               }}
             >
-           {isLoading ? "Updating..." : "Update"}   
+              {isLoading ? "Updating..." : "Update"}
             </Button>
           </Form.Item>
 
