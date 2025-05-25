@@ -1,5 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @next/next/no-img-element */
 //@ts-nocheck
 import BusinessInput from "@/components/shared/BusinessInput";
 import { ConfigProvider, Form, Input, Select } from "antd";
@@ -20,8 +20,8 @@ const { Dragger } = Upload;
 const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onBack: () => void }) => {
   const [form] = Form.useForm();
   const { data: categoryData } = useGetCategoryQuery(undefined)
-  const [imgURL, setImgURL] = useState("/imgdemo.png");
-  const [imgFile, setImageFile] = useState(null);
+  const [imgURL, setImgURL] = useState("");
+  const [imgFile, setImageFile] = useState<File | null>(null);
   const [coverImages, setCoverImages] = useState<File[]>([]);
   const [documents, setDocuments] = useState<File[]>([]);
   const [deletedCoverImages, setDeletedCoverImages] = useState<string[]>([]);
@@ -30,20 +30,18 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
   const { data: getBusinessData } = useGetBusinessByIdQuery(businessId)
   const [updateBusiness] = useUpdateBusinessMutation()
 
-
-
   useEffect(() => {
     if (businessId) {
 
       if (getBusinessData) {
         form.setFieldsValue(getBusinessData);
-        setImgURL(getBusinessData?.logo?.startsWith("https") ? getBusinessData?.logo : `${imageUrl}${getBusinessData?.logo}`)
+        setImgURL(getBusinessData?.logo?.startsWith("http") ? getBusinessData?.logo : `${imageUrl}${getBusinessData?.logo}`)
         setCoverImages(getBusinessData?.image);
         setDocuments(getBusinessData?.doc);
       }
 
     }
-  }, [form, getBusinessData, businessId]);
+  }, [form, getBusinessData, businessId, setImgURL ]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -68,7 +66,7 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
   }, [isSuccess, isError, error, data, onBack]);
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]; 
 
     if (file) {
       const imgUrl = URL.createObjectURL(file);
@@ -123,7 +121,7 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
   });
 
   const onFinish = async (values) => {
-    const formData = new FormData(); 
+    const formData = new FormData();
 
 
     if (coverImages) {
@@ -158,29 +156,29 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
       }
 
       await updateBusiness({ id: businessId, formData }).then((res) => {
-            if (res?.data?.success) {
-              Swal.fire({
-                text: res?.data?.message,
-                icon: "success",
-                showConfirmButton: false,
-                timer: 1500,
-              }).then(() => { 
-                onBack() 
+        if (res?.data?.success) {
+          Swal.fire({
+            text: res?.data?.message,
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            onBack()
 
-      
-              });
-            } else {
-              Swal.fire({
-                title: "Oops",
-                //@ts-ignore
-                text: res?.error?.data?.message,
-                icon: "error",
-                timer: 1500,
-                showConfirmButton: false,
-              });
-      
-            }
-          }) 
+
+          });
+        } else {
+          Swal.fire({
+            title: "Oops",
+            //@ts-ignore
+            text: res?.error?.data?.message,
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false,
+          });
+
+        }
+      })
 
     } else {
 
@@ -188,28 +186,28 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
 
     }
 
-  }; 
+  };
 
-  const OwnershipData=[
+  const OwnershipData = [
     {
-      label:"Sole Proprietorship",
-      value:"Sole Proprietorship"
+      label: "Sole Proprietorship",
+      value: "Sole Proprietorship"
     },
     {
-      label:"Partnership",
-      value:"Partnership"
+      label: "Partnership",
+      value: "Partnership"
     },
     {
-      label:"Limited Partnership",
-      value:"Limited Partnership"
+      label: "Limited Partnership",
+      value: "Limited Partnership"
     },
     {
-      label:"Limited Liability Partnership",
-      value:"Limited Liability Partnership"
+      label: "Limited Liability Partnership",
+      value: "Limited Liability Partnership"
     },
     {
-      label:"Private Limited Company",
-      value:"Private Limited Company"
+      label: "Private Limited Company",
+      value: "Private Limited Company"
     },
   ]
 
@@ -251,40 +249,40 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
           <BusinessInput name="location" label="Enter your business location" />
           <BusinessInput name="email" label="Enter your business email" />
           <BusinessInput name="phone" label="Enter your contact number" />
-          <BusinessInput name="website" label="Enter your website URL" /> 
+          <BusinessInput name="website" label="Enter your website URL" />
           <Form.Item
-                name="socialMedia"
-              > 
-          
-                <Input
-                  placeholder={`Enter your social media accounts`}
-                  style={{
-                      height: 45,
-                      border: "1px solid #d9d9d9",
-                      outline: "none",
-                      boxShadow: "none",
-                      backgroundColor: "white",
-                    }}
-                />
-          
-              </Form.Item> 
+            name="socialMedia"
+          >
 
-              <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: "#FFAB3E",
-            },
-          }}
-        >
-          <Form.Item name="ownership" >
-            <Select
-              placeholder="Enter your ownership type"
-              style={{ width: "100%", height: 45, }}
-              options={OwnershipData}
+            <Input
+              placeholder={`Enter your social media accounts`}
+              style={{
+                height: 45,
+                border: "1px solid #d9d9d9",
+                outline: "none",
+                boxShadow: "none",
+                backgroundColor: "white",
+              }}
             />
+
           </Form.Item>
-        </ConfigProvider> 
-          <BusinessInput name="ownership" label="Enter your ownership type" />
+
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#FFAB3E",
+              },
+            }}
+          >
+            <Form.Item name="ownership" >
+              <Select
+                placeholder="Enter your ownership type"
+                style={{ width: "100%", height: 45, }}
+                options={OwnershipData}
+              />
+            </Form.Item>
+          </ConfigProvider>
+          {/* <BusinessInput name="ownership" label="Enter your ownership type" />  */}
 
           <Form.Item
             name="revenue"
@@ -370,20 +368,27 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
 
           <div>
             <p className="text-[16px] text-gray-500 font-semibold pb-1">Upload Business Logo </p>
-            <div className="flex  py-5 border border-gray-200 items-center justify-center rounded-lg">
-              <div className="hidden">
-                <input
-                  onChange={onChange}
-                  type="file"
-                  id="img"
-                  className=" hidden"
-                />
+            <div className="flex py-5 border border-gray-200 items-center justify-center rounded-lg">  
+              <div className="hidden"> 
+              <input
+                onChange={onChange}
+                type="file"
+                id="img"
+                className="hidden"
+              />
               </div>
+
               <label
                 htmlFor="img"
-                className="relative w-[160px] h-[80px] cursor-pointer rounded-lg  bg-white bg-contain bg-no-repeat bg-center object-cover"
-                style={{ backgroundImage: `url(${imgURL ? imgURL : <IoImageOutline size={50} />})` }}
-              >
+                className="relative w-[160px] h-[80px] cursor-pointer rounded-lg bg-white bg-contain bg-no-repeat bg-center object-cover"
+              
+              > 
+              <img src={imgURL} alt="" />
+                {!imgURL && (
+                  <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                    <IoImageOutline size={30} />
+                  </div>
+                )}
               </label>
             </div>
           </div>
@@ -391,7 +396,7 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
 
         <div className="">
           {/* Cover Images Upload */}
-          <div className="h-auto mb-5">
+          <div className="h-auto mb-5  mt-5 lg:mt-0">
             <Dragger {...uploadProps("cover")} min={5} className="p-6 business-add">
               <div className="flex justify-center gap-4 items-center">
                 <IoImageOutline size={24} color="#757575" />
