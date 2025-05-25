@@ -188,7 +188,30 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
 
     }
 
-  };
+  }; 
+
+  const OwnershipData=[
+    {
+      label:"Sole Proprietorship",
+      value:"Sole Proprietorship"
+    },
+    {
+      label:"Partnership",
+      value:"Partnership"
+    },
+    {
+      label:"Limited Partnership",
+      value:"Limited Partnership"
+    },
+    {
+      label:"Limited Liability Partnership",
+      value:"Limited Liability Partnership"
+    },
+    {
+      label:"Private Limited Company",
+      value:"Private Limited Company"
+    },
+  ]
 
   return (
     <div >
@@ -228,8 +251,39 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
           <BusinessInput name="location" label="Enter your business location" />
           <BusinessInput name="email" label="Enter your business email" />
           <BusinessInput name="phone" label="Enter your contact number" />
-          <BusinessInput name="website" label="Enter your website URL" />
-          <BusinessInput name="socialMedia" label="Enter your social media accounts" />
+          <BusinessInput name="website" label="Enter your website URL" /> 
+          <Form.Item
+                name="socialMedia"
+              > 
+          
+                <Input
+                  placeholder={`Enter your social media accounts`}
+                  style={{
+                      height: 45,
+                      border: "1px solid #d9d9d9",
+                      outline: "none",
+                      boxShadow: "none",
+                      backgroundColor: "white",
+                    }}
+                />
+          
+              </Form.Item> 
+
+              <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#FFAB3E",
+            },
+          }}
+        >
+          <Form.Item name="ownership" >
+            <Select
+              placeholder="Enter your ownership type"
+              style={{ width: "100%", height: 45, }}
+              options={OwnershipData}
+            />
+          </Form.Item>
+        </ConfigProvider> 
           <BusinessInput name="ownership" label="Enter your ownership type" />
 
           <Form.Item
@@ -242,7 +296,7 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
             ]}
           >
             <Input
-              placeholder={`Enter your revenue`}
+              placeholder={`Enter Last Annual Revenue`}
               type="number"
               style={{
                 height: 45,
