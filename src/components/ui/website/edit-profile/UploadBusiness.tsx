@@ -52,21 +52,20 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
           timer: 1500,
           showConfirmButton: false
         }).then(() => {
-          onBack()  
+          onBack()
         })
       }
     }
     if (isError) {
       Swal.fire({
         //@ts-ignore
-         html: `
-      <p style="margin-bottom: 10px;" >${
-        Array.isArray(error?.data?.errorMessages)
-          ? error.data.errorMessages.map((err: { message: string }) => err.message).join('<br/>')
-          : error?.data?.message
-      }</p>
- <p><small style="color: red; margin-top:50px;">If you cannot resolve the error, please contact us.</small></p>
-    `,
+        html: `
+        <p style="margin-bottom: 10px;" > ${Array.isArray(error?.data?.errorMessages)
+            ? error.data.errorMessages.map((err: { message: string }) => err.message).join('<br/>')
+            : error?.data?.message
+          }</p>
+        <p><small style="color: red; margin-top:50px;">If you cannot resolve the error, please contact with us.</small></p>
+        `,
         icon: "error",
       });
     }
@@ -387,15 +386,15 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
 
               <label
                 htmlFor="img"
-                className="relative w-[160px] h-[80px] cursor-pointer rounded-lg bg-white bg-contain bg-no-repeat bg-center object-cover" > 
+                className="relative w-[160px] h-[80px] cursor-pointer rounded-lg bg-white bg-contain bg-no-repeat bg-center object-cover" >
 
-                <img src={imgURL} alt=""  className={` ${imgURL && " w-[120px] h-16 object-cover " } `}/> 
+                <img src={imgURL} alt="" className={` ${imgURL && " w-[120px] h-16 object-cover "} `} />
 
                 {!imgURL && (
                   <div className="absolute inset-0 flex items-center justify-center text-gray-400">
                     <IoImageOutline size={30} />
                   </div>
-                )} 
+                )}
 
               </label>
             </div>
