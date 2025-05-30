@@ -41,7 +41,7 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
       }
 
     }
-  }, [form, getBusinessData, businessId, setImgURL ]);
+  }, [form, getBusinessData, businessId, setImgURL]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -52,21 +52,28 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
           timer: 1500,
           showConfirmButton: false
         }).then(() => {
-          onBack()
+          onBack()  
         })
       }
     }
     if (isError) {
       Swal.fire({
         //@ts-ignore
-        text: error?.data?.message,
+         html: `
+      <p style="margin-bottom: 10px;" >${
+        Array.isArray(error?.data?.errorMessages)
+          ? error.data.errorMessages.map((err: { message: string }) => err.message).join('<br/>')
+          : error?.data?.message
+      }</p>
+ <p><small style="color: red; margin-top:50px;">If you cannot resolve the error, please contact us.</small></p>
+    `,
         icon: "error",
       });
     }
   }, [isSuccess, isError, error, data, onBack]);
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]; 
+    const file = e.target.files?.[0];
 
     if (file) {
       const imgUrl = URL.createObjectURL(file);
@@ -368,27 +375,28 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
 
           <div>
             <p className="text-[16px] text-gray-500 font-semibold pb-1">Upload Business Logo </p>
-            <div className="flex py-5 border border-gray-200 items-center justify-center rounded-lg">  
-              <div className="hidden"> 
-              <input
-                onChange={onChange}
-                type="file"
-                id="img"
-                className="hidden"
-              />
+            <div className="flex py-5 border border-gray-200 items-center justify-center rounded-lg">
+              <div className="hidden">
+                <input
+                  onChange={onChange}
+                  type="file"
+                  id="img"
+                  className="hidden"
+                />
               </div>
 
               <label
                 htmlFor="img"
-                className="relative w-[160px] h-[80px] cursor-pointer rounded-lg bg-white bg-contain bg-no-repeat bg-center object-cover"
-              
-              > 
-              <img src={imgURL} alt="" />
+                className="relative w-[160px] h-[80px] cursor-pointer rounded-lg bg-white bg-contain bg-no-repeat bg-center object-cover" > 
+
+                <img src={imgURL} alt=""  className={` ${imgURL && " w-[120px] h-16 object-cover " } `}/> 
+
                 {!imgURL && (
                   <div className="absolute inset-0 flex items-center justify-center text-gray-400">
                     <IoImageOutline size={30} />
                   </div>
-                )}
+                )} 
+
               </label>
             </div>
           </div>
