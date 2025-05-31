@@ -388,7 +388,7 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
                 htmlFor="img"
                 className="relative w-[160px] h-[80px] cursor-pointer rounded-lg bg-white bg-contain bg-no-repeat bg-center object-cover" >
 
-                <img src={imgURL} alt="" className={` ${imgURL && " w-[120px] h-16 object-cover "} `} />
+                <img src={imgURL} alt="" className={` ${imgURL && " w-[120px] h-20 object-contain "} `} />
 
                 {!imgURL && (
                   <div className="absolute inset-0 flex items-center justify-center text-gray-400">
