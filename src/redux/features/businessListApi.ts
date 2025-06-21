@@ -63,11 +63,11 @@ const businessApi = baseApi.injectEndpoints({
         })  ,
 
         updateBusiness: builder.mutation({
-            query: ({id , data}) => {
+            query: ({id,formData }) => { 
                 return{
                     url: `/business/update/${id}` ,
                     method: "PATCH",
-                    body: data,
+                    body: formData ,
                 }
             }, 
         })

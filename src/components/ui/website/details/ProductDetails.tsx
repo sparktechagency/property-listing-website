@@ -4,7 +4,7 @@
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { LuBriefcaseBusiness } from "react-icons/lu";
 import { PiUsers } from "react-icons/pi";
-import { RiCalendarScheduleLine, RiMoneyDollarCircleLine } from "react-icons/ri";
+import { RiCalendarScheduleLine } from "react-icons/ri";
 import { Montserrat } from "next/font/google";
 import { GrLocation } from "react-icons/gr";
 import { useState } from "react";
@@ -13,7 +13,6 @@ import { useGetBusinessByIdQuery } from "@/redux/features/businessListApi";
 import { useGetCategoryQuery } from "@/redux/features/categoryApi";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import moment from "moment";
 import { useProfileQuery } from "@/redux/features/auth/authApi";
 import ProposalModal from "./ProposalModal";
 import { useCreateInitialChatMutation } from "@/redux/features/chatApi";
@@ -32,7 +31,7 @@ const ProductDetails = () => {
     const [createInitialChat] = useCreateInitialChatMutation()
     const [openProposal, setOpenProposal] = useState(false)
     const userRole = profile?.role
-    const router = useRouter()
+    const router = useRouter()  
 
     const matchedCategory = category?.find(
         (cat: { _id: string }) => cat?._id === detailsData?.category
@@ -55,38 +54,23 @@ const ProductDetails = () => {
             id: 3,
             title: "Inception",
             icon: <RiCalendarScheduleLine size={24} color="#757575" />,
-            value: moment(detailsData?.createdAt).format('D-MM-YY')
-        },
-        {
-            id: 4,
-            title: "Headquarters",
-            icon: <HiOutlineBuildingOffice2 size={24} color="#757575" />,
-            value: detailsData?.location
-        },
-        {
-            id: 5,
-            title: "Ownership Type",
-            icon: <PiUsers size={24} color="#757575" />,
-            value: detailsData?.ownership
-        },
-        {
-            id: 6,
-            title: "Funding",
-            icon: <RiMoneyDollarCircleLine size={24} color="#757575" />,
-            value: "$40k"
+            value: detailsData?.founded
         },
     ]
 
 
+    const handelChat = async () => { 
 
+        if(profile?._id){
+            await createInitialChat(detailsData?.seller).then((res) => {
+                if (res?.data?.success) {
+                    router.push("/edit-profile?tab=7")
+                }
+            })
+        }else{
+            router.push("/login")
+        }
 
-    const handelChat = async () => {
-
-        await createInitialChat(detailsData?.seller).then((res) => {
-            if (res?.data?.success) {
-                router.push("/edit-profile?tab=7")
-            }
-        })
 
     };
     return (
@@ -103,7 +87,8 @@ const ProductDetails = () => {
                         </div>
 
                         <div className=" flex items-center lg:justify-end gap-4 ">
-                            <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px] disabled:bg-[#ffab3e]/60  disabled:cursor-not-allowed  " onClick={() => setOpenProposal(true)} disabled={userRole === "SELLER"}  > Send Proposal </button>
+                            <button className=" bg-primary text-white font-bold h-[40px]  px-5 rounded-lg text-[16px] disabled:bg-[#ffab3e]/60  disabled:cursor-not-allowed  " onClick={() => setOpenProposal(true)} disabled={userRole === "SELLER"}  > Send Proposal </button> 
+                          
                             <button className=" bg-[#FFF7EC] text-primary font-bold h-[40px]  px-5 rounded-lg text-[16px] disabled:text-[#ffab3e]/60   disabled:cursor-not-allowed " onClick={handelChat} disabled={userRole === "SELLER"} > Send Message </button>
                         </div>
 
@@ -113,30 +98,17 @@ const ProductDetails = () => {
                     </div>
                 </div>
 
-                <Carousel autoplay autoplaySpeed={5000} >
+                <div className="w-[90%] mx-auto pb-10 ">
 
-     
+                    <Carousel autoplay autoplaySpeed={5000} >
                         {detailsData?.image?.map((image: string, index: number) => (
-                            <img key={index} alt={`Property Image ${index + 2}`} src={image?.startsWith("https") ? image : `${imageUrl}${image}`} className="h-[480px] w-full object-fill shadow-md rounded-lg" />
+                            <div key={index} className=" bg-[#F8F8F8] rounded-md ">
+                                <img alt={`Property Image ${index + 2}`} src={image?.startsWith("https") ? image : `${imageUrl}${image}`} className="h-[480px] w-full object-contain shadow-md rounded-lg" />
+                            </div>
                         ))}
-                  
 
-
-                </Carousel>
-
-                {/* <div className="grid lg:grid-cols-4 grid-cols-1 gap-4 mb-8  ">
-                    <div className="col-span-2">
-                        <img alt="Main Property Image" src={detailsData?.image[0]?.startsWith("https") ? detailsData?.image[0] : `${imageUrl}${detailsData?.image[0]}`} className="h-auto w-full object-cover shadow-lg rounded-lg" />
-                    </div>
-                    <div className="col-span-2 ">
-                        <div className="grid grid-cols-2 gap-x-4 lg:gap-y-0 gap-y-2">
-                            {detailsData?.image.slice(1).map((image:string, index:number) => (
-                                <img key={index} alt={`Property Image ${index + 2}`} src={image?.startsWith("https") ? image : `${imageUrl}${image}`} className="h-auto w-full object-cover shadow-md rounded-lg" />
-                            ))}
-
-                        </div>
-                    </div>
-                </div> */}
+                    </Carousel>
+                </div>
 
 
                 <div className="flex items-center justify-center mb-[30px]   ">
@@ -156,6 +128,27 @@ const ProductDetails = () => {
                                 ))
                             }
                         </div>
+
+                        <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mb-8 text-center">
+                            <div className="p-4  col-span-2 flex items-center justify-center gap-x-5 border border-gray-300 rounded-lg">
+                                <p className="flex items-center  justify-center bg-white w-12 h-12 rounded-full"> <HiOutlineBuildingOffice2 size={24} color="#757575" />  </p>
+
+                                <div className=" flex items-start flex-col">
+                                    <p className="font-medium text-[#757575] text-[16px] ">Headquarters</p>
+                                    <p className="text-[#000000] text-[17px] font-semibold"> {detailsData?.location}</p>
+                                </div>
+                            </div>
+
+                            <div className="p-4  col-span-1 flex items-center justify-center gap-x-5 border border-gray-300 rounded-lg">
+                                <p className="flex items-center  justify-center bg-white w-12 h-12 rounded-full"> <PiUsers size={24} color="#757575" />  </p>
+
+                                <div className=" flex items-start flex-col">
+                                    <p className="font-medium text-[#757575] text-[16px] ">Ownership Type</p>
+                                    <p className="text-[#000000] text-[17px] font-semibold">{detailsData?.ownership}</p>
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
 
@@ -200,9 +193,9 @@ const ProductDetails = () => {
                         <div className=" ">
 
                             <div className="flex flex-col gap-10 gap-y-2  w-full">
-                                <div className="flex items-center justify-between gap-10 "><p className="text-gray-500 font-medium">Address : </p>  <p className="font-semibold">{detailsData?.location}</p></div>
-                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">City :</p><p className="font-semibold">Woodlands</p></div>
-                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">State/County :</p><p className="font-semibold">Singapore City</p></div>
+                                <div className="flex items-center justify-between"><p className="text-gray-500 font-medium">Address : </p>  <p className="font-semibold text-xs text-end">{detailsData?.location}</p></div>
+                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">City :</p><p className="font-semibold">{detailsData?.city}</p></div>
+                                <div className="flex items-center justify-between "><p className="text-gray-500 font-medium">County :</p><p className="font-semibold">{detailsData?.country}</p></div>
                             </div>
                         </div>
 

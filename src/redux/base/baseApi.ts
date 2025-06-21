@@ -6,7 +6,7 @@ export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://148.66.158.106:5000/api/v1" ,
-      // baseUrl: "http://192.168.10.15:8000/api/v1" , 
+      // baseUrl: "http://10.0.80.75:5005/api/v1" , 
       prepareHeaders: (headers) => {
         const token = GetLocalStorage("accessToken");
         if (token) {
@@ -19,6 +19,7 @@ export const baseApi = createApi({
   tagTypes: [ "chats"],
 });
 
-// export const imageUrl = "http://192.168.10.15:8000/";
+// export const imageUrl = "http://10.0.80.75:5005/";
+// export const socketURL = "http://10.0.80.75:5005";
 export const imageUrl = "http://148.66.158.106:5000/"; 
 export const socketURL  = "http://148.66.158.106:5000"; 

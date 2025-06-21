@@ -14,7 +14,6 @@ import { imageUrl } from "@/redux/base/baseApi";
 import Swal from "sweetalert2";
 import { GoArrowLeft } from "react-icons/go";
 
-
 const { Dragger } = Upload;
 
 const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onBack: () => void }) => {
@@ -35,7 +34,7 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
 
       if (getBusinessData) {
         form.setFieldsValue(getBusinessData);
-        setImgURL(getBusinessData?.logo?.startsWith("http") ? getBusinessData?.logo : `${imageUrl}${getBusinessData?.logo}`)
+        setImgURL(getBusinessData?.logo?.startsWith("http") ? getBusinessData?.logo : `${imageUrl}${getBusinessData?.logo}`) 
         setCoverImages(getBusinessData?.image);
         setDocuments(getBusinessData?.doc);
       }
@@ -52,6 +51,13 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
           timer: 1500,
           showConfirmButton: false
         }).then(() => {
+          setImageFile(null)
+          setImgURL('')
+          setCoverImages([])
+          setDocuments([])
+          setDeletedCoverImages([])
+          setDeletedDocuments([])
+          onBack()
           onBack()
         })
       }
@@ -129,7 +135,6 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
   const onFinish = async (values) => {
     const formData = new FormData();
 
-
     if (coverImages) {
       coverImages.forEach((file) => {
         formData.append("image", file)
@@ -169,8 +174,13 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
             showConfirmButton: false,
             timer: 1500,
           }).then(() => {
+            setImageFile(null)
+            setImgURL('')
+            setCoverImages([])
+            setDocuments([])
+            setDeletedCoverImages([])
+            setDeletedDocuments([])
             onBack()
-
 
           });
         } else {
@@ -336,6 +346,8 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
           </Form.Item>
 
           <BusinessInput name="founded" label="Enter your year established" />
+          <BusinessInput name="city" label="Enter your city" />
+          <BusinessInput name="country" label="Enter your country" />
           <Form.Item
             name="price"
             rules={[
@@ -412,6 +424,7 @@ const UploadBusiness = ({ businessId, onBack }: { businessId: string | null, onB
             </Dragger>
             <div className="grid grid-cols-3 gap-3 mb-4 mt-4">
               {coverImages?.map((img, index) => {
+                if (!img) return null;
                 const imageSrc = typeof img === "string" ? `${imageUrl}${img}` : URL.createObjectURL(img);
                 return (
                   <div key={index} className="relative">
