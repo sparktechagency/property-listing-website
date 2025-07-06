@@ -8,7 +8,7 @@ import { UserProvider } from "@/provider/User";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Business Listing Website",
+  title: "Ambitious",
 };
 
 export default function RootLayout({
